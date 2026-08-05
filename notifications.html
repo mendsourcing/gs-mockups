@@ -26,19 +26,24 @@
 html,body{margin:0;padding:0;font-family:'Manrope',sans-serif;background:var(--bg);color:var(--text);font-size:14px}
 
 /* Top bar */
-.topbar{display:flex;align-items:center;gap:24px;padding:12px 22px;background:var(--surface);border-bottom:1px solid var(--border);position:sticky;top:0;z-index:20;height:56px}
-.brand{display:flex;align-items:center;gap:2px;font-family:'DM Sans',sans-serif;font-weight:800;font-size:18px;letter-spacing:-.3px;color:var(--text)}
-.brand .dot-o{position:relative;display:inline-block;color:var(--text)}
-.brand .dot-o::after{content:"";position:absolute;top:38%;left:50%;transform:translate(-50%,-50%);width:6px;height:6px;background:var(--active-supplier);border-radius:50%}
-.portal-switch{display:flex;background:#0F172A;border-radius:999px;padding:4px;gap:2px}
-.portal-btn{display:inline-flex;align-items:center;gap:7px;padding:6px 14px;border-radius:999px;font-family:'Manrope',sans-serif;font-weight:600;font-size:12.5px;color:#CBD5E1;cursor:pointer;border:none;background:transparent;transition:background .15s,color .15s}
-.portal-btn .dot{width:7px;height:7px;border-radius:50%}
-.portal-btn.member .dot{background:var(--accent)}
-.portal-btn.supplier .dot{background:var(--active-supplier)}
-.portal-btn.active{background:#334155;color:#fff}
-.topbar .breadcrumbs{margin-left:16px;font-size:13px;color:var(--text-dim);font-weight:600}
+.topbar{display:flex;align-items:center;gap:18px;padding:10px 22px;background:var(--surface);border-bottom:1px solid var(--border);position:sticky;top:0;z-index:20;height:60px}
+.brand{display:inline-flex;align-items:center;font-family:'DM Sans',sans-serif;font-weight:800;font-size:22px;letter-spacing:-.5px;color:var(--text);line-height:1}
+.brand .brand-o{position:relative;display:inline-flex;align-items:center;justify-content:center;width:22px;height:22px;margin:0 1px;color:var(--text)}
+.brand .brand-o svg{width:22px;height:22px}
+.portal-switch{display:inline-flex;background:#0F172A;border-radius:999px;padding:3px;gap:0;margin-left:14px}
+.portal-btn{display:inline-flex;align-items:center;gap:7px;padding:6px 14px;border-radius:999px;font-family:'Manrope',sans-serif;font-weight:600;font-size:12.5px;color:#94A3B8;cursor:pointer;border:none;background:transparent;transition:background .15s,color .15s;white-space:nowrap}
+.portal-btn .dot{width:7px;height:7px;border-radius:50%;background:#475569;transition:background .15s}
+.portal-btn.member.active{background:#1E293B;color:#fff}
+.portal-btn.supplier.active{background:#1E293B;color:#fff}
+.portal-btn.member.active .dot{background:#3B82F6}
+.portal-btn.supplier.active .dot{background:var(--active-supplier)}
+.portal-btn.member:not(.active) .dot{background:#3B82F6;opacity:.6}
+.portal-btn.supplier:not(.active) .dot{background:var(--active-supplier);opacity:.6}
+.portal-btn:hover:not(.active){color:#CBD5E1}
 .topbar .spacer{flex:1}
-.avatar{width:36px;height:36px;border-radius:8px;background:linear-gradient(135deg,#F97316,#DC2626);display:flex;align-items:center;justify-content:center;font-family:'DM Sans',sans-serif;font-weight:800;color:#fff;font-size:13px;overflow:hidden;border:2px solid var(--border)}
+.nav-link{font-family:'Manrope',sans-serif;font-size:13.5px;font-weight:600;color:var(--text-dim);text-decoration:none;padding:8px 12px;border-radius:6px;cursor:pointer;transition:color .15s,background .15s}
+.nav-link:hover{color:var(--accent);background:var(--accent-bg)}
+.avatar{width:38px;height:38px;border-radius:50%;background:linear-gradient(135deg,#F59E0B,#DC2626);display:flex;align-items:center;justify-content:center;font-family:'DM Sans',sans-serif;font-weight:800;color:#fff;font-size:13px;overflow:hidden;border:2px solid var(--surface);box-shadow:0 0 0 1px var(--border);cursor:pointer;flex-shrink:0}
 
 /* App shell */
 .shell{display:grid;grid-template-columns:250px 1fr;min-height:calc(100vh - 56px)}
@@ -141,14 +146,14 @@ main{padding:26px 36px 60px;max-width:1080px;margin:0 auto;width:100%;position:r
 
 <!-- ============ TOP BAR ============ -->
 <header class="topbar">
-  <div class="brand">Gov<span class="dot-o">O</span>Scraper</div>
+  <div class="brand">Gov<span class="brand-o" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="11" fill="#0F172A"/><circle cx="12" cy="12" r="8.5" fill="#3B82F6"/><circle cx="12" cy="12" r="6" fill="#0F172A"/><circle cx="12" cy="12" r="3" fill="#DC2626"/></svg></span>Scraper</div>
   <div class="portal-switch">
     <button class="portal-btn member active"><span class="dot"></span>Member Portal</button>
     <button class="portal-btn supplier"><span class="dot"></span>Supplier Portal</button>
   </div>
-  <span class="breadcrumbs">Settings & Account &nbsp;›&nbsp; Email Preferences</span>
   <span class="spacer"></span>
-  <div class="avatar">TT</div>
+  <a class="nav-link">Dashboard</a>
+  <div class="avatar" title="Tristan Thomas">TT</div>
 </header>
 
 <div class="shell">
