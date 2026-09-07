@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Mockup A3 — CSI + explicit FAT/PLT · GovScraper</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#F8FAFC; --surface:#FFFFFF; --surface-2:#F1F5F9; --surface-3:#E2E8F0;
+  --border:#E2E8F0; --border-strong:#CBD5E1;
+  --text:#0F172A; --text-dim:#334155; --text-muted:#64748B; --text-faint:#94A3B8;
+  --accent:#1B6CA8; --accent-hover:#155A8F; --accent-bg:#EFF6FF; --accent-border:#BFDBFE;
+  --green:#16A34A; --green-bg:#F0FDF4;
+  --amber:#F97316; --amber-bg:#FFF7ED; --amber-border:#FDBA74;
+  --red:#DC2626; --red-bg:#FEF2F2; --red-border:#FECACA;
+  --purple:#7C3AED; --purple-bg:#F5F3FF;
+  --cyan:#0891B2; --cyan-bg:#ECFEFF;
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0;font-family:'Manrope',sans-serif;background:var(--bg);color:var(--text);font-size:14px}
+.page{max-width:1280px;margin:32px auto;padding:0 24px}
+.mock-bar{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px}
+.mock-title{font-weight:800;font-size:18px}
+.mock-tag{font-size:11px;font-weight:700;padding:4px 10px;border-radius:6px;background:var(--accent-bg);color:var(--accent);letter-spacing:.4px}
+.mock-note{font-size:12px;color:var(--text-muted);margin-bottom:18px}
+
+.ps-sec{background:var(--surface);margin-bottom:14px;border:1px solid var(--border);border-radius:8px;overflow:hidden;box-shadow:0 1px 2px rgba(15,23,42,.04)}
+.ps-sec-hdr{display:flex;align-items:center;background:var(--accent-bg);color:var(--accent);font-weight:700;font-size:13.5px;padding:11px 16px;border-bottom:1px solid var(--border);letter-spacing:.2px}
+.ps-sec-hdr .id-meta{margin-left:auto;font-size:11px;font-weight:500;color:var(--text-faint)}
+.ps-sec-hdr .id-meta b{font-family:'DM Sans',sans-serif;font-weight:800;font-size:14px;color:var(--text);letter-spacing:.5px;margin-left:6px}
+.ps-sec-hdr .chev{margin-left:14px;color:var(--text-faint);font-size:13px}
+
+.split-body{display:grid;grid-template-columns:minmax(0,1fr) 360px;gap:0}
+.split-body .left{border-right:1px solid var(--border)}
+.split-body .right{padding:14px 18px;background:linear-gradient(180deg, #FBFCFE 0%, #F8FAFC 100%)}
+
+.info-table{width:100%;border-collapse:collapse}
+.info-table tr{border-bottom:1px solid var(--border)}
+.info-table tr:last-child{border-bottom:none}
+.info-table td{padding:9px 16px;font-size:12.5px;color:var(--text-dim);vertical-align:top}
+.info-table td:first-child{width:200px;font-weight:600;color:var(--text-dim);background:var(--surface-2);border-right:1px solid var(--border);white-space:nowrap}
+.info-table .val-mono{font-family:'DM Sans',sans-serif}
+.info-table .val-faint{color:var(--text-faint);font-style:italic}
+.info-table .val-blue{color:var(--accent);font-weight:600}
+.info-table .val-amber{color:var(--amber);font-weight:600}
+.tbl-btn{font-family:'DM Sans',sans-serif;font-size:11px;font-weight:700;padding:4px 12px;border-radius:12px;border:none;cursor:pointer;background:var(--accent);color:#fff;margin-left:10px}
+.copy-icon{color:var(--text-faint);cursor:pointer;font-size:12px;margin-left:6px}
+
+/* Shelf */
+.shelf-title{font-size:10.5px;font-weight:800;color:var(--text-muted);letter-spacing:.9px;text-transform:uppercase;margin:2px 0 8px 0}
+.shelf-group{margin-top:10px}
+.shelf-group:first-of-type{margin-top:0}
+.group-lbl{font-size:9.5px;font-weight:800;color:var(--text-faint);letter-spacing:1px;text-transform:uppercase;padding:3px 0 4px 0;border-bottom:1px solid var(--border);margin-bottom:2px}
+.flag-row{display:flex;align-items:center;justify-content:space-between;padding:7px 0;border-bottom:1px dashed var(--border)}
+.flag-row:last-child{border-bottom:none}
+.flag-row .lbl{font-size:12px;color:var(--text-dim);font-weight:600;line-height:1.25}
+.flag-row .lbl small{display:block;font-size:10px;font-weight:500;color:var(--text-faint);margin-top:1px;font-family:'DM Sans',sans-serif;letter-spacing:.3px}
+
+/* Status tag */
+.status-tag{display:inline-flex;align-items:center;gap:5px;font-size:10.5px;font-weight:700;padding:3px 9px;border-radius:5px;white-space:nowrap;letter-spacing:.2px}
+.status-tag .dot{width:5px;height:5px;border-radius:50%}
+.st-red{background:var(--red-bg);color:var(--red)} .st-red .dot{background:var(--red)}
+.st-amber{background:var(--amber-bg);color:var(--amber)} .st-amber .dot{background:var(--amber)}
+.st-purple{background:var(--purple-bg);color:var(--purple)} .st-purple .dot{background:var(--purple)}
+.st-no{background:var(--surface-2);color:var(--text-faint)} .st-no .dot{background:var(--text-faint)}
+
+/* CMMC composite */
+.cmmc-block{display:flex;align-items:center;justify-content:space-between;padding:9px 12px;background:var(--accent-bg);border:1px solid var(--accent-border);border-radius:6px;margin-top:6px}
+.cmmc-block .clbl{font-size:11px;font-weight:800;color:var(--accent);letter-spacing:.4px;text-transform:uppercase}
+.cmmc-pill{display:inline-flex;align-items:center;gap:7px;font-family:'DM Sans',sans-serif;font-size:12px;font-weight:800;padding:4px 10px;border-radius:5px;letter-spacing:.4px}
+.cmmc-pill .lvl{font-size:13px}
+.cmmc-pill .sep{opacity:.5;font-weight:600}
+.cmmc-pill.l1{background:var(--accent);color:#fff}
+.cmmc-pill.l2{background:var(--amber);color:#fff}
+.cmmc-pill.l3{background:var(--red);color:#fff}
+.cmmc-pill.na{background:var(--surface-2);color:var(--text-faint)}
+
+/* Inspection pill */
+.insp-pill{display:inline-flex;align-items:center;gap:5px;font-family:'DM Sans',sans-serif;font-size:11px;font-weight:800;padding:4px 10px;border-radius:5px;letter-spacing:.5px}
+.insp-pill .dot{width:5px;height:5px;border-radius:50%}
+.insp-pill.origin{background:var(--amber-bg);color:var(--amber)}
+.insp-pill.origin .dot{background:var(--amber)}
+.insp-pill.dest{background:var(--green-bg);color:var(--green)}
+.insp-pill.dest .dot{background:var(--green)}
+
+@media (max-width:920px){
+  .split-body{grid-template-columns:1fr}
+  .split-body .left{border-right:none;border-bottom:1px solid var(--border)}
+}
+</style>
+</head>
+<body>
+<div class="page">
+  <div class="mock-bar">
+    <div class="mock-title">Pattern A3 — CSI rename + explicit FAT &amp; PLT</div>
+    <span class="mock-tag">MOCKUP</span>
+  </div>
+  <div class="mock-note">
+    Three subtle groups: <b>Restrictions</b> (ITAR/CUI/CSI) · <b>Testing</b> (FAT/PLT) · <b>Logistics &amp; Cert</b> (Inspection / CMMC). 7 explicit Yes/No rows + 2 value pills, grouped for scannability.
+  </div>
+
+  <div class="ps-sec">
+    <div class="ps-sec-hdr">
+      Solicitation Information
+      <span class="id-meta">ID Number:<b>L7S3LWPV</b> <span class="copy-icon">⎘</span></span>
+      <span class="chev">▴</span>
+    </div>
+    <div class="split-body">
+
+      <!-- LEFT: existing info table -->
+      <div class="left">
+        <table class="info-table">
+          <tr><td>Solicitation Number</td><td><span class="val-mono">SPE7M2-26-T-4844</span> <span class="copy-icon">⎘</span> <button class="tbl-btn">Open PDF</button></td></tr>
+          <tr><td>Set Aside</td><td>Unrestricted</td></tr>
+          <tr><td>PR Number</td><td><span class="val-mono">7016803709</span> <span class="copy-icon">⎘</span></td></tr>
+          <tr><td>Date Issued</td><td>Monday, June 01, 2026</td></tr>
+          <tr><td>NSN Number</td><td><span class="val-blue val-mono">5930-01-093-5794</span> <span class="copy-icon">⎘</span></td></tr>
+          <tr><td>Part Number</td><td><span class="val-mono">19-29-9957, 222-2684NB-4</span> <span class="copy-icon">⎘</span></td></tr>
+          <tr><td>Due Date</td><td class="val-amber">06/11/2026</td></tr>
+          <tr><td>Item Description</td><td>SWITCH, PRESSURE</td></tr>
+          <tr><td>Drawing Information</td><td class="val-faint">Not Available</td></tr>
+          <tr><td>FOB Point (Shipping)</td><td>ORIGIN</td></tr>
+          <tr><td>Anticipated Award Amount</td><td class="val-blue">$3,175.50</td></tr>
+        </table>
+      </div>
+
+      <!-- RIGHT: grouped shelf -->
+      <div class="right">
+        <div class="shelf-title">Compliance &amp; Restrictions</div>
+
+        <!-- RESTRICTIONS -->
+        <div class="shelf-group">
+          <div class="group-lbl">Restrictions</div>
+          <div class="flag-row">
+            <div class="lbl">Export Control / ITAR<small>RQ032</small></div>
+            <span class="status-tag st-red"><span class="dot"></span>Yes</span>
+          </div>
+          <div class="flag-row">
+            <div class="lbl">CUI Present<small>RD002</small></div>
+            <span class="status-tag st-red"><span class="dot"></span>Yes</span>
+          </div>
+          <div class="flag-row">
+            <div class="lbl">Critical Safety Item<small>CSI</small></div>
+            <span class="status-tag st-amber"><span class="dot"></span>Yes</span>
+          </div>
+        </div>
+
+        <!-- TESTING -->
+        <div class="shelf-group">
+          <div class="group-lbl">Testing</div>
+          <div class="flag-row">
+            <div class="lbl">First Article Testing<small>FAT</small></div>
+            <span class="status-tag st-purple"><span class="dot"></span>Yes</span>
+          </div>
+          <div class="flag-row">
+            <div class="lbl">Production Lot Testing<small>PLT</small></div>
+            <span class="status-tag st-no"><span class="dot"></span>No</span>
+          </div>
+        </div>
+
+        <!-- LOGISTICS & CERT -->
+        <div class="shelf-group">
+          <div class="group-lbl">Logistics &amp; Certification</div>
+          <div class="flag-row">
+            <div class="lbl">Inspection Point<small>Where the gov inspects</small></div>
+            <span class="insp-pill origin"><span class="dot"></span>Origin</span>
+          </div>
+          <div class="cmmc-block">
+            <span class="clbl">CMMC Required</span>
+            <span class="cmmc-pill l2"><span class="lvl">L2</span><span class="sep">·</span><span>C3PAO</span></span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <p style="font-size:12px;color:var(--text-muted);margin-top:14px">
+    Compare:
+    <a href="mockup-compliance-A.html" style="color:var(--accent);font-weight:600">A original</a> ·
+    <a href="mockup-compliance-A2.html" style="color:var(--accent);font-weight:600">A2 (chip row)</a> ·
+    <strong style="color:var(--text)">A3 (this)</strong>
+  </p>
+
+  <details style="margin-top:24px;font-size:12px;color:var(--text-muted)">
+    <summary style="cursor:pointer;font-weight:700;color:var(--text-dim)">State variants</summary>
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:14px">
+
+      <div style="border:1px solid var(--border);border-radius:8px;padding:12px;background:var(--surface)">
+        <div style="font-weight:700;color:var(--text);margin-bottom:8px">Clean RFQ</div>
+        <div class="group-lbl">Restrictions</div>
+        <div class="flag-row"><div class="lbl">Export / ITAR</div><span class="status-tag st-no"><span class="dot"></span>No</span></div>
+        <div class="flag-row"><div class="lbl">CUI Present</div><span class="status-tag st-no"><span class="dot"></span>No</span></div>
+        <div class="flag-row"><div class="lbl">CSI</div><span class="status-tag st-no"><span class="dot"></span>No</span></div>
+        <div class="group-lbl" style="margin-top:8px">Testing</div>
+        <div class="flag-row"><div class="lbl">FAT</div><span class="status-tag st-no"><span class="dot"></span>No</span></div>
+        <div class="flag-row"><div class="lbl">PLT</div><span class="status-tag st-no"><span class="dot"></span>No</span></div>
+        <div class="group-lbl" style="margin-top:8px">Logistics &amp; Cert</div>
+        <div class="flag-row"><div class="lbl">Inspection</div><span class="insp-pill dest"><span class="dot"></span>Destination</span></div>
+        <div class="cmmc-block" style="background:var(--surface-2);border-color:var(--border)"><span class="clbl" style="color:var(--text-muted)">CMMC</span><span class="cmmc-pill na">L1</span></div>
+      </div>
+
+      <div style="border:1px solid var(--border);border-radius:8px;padding:12px;background:var(--surface)">
+        <div style="font-weight:700;color:var(--text);margin-bottom:8px">CUI · CMMC L2 Self-Assess</div>
+        <div class="group-lbl">Restrictions</div>
+        <div class="flag-row"><div class="lbl">Export / ITAR</div><span class="status-tag st-no"><span class="dot"></span>No</span></div>
+        <div class="flag-row"><div class="lbl">CUI Present</div><span class="status-tag st-red"><span class="dot"></span>Yes</span></div>
+        <div class="flag-row"><div class="lbl">CSI</div><span class="status-tag st-no"><span class="dot"></span>No</span></div>
+        <div class="group-lbl" style="margin-top:8px">Testing</div>
+        <div class="flag-row"><div class="lbl">FAT</div><span class="status-tag st-purple"><span class="dot"></span>Yes</span></div>
+        <div class="flag-row"><div class="lbl">PLT</div><span class="status-tag st-no"><span class="dot"></span>No</span></div>
+        <div class="group-lbl" style="margin-top:8px">Logistics &amp; Cert</div>
+        <div class="flag-row"><div class="lbl">Inspection</div><span class="insp-pill dest"><span class="dot"></span>Destination</span></div>
+        <div class="cmmc-block"><span class="clbl">CMMC</span><span class="cmmc-pill l2">L2 · Self-Assess</span></div>
+      </div>
+
+      <div style="border:1px solid var(--border);border-radius:8px;padding:12px;background:var(--surface)">
+        <div style="font-weight:700;color:var(--text);margin-bottom:8px">High-restriction · ITAR · CSI · L3</div>
+        <div class="group-lbl">Restrictions</div>
+        <div class="flag-row"><div class="lbl">Export / ITAR</div><span class="status-tag st-red"><span class="dot"></span>Yes</span></div>
+        <div class="flag-row"><div class="lbl">CUI Present</div><span class="status-tag st-red"><span class="dot"></span>Yes</span></div>
+        <div class="flag-row"><div class="lbl">CSI</div><span class="status-tag st-amber"><span class="dot"></span>Yes</span></div>
+        <div class="group-lbl" style="margin-top:8px">Testing</div>
+        <div class="flag-row"><div class="lbl">FAT</div><span class="status-tag st-purple"><span class="dot"></span>Yes</span></div>
+        <div class="flag-row"><div class="lbl">PLT</div><span class="status-tag st-purple"><span class="dot"></span>Yes</span></div>
+        <div class="group-lbl" style="margin-top:8px">Logistics &amp; Cert</div>
+        <div class="flag-row"><div class="lbl">Inspection</div><span class="insp-pill origin"><span class="dot"></span>Origin</span></div>
+        <div class="cmmc-block" style="background:var(--red-bg);border-color:var(--red-border)"><span class="clbl" style="color:var(--red)">CMMC</span><span class="cmmc-pill l3">L3 · C3PAO</span></div>
+      </div>
+
+    </div>
+  </details>
+</div>
+</body>
+</html>
