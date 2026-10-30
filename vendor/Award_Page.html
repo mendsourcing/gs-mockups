@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>SPE7M4-26-V-5103 — Awarded Contract — GovScraper</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Source+Code+Pro:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --primary:#1E293B; --accent:#2563EB; --accent-soft:#EFF6FF; --accent-border:#BFDBFE; --accent-hover:#1D4ED8;
+    --red:#DC2626; --red-bg:#FEF2F2; --green:#16A34A; --green-soft:#F0FDF4; --amber:#D97706; --amber-soft:#FFF7ED;
+    --bg:#F8FAFC; --surface:#fff; --border:#E2E8F0; --border-strong:#CBD5E1;
+    --text:#1E293B; --text-dim:#475569; --muted:#6B7280; --faint:#94A3B8;
+  }
+  *{box-sizing:border-box;margin:0}
+  body{font-family:'Manrope',sans-serif;background:var(--bg);color:var(--text);font-size:13px}
+  a{color:var(--accent);text-decoration:none}
+  .mono{font-family:'Source Code Pro',monospace}
+  .topbar{height:56px;background:var(--surface);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;padding:0 24px;position:sticky;top:0;z-index:100;box-shadow:0 1px 3px rgba(0,0,0,0.06)}
+  .topbar-left{display:flex;align-items:center;gap:20px}
+  .topbar-logo{height:30px;width:auto;display:block}
+  .topbar-divider{width:1px;height:24px;background:var(--border)}
+  .mode-switcher{display:flex;align-items:center;background:#F1F5F9;border:1.5px solid var(--border-strong);border-radius:9px;padding:3px}
+  .mode-btn{font-family:'Manrope',sans-serif;font-size:12px;font-weight:700;padding:6px 14px;border-radius:6px;border:none;cursor:pointer;display:flex;align-items:center;gap:7px}
+  .mode-btn.inactive{background:transparent;color:var(--muted)}
+  .mode-btn.active-member{background:#1B2A4A;color:#fff;box-shadow:0 1px 4px rgba(27,42,74,0.3)}
+  .mode-dot{width:7px;height:7px;border-radius:50%;display:inline-block}
+  .mode-btn.inactive .mode-dot{background:#BE1E2D}
+  .mode-btn.active-member .mode-dot{background:rgba(255,255,255,0.6)}
+  .breadcrumb{font-size:12px;color:var(--muted);font-weight:500}
+  .avatar{width:36px;height:36px;border-radius:9px;border:2px solid #E2E8F0;background:linear-gradient(135deg,var(--accent),#1D4ED8);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:11px;cursor:pointer}
+
+  .main{max-width:1240px;margin:0 auto;padding:24px 28px 80px}
+  .phead{display:flex;align-items:flex-start;gap:14px;margin-bottom:20px}
+  .back{width:34px;height:34px;border-radius:50%;border:1px solid var(--border);background:#fff;display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--muted);flex-shrink:0;margin-top:4px}
+  .phead h1{font-size:23px;font-weight:800;letter-spacing:.3px}
+  .phead .rfqline{font-size:12.5px;color:var(--muted);margin-top:3px}
+  .pill{display:inline-flex;align-items:center;gap:6px;font-size:11px;font-weight:700;border-radius:999px;padding:4px 12px}
+  .pill.won{background:var(--accent-soft);color:var(--accent);border:1px solid var(--accent-border)}
+  .btn{display:inline-flex;align-items:center;gap:7px;border-radius:8px;padding:8px 16px;font-size:13px;font-weight:700;cursor:pointer;border:1px solid var(--border);background:#fff;color:var(--text);font-family:'Manrope',sans-serif}
+  .btn.soft{background:var(--accent-soft);border-color:var(--accent-border);color:var(--accent)}
+  .btn.danger{color:var(--red);border-color:#FECACA;background:var(--red-bg)}
+  .spacer{flex:1}
+
+  .sec{background:#fff;border:1px solid var(--border);border-radius:12px;margin-bottom:18px;padding:20px 26px}
+  .sec h3{font-size:12.5px;font-weight:800;letter-spacing:.8px;color:var(--primary);margin-bottom:16px}
+  .grid3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:18px}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+  .f label{display:block;font-size:10.5px;font-weight:700;letter-spacing:.7px;color:var(--faint);margin-bottom:6px}
+  .f .val{border:1px solid var(--border);background:#FAFBFC;border-radius:8px;padding:10px 13px;font-size:13.5px;font-weight:600;min-height:40px}
+  .f .val.link a{font-weight:700}
+  .outcome{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:18px}
+  .oc{border:1.5px solid var(--border);border-radius:10px;padding:12px;text-align:center;font-weight:700;font-size:13.5px;color:var(--muted);cursor:pointer}
+  .oc.on{border-color:var(--accent);color:var(--accent);background:var(--accent-soft)}
+
+  table{width:100%;border-collapse:collapse;font-size:12.5px}
+  th{text-align:left;font-size:10.5px;letter-spacing:.6px;font-weight:700;color:var(--faint);padding:10px 12px;border-bottom:1px solid var(--border);background:#FAFBFC}
+  td{padding:12px;border-bottom:1px solid #F1F3F6;vertical-align:middle}
+  tr:last-child td{border-bottom:none}
+  .addclin{border:1px dashed var(--border-strong);border-radius:9px;text-align:center;padding:11px;color:var(--faint);font-weight:600;margin-top:10px;cursor:pointer}
+
+  .pricing{display:grid;grid-template-columns:1fr 300px;gap:0}
+  .prow{display:grid;grid-template-columns:170px 1fr;gap:14px;align-items:center;margin-bottom:11px}
+  .prow label{font-size:10.5px;font-weight:700;letter-spacing:.7px;color:var(--faint);text-align:right}
+  .prow label .minus{color:var(--red);margin-right:4px}
+  .prow .val{border:1px solid var(--border);background:#FAFBFC;border-radius:8px;padding:9px 13px;font-size:13.5px;font-weight:700}
+  .prow .hintline{font-size:11px;color:var(--accent);font-weight:600;margin-top:3px}
+  .summary{border-left:1px solid var(--border);padding-left:26px}
+  .summary label{display:block;font-size:10.5px;font-weight:700;letter-spacing:.7px;color:var(--faint);margin:14px 0 4px}
+  .summary label:first-child{margin-top:0}
+  .big{font-size:24px;font-weight:800;color:var(--accent)}
+  .big.profit{color:var(--green)}
+  .marginchip{display:inline-block;background:var(--green-soft);color:var(--green);font-weight:800;font-size:14px;border-radius:8px;padding:6px 14px}
+
+  .upload{border:1.5px dashed var(--border-strong);border-radius:10px;text-align:center;padding:26px;color:var(--faint);margin-bottom:14px}
+  .upload b{display:block;color:var(--accent);font-size:13.5px;margin-top:6px}
+  .doc{display:flex;align-items:center;gap:13px;border:1px solid var(--border);border-radius:10px;padding:12px 16px;margin-bottom:10px}
+  .doc .pdf{width:36px;height:36px;border-radius:8px;background:var(--red-bg);color:var(--red);font-size:10px;font-weight:800;display:flex;align-items:center;justify-content:center}
+  .doc .nm{font-weight:700;color:var(--accent)}
+  .doc .meta{font-size:11.5px;color:var(--faint);margin-top:3px}
+  .doc .x{margin-left:auto;color:var(--faint);cursor:pointer;border:1px solid var(--border);border-radius:7px;width:28px;height:28px;display:flex;align-items:center;justify-content:center}
+
+  .notecard{border:1px solid var(--border);border-radius:10px;padding:13px 16px;margin-bottom:10px}
+  .notecard .nd{font-size:11px;color:var(--faint);margin-bottom:5px}
+  textarea.addnote{width:100%;border:1px solid var(--border);border-radius:9px;padding:11px 13px;font-size:13px;font-family:'Manrope',sans-serif;height:64px;resize:none}
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <div class="topbar-left">
+    <a href="Vendor_Page.html"><img src="https://govscraper.com/assets/BigLogo-7gv5uAxF.png" alt="GovScraper" class="topbar-logo"></a>
+    <div class="topbar-divider"></div>
+    <div class="mode-switcher">
+      <button class="mode-btn active-member"><span class="mode-dot"></span>Member Portal</button>
+      <button class="mode-btn inactive"><span class="mode-dot"></span>Supplier Portal</button>
+    </div>
+    <div class="topbar-divider"></div>
+    <div class="breadcrumb">Awarded Contracts</div>
+  </div>
+  <div class="avatar" onclick="location.href='Settings_Page.html'" title="Settings & Account">TB</div>
+</header>
+
+<div class="main">
+  <div class="phead">
+    <div class="back" onclick="location.href='Vendor_Page.html'">‹</div>
+    <div>
+      <h1 class="mono">SPE7M4-26-V-5103</h1>
+      <div class="rfqline">RFQ: <a class="mono" href="RFQ_Page.html">SPE7M4-26-Q-8812</a></div>
+      <div style="margin-top:8px"><span class="pill won">✓ Award Won</span></div>
+    </div>
+    <button class="btn soft" style="margin-left:18px;margin-top:6px">✎ Edit</button>
+    <div class="spacer"></div>
+    <button class="btn danger" style="margin-top:6px">🗑 Delete</button>
+  </div>
+
+  <div class="sec">
+    <h3>CONTRACT OVERVIEW</h3>
+    <div class="grid3">
+      <div class="f"><label>SOLICITATION NUMBER</label><div class="val mono">SPE7M4-26-Q-8812</div></div>
+      <div class="f"><label>AWARD NUMBER</label><div class="val mono">SPE7M4-26-V-5103</div></div>
+      <div class="f"><label>AWARD DATE</label><div class="val">10/06/2026</div></div>
+    </div>
+  </div>
+
+  <div class="sec">
+    <h3>CONTRACT DETAILS</h3>
+    <div class="f" style="margin-bottom:16px"><label>OUTCOME</label>
+      <div class="outcome"><div class="oc on">✓ Award Won</div><div class="oc">✕ Award Lost</div></div>
+    </div>
+    <div class="grid2">
+      <div class="f"><label>NSN</label><div class="val mono">5930-00-655-1514</div></div>
+      <div class="f"><label>PART NUMBER</label><div class="val mono">8521K9</div></div>
+      <div class="f"><label>VENDOR CAGE</label><div class="val mono">4XK29</div></div>
+      <div class="f"><label>VENDOR USED</label><div class="val link"><a href="Vendor_Page.html" title="Open in My Vendors">APEX SWITCHGEAR CORP ↗</a></div></div>
+      <div class="f"><label>MANUFACTURER CAGE</label><div class="val mono">4XK29</div></div>
+      <div class="f"><label>MANUFACTURER NAME</label><div class="val">APEX SWITCHGEAR CORP</div></div>
+    </div>
+  </div>
+
+  <div class="sec">
+    <h3>CONTRACT LINE ITEMS (CLINS)</h3>
+    <table>
+      <thead><tr><th></th><th>CLIN</th><th>DESCRIPTION</th><th>QTY</th><th>U/I</th><th>DELIVERY DATE</th><th>FAT</th><th>PLT</th><th>PTI</th><th>COQC</th></tr></thead>
+      <tbody>
+        <tr><td>›</td><td>001</td><td>Switch, Push</td><td>60</td><td>EA</td><td>12/15/2026</td><td><input type="checkbox"></td><td><input type="checkbox"></td><td><input type="checkbox"></td><td><input type="checkbox"></td></tr>
+      </tbody>
+    </table>
+    <div class="addclin">+ Add CLIN</div>
+  </div>
+
+  <div class="sec">
+    <h3>PRICING &amp; COST ANALYSIS</h3>
+    <div class="pricing">
+      <div>
+        <div class="prow"><label>TOTAL AWARD VALUE</label><div><div class="val">$3,225.00</div></div></div>
+        <div class="prow"><label>QUANTITY</label><div><div class="val">60 EA</div></div></div>
+        <div class="prow"><label>UNIT PRICE</label><div><div class="val">$53.75 / EA</div></div></div>
+        <div class="prow"><label><span class="minus">−</span>VENDOR COST</label><div><div class="val">$2,514.00 &nbsp;($41.90 / EA)</div><div class="hintline">⚡ Auto-filled from Apex Switchgear's quote on RFQ SPE7M4-26-Q-8812 (quoted 10/01/2026)</div></div></div>
+        <div class="prow"><label><span class="minus">−</span>PACKAGING COST</label><div><div class="val" style="color:var(--faint);font-weight:500">$0.00</div></div></div>
+        <div class="prow"><label><span class="minus">−</span>MISCELLANEOUS</label><div><div class="val" style="color:var(--faint);font-weight:500">$0.00</div></div></div>
+      </div>
+      <div class="summary">
+        <label>TOTAL COST</label><div class="big">$2,514.00</div>
+        <label>PROFIT</label><div class="big profit">$711.00</div>
+        <label>PROFIT MARGIN</label><div class="marginchip">22.0%</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sec">
+    <h3>DOCUMENTS &amp; ATTACHMENTS</h3>
+    <div class="upload">⬆<b>Click to upload</b>PDF or DOC up to 10MB</div>
+    <div class="doc"><div class="pdf">PDF</div><div><div class="nm">Contract – Reviewed – SPE7M426V5103.PDF ↗</div><div class="meta">Contract · 98 KB</div></div><div class="x">✕</div></div>
+    <div class="doc"><div class="pdf">PDF</div><div><div class="nm">Apex Quote – 8521K9.PDF ↗</div><div class="meta">Vendor Quote · 64 KB · also saved to Apex Switchgear in My Vendors</div></div><div class="x">✕</div></div>
+  </div>
+
+  <div class="sec">
+    <h3>NOTES &amp; OBSERVATIONS</h3>
+    <div class="notecard"><div class="nd">Oct 6, 2026 · 2:12 PM</div>PO sent to Apex same day. Dana confirmed 45-day lead — delivery lands ~Nov 20, well before CLIN date.</div>
+    <textarea class="addnote" placeholder="Add a note..."></textarea>
+    <div style="margin-top:10px"><button class="btn">+ Add Note</button></div>
+  </div>
+</div>
+</body>
+</html>

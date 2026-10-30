@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>SPE7L1-27-T-3036 — GovScraper</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Source+Code+Pro:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --primary:#1E293B; --accent:#2563EB; --accent-soft:#EFF6FF; --accent-border:#BFDBFE; --accent-hover:#1D4ED8;
+    --red:#DC2626; --red-bg:#FEF2F2; --green:#16A34A; --green-soft:#F0FDF4; --amber:#D97706; --amber-soft:#FFF7ED;
+    --bg:#F8FAFC; --surface:#fff; --border:#E2E8F0; --border-strong:#CBD5E1;
+    --text:#1E293B; --text-dim:#475569; --muted:#6B7280; --faint:#94A3B8;
+  }
+  *{box-sizing:border-box;margin:0}
+  body{font-family:'Manrope',sans-serif;background:#aab3c0;color:var(--text);font-size:13px}
+  a{color:var(--accent);text-decoration:none}
+  .mono{font-family:'Source Code Pro',monospace}
+
+  /* slide-over panel look from screenshot */
+  .panel{background:var(--surface);max-width:1480px;margin:18px auto;border-radius:14px;box-shadow:0 20px 60px rgba(0,0,0,.3);overflow:hidden;min-height:96vh}
+  .phead{padding:22px 28px 0}
+  .ph-top{display:flex;align-items:flex-start;gap:12px}
+  .ph-top h1{font-size:22px;font-weight:800;letter-spacing:.3px}
+  .ph-top .right{margin-left:auto;display:flex;gap:8px;align-items:center}
+  .btn{display:inline-flex;align-items:center;gap:7px;border-radius:8px;padding:8px 15px;font-size:12.5px;font-weight:700;cursor:pointer;border:1px solid var(--border);background:#fff;color:var(--text);font-family:'Manrope',sans-serif}
+  .btn.soft{background:var(--accent-soft);border-color:var(--accent-border);color:var(--accent)}
+  .btn.primary{background:var(--accent);border-color:var(--accent);color:#fff}
+  .btn.mini{padding:5px 11px;font-size:11.5px;border-radius:7px}
+  .subline{font-size:12.5px;color:var(--muted);margin-top:4px}
+  .subline b{color:var(--text)}
+
+  /* status pills row */
+  .stages{display:flex;gap:13px;margin:16px 0 0;flex-wrap:wrap}
+  .stage{flex:1;min-width:110px;text-align:center;font-size:12.5px;font-weight:700;padding:10px 6px;border-radius:8px;border:1px solid var(--border);color:var(--text-dim);background:#EEF2F6;cursor:pointer;position:relative}
+  .stage:not(:last-child)::after{content:'›';position:absolute;right:-10px;top:50%;transform:translateY(-50%);color:var(--border-strong);font-weight:800;z-index:2}
+  .stage.on{background:var(--accent);border-color:var(--accent);color:#fff;box-shadow:0 2px 6px rgba(37,99,235,.35)}
+  .stage .autotag{position:absolute;top:-8px;right:-4px;font-size:8.5px;font-weight:800;letter-spacing:.5px;background:var(--green);color:#fff;border-radius:5px;padding:2px 6px}
+  .stagehint{font-size:11.5px;color:var(--faint);margin-top:9px}
+  .icobtn.nudge{background:var(--amber-soft);border-color:#FDE68A;color:var(--amber)}
+
+  /* info strip */
+  .strip{display:flex;border-top:1px solid var(--border);border-bottom:1px solid var(--border);margin-top:16px}
+  .cell{flex:1;padding:13px 16px;border-right:1px solid var(--border)}
+  .cell:last-child{border-right:none}
+  .cell label{display:block;font-size:10.5px;font-weight:700;letter-spacing:.7px;color:var(--faint);margin-bottom:3px}
+  .cell .v{font-size:13.5px;font-weight:700}
+  .cell .v.due{color:var(--amber)} .cell .v.money{color:var(--accent)}
+
+  .body{padding:20px 28px 60px}
+  .sec{border:1px solid var(--border);border-radius:12px;margin-bottom:18px;overflow:hidden}
+  .sechead{display:flex;align-items:center;padding:13px 20px;border-bottom:1px solid var(--border);background:#fff}
+  .sechead h3{font-size:13.5px;font-weight:800;color:var(--accent)}
+  .sechead .hint{margin-left:auto;font-size:11.5px;color:var(--faint)}
+  table{width:100%;border-collapse:collapse;font-size:12.5px}
+  th{text-align:left;font-size:10.5px;letter-spacing:.6px;font-weight:700;color:var(--faint);padding:10px 14px;border-bottom:1px solid var(--border);background:#FAFBFC;white-space:nowrap}
+  td{padding:11px 14px;border-bottom:1px solid #F1F3F6;vertical-align:middle}
+  tr:last-child td{border-bottom:none}
+  .pill{display:inline-block;font-size:11px;font-weight:700;border-radius:999px;padding:3px 10px;white-space:nowrap}
+  .pill.b{background:var(--accent-soft);color:var(--accent)}
+  .pill.g{background:var(--green-soft);color:var(--green)}
+  .pill.a{background:var(--amber-soft);color:var(--amber)}
+  .pill.r{background:var(--red-bg);color:var(--red)}
+  .pill.gr{background:#F1F5F9;color:var(--muted)}
+  .refpill{display:inline-block;font-size:11px;font-weight:600;background:#F1F5F9;color:var(--text-dim);border-radius:7px;padding:4px 10px;white-space:nowrap}
+  .info{color:var(--accent);font-size:11px;cursor:pointer}
+
+  /* vendor reference table */
+  .vrt td{padding:8px 8px}
+  .vrt th{padding:10px 8px}
+  .vrt input,.vrt select{width:100%;border:1px solid var(--border);border-radius:7px;padding:7px 9px;font-size:12px;font-family:'Manrope',sans-serif;background:#fff}
+  .vrt input:focus{outline:2px solid var(--accent-border)}
+  .vrt .auto{position:relative}
+  .st-sel{font-weight:700;border-radius:999px !important;padding:5px 10px !important;border:none !important;appearance:none;text-align:center;cursor:pointer}
+  .st-notsent{background:#F1F5F9;color:var(--muted)}
+  .st-sent{background:var(--accent-soft);color:var(--accent)}
+  .st-quoted{background:var(--green-soft);color:var(--green)}
+  .st-noquote{background:var(--amber-soft);color:var(--amber)}
+  .st-declined{background:var(--red-bg);color:var(--red)}
+  .icobtn{width:30px;height:30px;border-radius:7px;border:1px solid var(--border);background:#fff;display:inline-flex;align-items:center;justify-content:center;cursor:pointer;color:var(--muted)}
+  .icobtn.send{background:var(--accent);border-color:var(--accent);color:#fff}
+  .icobtn:hover{border-color:var(--accent)}
+  .addrow{display:flex;gap:9px;padding:13px 16px;background:#FAFBFC;border-top:1px solid var(--border);align-items:center}
+  .addrow .note{font-size:11.5px;color:var(--faint);margin-left:auto}
+  .autofill-flash{animation:flash 1.2s}
+  @keyframes flash{0%{background:var(--green-soft)}100%{background:#fff}}
+
+  /* vendor autocomplete dropdown (house style) */
+  #acMenu{position:absolute;display:none;min-width:300px;max-height:320px;overflow-y:auto;background:#fff;border:1.5px solid var(--accent-border);border-radius:12px;box-shadow:0 12px 32px rgba(15,23,42,.14);z-index:200;padding:4px 0}
+  .ac-item{padding:13px 18px;font-size:14px;font-weight:700;color:var(--text);cursor:pointer;border-bottom:1px solid #F1F5F9;font-family:'Manrope',sans-serif}
+  .ac-item:last-child{border-bottom:none}
+  .ac-item:hover,.ac-item.hl{background:var(--accent-soft)}
+  .ac-item small{display:block;font-size:11.5px;font-weight:500;color:var(--faint);margin-top:1px}
+
+  .syncnote{border:1px dashed var(--accent-border);background:var(--accent-soft);border-radius:10px;padding:12px 16px;font-size:12.5px;color:#334155;margin:0 0 18px}
+  .syncnote b{color:var(--accent)}
+
+  /* compose email modal */
+  .covl{position:fixed;inset:0;background:rgba(15,23,42,.45);display:none;align-items:flex-start;justify-content:center;padding:40px 20px;z-index:500}
+  .covl.open{display:flex}
+  .cmodal{background:#fff;border-radius:16px;width:980px;max-width:100%;max-height:90vh;display:flex;flex-direction:column;box-shadow:0 24px 70px rgba(0,0,0,.3);overflow:hidden}
+  .chead{display:flex;align-items:center;gap:10px;padding:18px 26px;background:#F8FAFC;border-bottom:1px solid var(--border)}
+  .chead h3{font-size:19px;font-weight:800}
+  .tplchip{margin-left:auto;display:inline-flex;align-items:center;gap:8px;border:1.5px solid var(--accent);border-radius:10px;background:#fff;padding:8px 14px;font-size:13px;font-weight:700;color:var(--text);cursor:pointer;font-family:'Manrope',sans-serif}
+  .cx{font-size:20px;color:var(--muted);cursor:pointer;padding:4px 8px;background:none;border:none}
+  .cfield{padding:13px 26px;border-bottom:1px solid var(--border);font-size:14px}
+  .cfield.from{color:var(--faint)}
+  .cfield input{width:100%;border:none;outline:none;font-size:14px;font-family:'Manrope',sans-serif;color:var(--text)}
+  .cbody{flex:1;overflow-y:auto;padding:14px 26px}
+  .ctools{display:flex;align-items:center;gap:14px;border:1px solid var(--border);border-bottom:none;border-radius:10px 10px 0 0;padding:10px 14px;font-size:13px;color:var(--text-dim);flex-wrap:wrap}
+  .ctools .tsel{border:1px solid var(--border);border-radius:8px;padding:6px 10px;font-size:13px;font-family:'Manrope',sans-serif}
+  .ctools .sw{width:26px;height:26px;border-radius:6px;background:#111;border:1px solid var(--border)}
+  .ctools b,.ctools i,.ctools u,.ctools s{cursor:pointer;padding:0 4px;font-size:15px}
+  .ctools .sep{width:1px;height:20px;background:var(--border)}
+  .cedit{border:1px solid var(--border);border-radius:0 0 10px 10px;min-height:320px;padding:18px 22px;font-size:15px;line-height:1.65;outline:none;font-family:'Manrope',sans-serif}
+  .cedit .var{font-weight:800}
+  .cedit .sig{margin-top:26px}
+  .cedit .disc{color:var(--muted);font-size:12.5px;border-top:1px dashed var(--border-strong);margin-top:26px;padding-top:12px}
+  .cfoot{display:flex;align-items:center;gap:12px;padding:15px 26px;border-top:1px solid var(--border);background:#fff}
+  .cfoot .attach{margin-left:auto;display:inline-flex;align-items:center;gap:9px;border:1px solid var(--border);border-radius:10px;padding:10px 16px;font-size:13.5px;font-weight:600;color:var(--text-dim);cursor:pointer}
+  .cfoot .sendbtn{background:var(--accent);color:#fff;border:none;border-radius:10px;padding:11px 22px;font-size:14px;font-weight:800;cursor:pointer;display:inline-flex;align-items:center;gap:9px;font-family:'Manrope',sans-serif}
+  .cfoot .sendbtn:hover{background:var(--accent-hover)}
+
+  /* right rail compliance (compact, inside solicitation sec) */
+  .solgrid{display:grid;grid-template-columns:1fr 330px}
+  .kv{display:grid;grid-template-columns:190px 1fr;border-bottom:1px solid #F1F3F6}
+  .kv:last-child{border-bottom:none}
+  .kv .k{padding:13px 16px;font-weight:700;font-size:13px;color:var(--text);background:none;border-right:1px solid #F1F3F6}
+  .kv .vv{padding:11px 16px}
+  .rail{border-left:1px solid var(--border);padding:16px 18px}
+  .rail h4{font-size:10.5px;letter-spacing:.8px;color:var(--faint);margin:12px 0 6px}
+  .rail h4:first-child{margin-top:0}
+  .rrow{display:flex;align-items:center;font-size:12.5px;padding:7px 0}
+  .rrow .rlab b{font-weight:700;display:block;font-size:13px}
+  .rrow .rlab small{color:var(--faint);font-size:10.5px;letter-spacing:.3px}
+  .flagpill{margin-left:auto;font-size:11px;font-weight:700;border-radius:8px;padding:4px 11px;white-space:nowrap}
+  .flagpill.no{background:#F1F5F9;color:var(--muted)}
+  .flagpill.yes{background:var(--red-bg);color:var(--red)}
+  .flagpill.purple{background:#F5F3FF;color:#7C3AED}
+  .flagpill.orange{background:var(--amber-soft);color:var(--amber)}
+  .flagpill.green{background:var(--green-soft);color:var(--green)}
+  .cmmc{display:flex;align-items:center;border:1px solid var(--accent-border);background:var(--accent-soft);border-radius:9px;padding:9px 12px;margin-top:10px;font-weight:800;font-size:11.5px;color:var(--accent)}
+  .cmmc span{margin-left:auto;background:#EA580C;color:#fff;border-radius:6px;padding:3px 9px}
+</style>
+</head>
+<body>
+
+<div class="panel">
+  <div class="phead">
+    <div class="ph-top">
+      <div>
+        <h1>SPE7L1-27-T-3036 <span style="font-size:14px;color:var(--faint);cursor:pointer;font-weight:500">⧉</span></h1>
+        <div class="subline">SHAFT,SHOULDERED &nbsp;·&nbsp; FSC 3040 &nbsp;·&nbsp; 70351-08206-102 &nbsp;·&nbsp; ID: <b class="mono">7STV04V3</b></div>
+      </div>
+      <div class="right">
+        <button class="btn" style="border:1.5px solid var(--accent);color:var(--accent);font-weight:800">💬 Price Sheet</button>
+        <button class="btn">‹</button><button class="btn">›</button><button class="btn" onclick="location.href='Vendor_Page.html'" title="Back to Vendors">✕</button>
+      </div>
+    </div>
+
+    <div class="stages" id="stages">
+      <div class="stage" data-s="New Opportunity" onclick="manualStage(this)">New Opportunity</div><div class="stage" data-s="Will Source" onclick="manualStage(this)">Will Source</div><div class="stage" data-s="Currently Sourcing" onclick="manualStage(this)">Currently Sourcing</div><div class="stage" data-s="Ready to Bid" onclick="manualStage(this)">Ready to Bid</div><div class="stage" data-s="Bid Complete" onclick="manualStage(this)">Bid Complete</div><div class="stage" data-s="Trace" onclick="manualStage(this)">Trace</div><div class="stage" data-s="Award Won" onclick="manualStage(this)">Award Won</div><div class="stage" data-s="Award Lost" onclick="manualStage(this)">Award Lost</div><div class="stage" data-s="No Bid" onclick="manualStage(this)">No Bid</div>
+    </div>
+    <div class="stagehint" id="stagehint">⚡ Stage auto-syncs from your Vendor Reference Table below — click any stage to override.</div>
+
+    <div class="strip">
+      <div class="cell"><label>ISSUE DATE</label><div class="v">10/30/2026</div></div>
+      <div class="cell"><label>DUE DATE</label><div class="v due">11/09/2026</div></div>
+      <div class="cell"><label>SET ASIDE</label><div class="v">Small Business</div></div>
+      <div class="cell"><label>FSC</label><div class="v">3040</div></div>
+      <div class="cell"><label>EST. AWARD</label><div class="v money">$63,000</div></div>
+      <div class="cell"><label>MY BID PRICE</label><div class="v" style="color:var(--faint)">– ✎</div></div>
+      <div class="cell"><label>DELIVERY DAYS</label><div class="v" style="color:var(--faint)">– ✎</div></div>
+    </div>
+  </div>
+
+  <div class="body">
+
+    <!-- SOLICITATION INFO (abridged) -->
+    <div class="sec">
+      <div class="sechead"><h3>Solicitation Information</h3><span class="hint">ID Number: <b class="mono" style="color:var(--text)">7STV04V3</b> <span class="info">⧉</span> &nbsp;&nbsp;<span style="color:var(--faint)">⌃</span></span></div>
+      <div class="solgrid">
+        <div>
+          <div class="kv"><div class="k">Solicitation Number</div><div class="vv">SPE7L1-27-T-3036 <span class="info">⧉</span> &nbsp;<button class="btn mini primary">Open PDF</button></div></div>
+          <div class="kv"><div class="k">Set Aside</div><div class="vv">Small Business</div></div>
+          <div class="kv"><div class="k">PR Number</div><div class="vv mono">7018835042 <span class="info">⧉</span></div></div>
+          <div class="kv"><div class="k">Date Issued</div><div class="vv">Friday, October 30, 2026</div></div>
+          <div class="kv"><div class="k">NSN Number</div><div class="vv"><a class="mono" href="#">3040-01-368-6667</a> <span class="info">⧉</span></div></div>
+          <div class="kv"><div class="k">Part Number</div><div class="vv mono">70351-08206-102 <span class="info">⧉</span></div></div>
+          <div class="kv"><div class="k">Due Date</div><div class="vv" style="color:var(--amber);font-weight:700">11/09/2026</div></div>
+          <div class="kv"><div class="k">Item Description</div><div class="vv">SHAFT,SHOULDERED</div></div>
+          <div class="kv"><div class="k">Drawing Information</div><div class="vv">IAW REFERENCE DRAWING NR 78286 SS8423 REVISION NR 5- DTD 01/29/2007 PART PIECE NUMBER: TDP Rev B Gen 4 IAW REFERENCE DRAWING NR 78286 70351-08206 REVISION NR M DTD 09/25/2007</div></div>
+          <div class="kv"><div class="k">Tech Document</div><div class="vv"><button class="btn mini primary">Open Tech Doc</button></div></div>
+          <div class="kv"><div class="k">FOB Point (Shipping)</div><div class="vv">ORIGIN</div></div>
+          <div class="kv"><div class="k">Anticipated Award Amount</div><div class="vv" style="color:var(--accent);font-weight:800">$63,000</div></div>
+        </div>
+        <div class="rail">
+          <h4>COMPLIANCE &amp; RESTRICTIONS</h4>
+          <h4 style="margin-top:6px">RESTRICTIONS</h4>
+          <div class="rrow"><span class="rlab"><b>Export Control / ITAR</b><small>RQ032</small></span><span class="flagpill yes">● Yes</span></div>
+          <div class="rrow"><span class="rlab"><b>CUI Present</b><small>RD002</small></span><span class="flagpill yes">● Yes</span></div>
+          <div class="rrow"><span class="rlab"><b>Critical Safety Item</b><small>CSI</small></span><span class="flagpill yes">● Yes</span></div>
+          <h4>TESTING</h4>
+          <div class="rrow"><span class="rlab"><b>First Article Testing</b><small>FAT</small></span><span class="flagpill purple">● Yes</span></div>
+          <div class="rrow"><span class="rlab"><b>Production Lot Testing</b><small>PLT</small></span><span class="flagpill purple">● Yes</span></div>
+          <h4>LOGISTICS &amp; CERTIFICATION</h4>
+          <div class="rrow"><span class="rlab"><b>Inspection Point</b><small>Where the gov inspects</small></span><span class="flagpill orange">● Origin</span></div>
+          <div class="cmmc">CMMC REQUIRED<span>L2 · C3PAO</span></div>
+          <h4>ACQUISITION (DLA)</h4>
+          <div class="rrow"><span class="rlab"><b>Acquisition Method</b><small>AMC</small></span><span class="flagpill green">● 1 · Competitive</span></div>
+          <div class="rrow"><span class="rlab"><b>Acquisition Method Suffix</b><small>AMSC</small></span><span class="flagpill orange">● C · Requires engineering source a…</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- APPROVED SOURCES -->
+    <div class="sec">
+      <div class="sechead"><h3>Approved Source List</h3><span class="hint">One click sends any source into your Vendor Reference Table below</span></div>
+      <table>
+        <thead><tr><th>MANUFACTURER NAME</th><th>CAGE</th><th>PART NUMBER</th><th>CITY</th><th>STATE</th><th>REFERENCE ROLE</th><th>RNCC</th><th>RNVC</th><th></th></tr></thead>
+        <tbody>
+          <tr><td style="font-weight:700">SIKORSKY AIRCRAFT CORPORATION</td><td><span class="mono" style="color:var(--accent)">78286</span> <span class="info">ⓘ</span></td><td class="mono">70351-08206-102 ⧉</td><td>STRATFORD</td><td>CT</td><td>Mfg</td><td><span class="refpill">● 3 · Design control re…</span></td><td><span class="refpill">● 2 · Item identifying</span></td><td><button class="btn mini soft" onclick="addVendorRow('Sikorsky Aircraft Corporation')">+ Add to table</button></td></tr>
+          <tr><td style="font-weight:700">EQUITABLE ENGINEERING COMPANY INC.</td><td><span class="mono" style="color:var(--accent)">11867</span> <span class="info">ⓘ</span></td><td class="mono">70351-08206-102 ⧉</td><td>TROY</td><td>MI</td><td>Dist</td><td><span class="refpill">● 5 · Secondary referen…</span></td><td><span class="refpill">● 2 · Item identifying</span></td><td><button class="btn mini soft" onclick="addVendorRow('Equitable Engineering Company')">+ Add to table</button></td></tr>
+          <tr><td style="font-weight:700">PCX AEROSYSTEMS–MANCHESTER, LLC</td><td><span class="mono" style="color:var(--accent)">15152</span> <span class="info">ⓘ</span></td><td class="mono">70351-08206-102 ⧉</td><td>MANCHESTER</td><td>CT</td><td>Dist</td><td><span class="refpill">● 5 · Secondary referen…</span></td><td><span class="refpill">● 2 · Item identifying</span></td><td><button class="btn mini soft" onclick="addVendorRow('PCX Aerosystems–Manchester, LLC')">+ Add to table</button></td></tr>
+          <tr><td style="font-weight:700">PRECISION GEAR INDUSTRIES LLC</td><td><span class="mono" style="color:var(--accent)">21540</span> <span class="info">ⓘ</span></td><td class="mono">70351-08206-102 ⧉</td><td>COLLEGE POINT</td><td>NY</td><td>Dist</td><td><span class="refpill">● 5 · Secondary referen…</span></td><td><span class="refpill">● 2 · Item identifying</span></td><td><button class="btn mini soft" onclick="addVendorRow('Precision Gear Industries LLC')">+ Add to table</button></td></tr>
+          <tr><td style="font-weight:700">ROTAIR AEROSPACE CORP</td><td><span class="mono" style="color:var(--accent)">54878</span> <span class="info">ⓘ</span></td><td class="mono">70351-08206-102 ⧉</td><td>BRIDGEPORT</td><td>CT</td><td>Dist</td><td><span class="refpill">● 5 · Secondary referen…</span></td><td><span class="refpill">● 2 · Item identifying</span></td><td><button class="btn mini soft" onclick="addVendorRow('Rotair Aerospace Corp')">+ Add to table</button></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- PROCUREMENT HISTORY -->
+    <div class="sec">
+      <div class="sechead"><h3>Procurement History</h3></div>
+      <table>
+        <thead><tr><th>CAGE CODE</th><th>SOLICITATION</th><th>QUANTITY</th><th>UNIT PRICE</th><th>DATE OF AWARD</th></tr></thead>
+        <tbody><tr><td class="mono" style="color:var(--accent)">11867</td><td class="mono">SPE7L325P6471P00001</td><td>31</td><td style="color:var(--accent);font-weight:800">$4,500</td><td>08/26/2025</td></tr></tbody>
+      </table>
+    </div>
+
+    <!-- VENDOR REFERENCE TABLE (upgraded) -->
+    <div class="syncnote"><b>⚡ Connected:</b> vendors autocomplete from <a href="Vendor_Page.html"><b>My Vendors + Vendor Pool</b></a> — pick one and email, CAGE, and type fill automatically. Every status you set here rolls up to the Vendors page stats (Sent / Quoted / No Quote / Declined), and prices land in that vendor's <b>Parts &amp; Pricing History</b>.</div>
+
+    <div class="sec">
+      <div class="sechead"><h3>Vendor Reference Table</h3><span class="hint">Your sourcing worksheet for this RFQ</span></div>
+      <table class="vrt">
+        <thead><tr>
+          <th style="min-width:170px">VENDOR</th><th>TYPE</th><th style="min-width:170px">EMAIL</th><th>PART NUMBER</th><th>QTY &amp; UNIT</th><th style="min-width:106px">STATUS</th><th>DATE SENT</th><th>PRICE / UNIT</th><th>LEAD TIME</th><th>LAST UPDATE</th><th></th>
+        </tr></thead>
+        <tbody id="vrows">
+          <tr>
+            <td><input value="Allied Motion Parts Inc" class="vend-in" autocomplete="off" oninput="fillVendor(this)"></td>
+            <td><span class="pill b">MFG</span></td>
+            <td><input value="treyes@alliedmotionparts.com"></td>
+            <td><input value="70351-08206-102" class="mono"></td>
+            <td><input value="12 EA"></td>
+            <td><select class="st-sel st-quoted" onchange="restyle(this)"><option>Not Sent</option><option>Sent</option><option selected>Quoted</option><option>No Quote</option><option>Declined</option></select></td>
+            <td><input value="10/30/2026"></td>
+            <td><input value="$3,980.00"></td>
+            <td><input value="45 days"></td>
+            <td><input value="10/30/2026"></td>
+            <td style="white-space:nowrap"><button class="icobtn nudge" title="Send reminder to vendor" onclick="nudgeRow(this)">🔔</button> <button class="icobtn send" title="Send RFQ email" onclick="openCompose(this)">➤</button></td>
+          </tr>
+          <tr>
+            <td><input value="Sikorsky Aircraft Corporation" class="vend-in" autocomplete="off" oninput="fillVendor(this)"></td>
+            <td><span class="pill b">MFG</span></td>
+            <td><input value="supplier.quotes@sikorsky.com"></td>
+            <td><input value="70351-08206-102" class="mono"></td>
+            <td><input value="12 EA"></td>
+            <td><select class="st-sel st-sent" onchange="restyle(this)"><option>Not Sent</option><option selected>Sent</option><option>Quoted</option><option>No Quote</option><option>Declined</option></select></td>
+            <td><input value="10/30/2026"></td>
+            <td><input placeholder="—"></td>
+            <td><input placeholder="—"></td>
+            <td><input placeholder="—"></td>
+            <td style="white-space:nowrap"><button class="icobtn nudge" title="Send reminder to vendor" onclick="nudgeRow(this)">🔔</button> <button class="icobtn send" title="Send RFQ email" onclick="openCompose(this)">➤</button></td>
+          </tr>
+          <tr>
+            <td><input value="Equitable Engineering Company" class="vend-in" autocomplete="off" oninput="fillVendor(this)"></td>
+            <td><span class="pill g">Distributor</span></td>
+            <td><input value="sales@equitableeng.com"></td>
+            <td><input value="70351-08206-102" class="mono"></td>
+            <td><input value="12 EA"></td>
+            <td><select class="st-sel st-noquote" onchange="restyle(this)"><option>Not Sent</option><option>Sent</option><option>Quoted</option><option selected>No Quote</option><option>Declined</option></select></td>
+            <td><input value="10/28/2026"></td>
+            <td><input placeholder="—"></td>
+            <td><input placeholder="—"></td>
+            <td><input placeholder="—"></td>
+            <td style="white-space:nowrap"><button class="icobtn nudge" title="Send reminder to vendor" onclick="nudgeRow(this)">🔔</button> <button class="icobtn send" title="Send RFQ email" onclick="openCompose(this)">➤</button></td>
+          </tr>
+          <tr>
+            <td><input placeholder="Start typing a vendor…" class="vend-in" autocomplete="off" oninput="fillVendor(this)"></td>
+            <td><span class="pill gr">—</span></td>
+            <td><input placeholder="auto-fills"></td>
+            <td><input value="70351-08206-102" class="mono"></td>
+            <td><input value="12 EA"></td>
+            <td><select class="st-sel st-notsent" onchange="restyle(this)"><option selected>Not Sent</option><option>Sent</option><option>Quoted</option><option>No Quote</option><option>Declined</option></select></td>
+            <td><input placeholder="—"></td>
+            <td><input placeholder="—"></td>
+            <td><input placeholder="—"></td>
+            <td><input placeholder="—"></td>
+            <td style="white-space:nowrap"><button class="icobtn nudge" title="Send reminder to vendor" onclick="nudgeRow(this)">🔔</button> <button class="icobtn send" title="Send RFQ email" onclick="openCompose(this)">➤</button></td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="addrow">
+        <button class="btn primary mini" onclick="addVendorRow('')">+ Add Row</button>
+        <span class="note">Best quote so far: <b style="color:var(--green)">$3,980.00 / EA · Allied Motion</b> → sets your suggested bid</span>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- COMPOSE EMAIL MODAL -->
+<div class="covl" id="covl" onclick="if(event.target===this)closeCompose()">
+  <div class="cmodal">
+    <div class="chead">
+      <h3>Compose Email</h3>
+      <button class="tplchip" id="tplChip">📋 Template 1 ▾</button>
+      <button class="cx" onclick="closeCompose()">✕</button>
+    </div>
+    <div class="cfield from">govscraper@outlook.com</div>
+    <div class="cfield"><input id="cTo" placeholder="To"></div>
+    <div class="cfield"><input id="cSubj" placeholder="Subject"></div>
+    <div class="cbody">
+      <div class="ctools">
+        <select class="tsel"><option>16px</option><option>14px</option><option>18px</option></select>
+        <select class="tsel"><option>Default</option><option>Manrope</option><option>Arial</option></select>
+        <span class="sw"></span><span class="sep"></span>
+        <b>B</b><i>I</i><u>U</u><s>S</s><span class="sep"></span>
+        <span>≔</span><span>⋮≡</span><span class="sep"></span>
+        <span>⬱</span><span>☰</span><span>⇶</span><span class="sep"></span>
+        <span>🔗</span><span>🖼</span>
+      </div>
+      <div class="cedit" contenteditable="true" id="cEdit"></div>
+    </div>
+    <div class="cfoot">
+      <button class="btn" onclick="closeCompose()">Cancel</button>
+      <label class="attach"><input type="checkbox"> 📎 Attach the RFQ PDF</label>
+      <button class="sendbtn" onclick="sendCompose()">Send <span>➤</span></button>
+    </div>
+  </div>
+</div>
+
+<script>
+const BOOK = {
+ "Allied Motion Parts Inc":{e:"treyes@alliedmotionparts.com",t:["b","MFG"]},
+ "Apex Switchgear Corp":{e:"dana@apexswitchgear.com",t:["b","MFG"]},
+ "Calder Components LLC":{e:"jen@caldercomponents.com",t:["g","Distributor"]},
+ "Equitable Engineering Company":{e:"sales@equitableeng.com",t:["g","Distributor"]},
+ "Gulf Coast Castings":{e:"sales@gulfcoastcastings.com",t:["b","MFG"]},
+ "Lakeshore CNC & Gear Works":{e:"shop@lakeshorecnc.com",t:["b","MFG"]},
+ "Midwest Bearing Works":{e:"rfq@midwestbearing.com",t:["g","Distributor"]},
+ "Northline Electro Mfg":{e:"s.caldwell@northline-mfg.com",t:["b","MFG"]},
+ "PCX Aerosystems–Manchester, LLC":{e:"rfq@pcxaero.com",t:["g","Distributor"]},
+ "Precision Gear Industries LLC":{e:"info@precisiongear.com",t:["g","Distributor"]},
+ "Precision Sleeve & Bushing Co":{e:"quotes@precisionsleeve.com",t:["b","MFG"]},
+ "Rotair Aerospace Corp":{e:"quotes@rotair.com",t:["g","Distributor"]},
+ "Sikorsky Aircraft Corporation":{e:"supplier.quotes@sikorsky.com",t:["b","MFG"]}
+};
+function fillVendor(inp){
+  const v = BOOK[inp.value];
+  if(!v) return;
+  const tr = inp.closest('tr');
+  const em = tr.cells[2].querySelector('input');
+  em.value = v.e; em.classList.remove('autofill-flash'); void em.offsetWidth; em.classList.add('autofill-flash');
+  tr.cells[1].innerHTML = `<span class="pill ${v.t[0]}">${v.t[1]}</span>`;
+}
+function restyle(sel){
+  sel.className = 'st-sel st-' + sel.value.toLowerCase().replace(/[^a-z]/g,'');
+  syncStage();
+}
+function markSent(btn){
+  const tr = btn.closest('tr');
+  const sel = tr.querySelector('select');
+  sel.value = 'Sent'; restyle(sel);
+  const d = new Date();
+  const today = (d.getMonth()+1)+'/'+d.getDate()+'/'+d.getFullYear();
+  tr.cells[6].querySelector('input').value = today;
+  const lu = tr.cells[9].querySelector('input'); if(lu) lu.value = today;
+}
+// ===== compose email modal =====
+let composeRow=null;
+function openCompose(btn){
+  composeNudgeBtn=null;
+  document.getElementById('tplChip').innerHTML='📋 Template 1 ▾';
+  composeRow=btn.closest('tr');
+  const part=composeRow.cells[3].querySelector('input').value||'70351-08206-102';
+  const qty=composeRow.cells[4].querySelector('input').value||'12 EA';
+  const email=composeRow.cells[2].querySelector('input').value||'';
+  const vendor=composeRow.cells[0].querySelector('input').value||'';
+  document.getElementById('cTo').value=email;
+  document.getElementById('cSubj').value='RFQ - Part '+part+' *7STV04V3';
+  document.getElementById('cEdit').innerHTML=
+    '<p>Hi'+(vendor?' '+vendor.split(' ')[0]:'')+',</p>'+
+    '<p>I was hoping you could help with a quote for <span class="var">Part Number '+part+'</span>.<br>Would you be able to assist?</p>'+
+    '<p>If so, please quote this government rated order/part for the following item(s):<br>'+
+    'Part Number: <span class="var">'+part+'</span><br>'+
+    'Quantity Quote of: <span class="var">'+qty+'</span></p>'+
+    '<p><b>**Please make sure to note the following:**</b></p>'+
+    '<ul><li>Lead Time</li><li>Stock (if any)</li><li>Type of Certs</li><li>Country of Origin</li><li>Cert Charge</li></ul>'+
+    '<div class="sig">Best,<br><br><b>TRISTAN <span style="color:#BE1E2D">THOMAS</span></b><br><b>MANAGING DIRECTOR</b><br>(661) 644-5509<br><a href="#">tristan@MeNDSourcing.com</a><br>Los Angeles, CA USA<br><a href="#">See Our Services Here</a></div>'+
+    '<div class="disc">This email, including any attachments, is intended only for the recipient(s) and may contain confidential information. If you are not the intended recipient, please contact the sender and destroy all copies and attachments of the original message.</div>';
+  document.getElementById('covl').classList.add('open');
+}
+function closeCompose(){document.getElementById('covl').classList.remove('open');composeRow=null;}
+function sendCompose(){
+  if(composeNudgeBtn){
+    composeNudgeBtn.textContent='✓'; composeNudgeBtn.title='Reminder sent today';
+    composeNudgeBtn.disabled=true; composeNudgeBtn.style.opacity=.65;
+    composeNudgeBtn=null;
+  } else if(composeRow){
+    const sel=composeRow.querySelector('select');
+    sel.value='Sent'; restyle(sel);
+    const d=new Date();
+    composeRow.cells[6].querySelector('input').value=(d.getMonth()+1)+'/'+d.getDate()+'/'+d.getFullYear();
+  }
+  closeCompose();
+}
+let composeNudgeBtn=null;
+function nudgeRow(btn){
+  composeNudgeBtn=btn;
+  const tr=btn.closest('tr');
+  composeRow=tr;
+  const part=tr.cells[3].querySelector('input').value||'70351-08206-102';
+  const qty=tr.cells[4].querySelector('input').value||'12 EA';
+  const email=tr.cells[2].querySelector('input').value||'';
+  const vendor=tr.cells[0].querySelector('input').value||'';
+  const sent=tr.cells[6].querySelector('input').value||'recently';
+  document.getElementById('cTo').value=email;
+  document.getElementById('cSubj').value='Re: RFQ - Part '+part+' *7STV04V3';
+  document.getElementById('tplChip').innerHTML='📋 Follow-Up Template ▾';
+  document.getElementById('cEdit').innerHTML=
+    '<p>Hi'+(vendor?' '+vendor.split(' ')[0]:'')+',</p>'+
+    '<p>Just following up on the request for quote we sent over on <span class="var">'+sent+'</span> for <span class="var">Part Number '+part+'</span> (Qty <span class="var">'+qty+'</span>).</p>'+
+    '<p>Have you had a chance to review? We would love to include your pricing before this solicitation closes — a quick yes/no either way helps us plan.</p>'+
+    '<p><b>As a reminder, please note the following with your quote:</b></p>'+
+    '<ul><li>Lead Time</li><li>Stock (if any)</li><li>Type of Certs</li><li>Country of Origin</li><li>Cert Charge</li></ul>'+
+    '<div class="sig">Best,<br><br><b>TRISTAN <span style="color:#BE1E2D">THOMAS</span></b><br><b>MANAGING DIRECTOR</b><br>(661) 644-5509<br><a href="#">tristan@MeNDSourcing.com</a><br>Los Angeles, CA USA<br><a href="#">See Our Services Here</a></div>'+
+    '<div class="disc">On '+sent+' we wrote: "I was hoping you could help with a quote for Part Number '+part+'. If so, please quote this government rated order/part..."</div>';
+  document.getElementById('covl').classList.add('open');
+}
+// ===== stage auto-sync from vendor table =====
+let stageManual = false;
+function setStage(name, auto){
+  document.querySelectorAll('#stages .stage').forEach(st=>{
+    const on = st.dataset.s===name;
+    st.classList.toggle('on',on);
+    const tag=st.querySelector('.autotag'); if(tag) tag.remove();
+    if(on && auto) st.insertAdjacentHTML('beforeend','<span class="autotag">AUTO</span>');
+  });
+}
+function manualStage(el){ stageManual=true; setStage(el.dataset.s,false);
+  document.getElementById('stagehint').textContent='Stage set manually — auto-sync off for this RFQ.'; }
+function syncStage(){
+  if(stageManual) return;
+  const sts=[...document.querySelectorAll('#vrows select')].map(s=>s.value);
+  const active=sts.filter((v,i)=>{
+    const name=document.querySelectorAll('#vrows tr')[i].cells[0].querySelector('input').value.trim();
+    return name.length>0;
+  });
+  let stage='New Opportunity';
+  if(active.some(v=>v==='Quoted')) stage='Ready to Bid';
+  else if(active.some(v=>v==='Sent')) stage='Currently Sourcing';
+  else if(active.length && active.every(v=>v==='No Quote'||v==='Declined')) stage='Will Source';
+  setStage(stage,true);
+  const hint=document.getElementById('stagehint');
+  if(stage==='Currently Sourcing') hint.textContent='⚡ Auto: Currently Sourcing — awaiting vendor responses. Click a stage to override.';
+  else if(stage==='Ready to Bid') hint.textContent='⚡ Auto: Ready to Bid — you have pricing in hand. Click a stage to override.';
+  else if(stage==='Will Source') hint.textContent='⚡ Auto: all vendors declined — source more vendors. Click a stage to override.';
+  else hint.textContent='⚡ Stage auto-syncs from your Vendor Reference Table below — click any stage to override.';
+}
+syncStage();
+// ===== styled autocomplete dropdown =====
+const acMenu = document.createElement('div'); acMenu.id='acMenu'; document.body.appendChild(acMenu);
+let acInput = null;
+function acShow(inp){
+  acInput = inp;
+  const q = inp.value.toLowerCase();
+  const names = Object.keys(BOOK).filter(n=>n.toLowerCase().includes(q));
+  if(!names.length){ acHide(); return; }
+  acMenu.innerHTML = names.map(n=>`<div class="ac-item" data-n="${n.replace(/"/g,'&quot;')}">${n}<small>${BOOK[n].e} · ${BOOK[n].t[1]}</small></div>`).join('');
+  const r = inp.getBoundingClientRect();
+  acMenu.style.left = (r.left+window.scrollX)+'px';
+  acMenu.style.top = (r.bottom+window.scrollY+4)+'px';
+  acMenu.style.display = 'block';
+}
+function acHide(){ acMenu.style.display='none'; acInput=null; }
+acMenu.addEventListener('mousedown',e=>{
+  const it = e.target.closest('.ac-item');
+  if(!it || !acInput) return;
+  e.preventDefault();
+  acInput.value = it.dataset.n;
+  fillVendor(acInput);
+  acHide();
+});
+document.addEventListener('focusin',e=>{ if(e.target.classList && e.target.classList.contains('vend-in')) acShow(e.target); });
+document.addEventListener('input',e=>{ if(e.target.classList && e.target.classList.contains('vend-in')) acShow(e.target); });
+document.addEventListener('focusout',e=>{ if(e.target.classList && e.target.classList.contains('vend-in')) setTimeout(acHide,120); });
+document.addEventListener('keydown',e=>{ if(e.key==='Escape') acHide(); });
+window.addEventListener('scroll',()=>{ if(acInput) acShow(acInput); },true);
+
+function addVendorRow(name){
+  const tb = document.getElementById('vrows');
+  const tr = tb.rows[tb.rows.length-1].cloneNode(true);
+  tr.cells[0].querySelector('input').value = name || '';
+  tr.cells[1].innerHTML = '<span class="pill gr">—</span>';
+  tr.cells[2].querySelector('input').value = '';
+  const sel = tr.querySelector('select'); sel.value='Not Sent'; restyle(sel);
+  ['6','7','8','9'].forEach(i=>{const el=tr.cells[i].querySelector('input'); if(el) el.value='';});
+  tb.appendChild(tr);
+  if(name){ const inp = tr.cells[0].querySelector('input'); fillVendor(inp); }
+  tr.scrollIntoView({behavior:'smooth',block:'center'});
+}
+</script>
+</body>
+</html>

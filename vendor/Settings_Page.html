@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>Settings &amp; Account — GovScraper</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Source+Code+Pro:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --primary:#1E293B; --accent:#2563EB; --accent-soft:#EFF6FF; --accent-border:#BFDBFE; --accent-hover:#1D4ED8;
+    --red:#DC2626; --red-bg:#FEF2F2; --green:#16A34A; --green-soft:#F0FDF4; --amber:#D97706; --amber-soft:#FFF7ED;
+    --bg:#F8FAFC; --surface:#fff; --border:#E2E8F0; --border-strong:#CBD5E1;
+    --text:#1E293B; --text-dim:#475569; --muted:#6B7280; --faint:#94A3B8;
+  }
+  *{box-sizing:border-box;margin:0}
+  body{font-family:'Manrope',sans-serif;background:var(--bg);color:var(--text);font-size:13px}
+  a{color:var(--accent);text-decoration:none}
+  .topbar{height:56px;background:var(--surface);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;padding:0 24px;position:sticky;top:0;z-index:100;box-shadow:0 1px 3px rgba(0,0,0,0.06)}
+  .topbar-left{display:flex;align-items:center;gap:20px}
+  .topbar-logo{height:30px;width:auto;display:block}
+  .topbar-divider{width:1px;height:24px;background:var(--border)}
+  .mode-switcher{display:flex;align-items:center;background:#F1F5F9;border:1.5px solid var(--border-strong);border-radius:9px;padding:3px}
+  .mode-btn{font-family:'Manrope',sans-serif;font-size:12px;font-weight:700;padding:6px 14px;border-radius:6px;border:none;cursor:pointer;display:flex;align-items:center;gap:7px}
+  .mode-btn.inactive{background:transparent;color:var(--muted)}
+  .mode-btn.active-member{background:#1B2A4A;color:#fff;box-shadow:0 1px 4px rgba(27,42,74,0.3)}
+  .mode-dot{width:7px;height:7px;border-radius:50%;display:inline-block}
+  .mode-btn.inactive .mode-dot{background:#BE1E2D}
+  .mode-btn.active-member .mode-dot{background:rgba(255,255,255,0.6)}
+  .breadcrumb{font-size:12px;color:var(--muted);font-weight:500}
+  .avatar{width:36px;height:36px;border-radius:9px;border:2px solid #E2E8F0;background:linear-gradient(135deg,var(--accent),#1D4ED8);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:11px}
+
+  .shell{display:flex;min-height:calc(100vh - 56px)}
+  .side{width:224px;background:var(--surface);border-right:1px solid var(--border);padding:14px 0;flex-shrink:0;display:flex;flex-direction:column}
+  .sgroup{font-size:10.5px;font-weight:700;letter-spacing:0.8px;color:var(--faint);padding:14px 16px 6px}
+  .sitem{display:flex;align-items:center;gap:9px;padding:8px 16px;font-size:12.5px;color:var(--text-dim);font-weight:500;cursor:pointer;border-left:3px solid transparent}
+  .sitem:hover{background:var(--accent-soft);color:var(--accent);border-left-color:var(--accent-border)}
+  .sitem.on{background:var(--accent-soft);color:var(--accent);font-weight:700;border-left-color:var(--accent)}
+  .sitem.sub{padding-left:38px;font-size:12px}
+  .sitem svg{width:16px;height:16px;flex-shrink:0}
+  .sfoot{margin-top:auto;border-top:1px solid var(--border);padding-top:8px}
+
+  .main{flex:1;padding:26px 0;min-width:0;display:flex;justify-content:center}
+  .wrap{width:900px;max-width:94%}
+  h1{font-size:23px;font-weight:800;margin-bottom:4px}
+  .signed{font-size:13px;color:var(--muted);margin-bottom:20px}
+  .signed b{color:var(--text)}
+
+  .scard{background:#fff;border:1px solid var(--border);border-radius:12px;margin-bottom:16px;overflow:hidden}
+  .shead{display:flex;align-items:center;gap:13px;padding:17px 22px;cursor:pointer}
+  .sico{width:38px;height:38px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0}
+  .sico.b{background:var(--accent-soft);color:var(--accent)} .sico.g{background:var(--green-soft);color:var(--green)}
+  .sico.a{background:var(--amber-soft);color:var(--amber)} .sico.p{background:#F5F3FF;color:#7C3AED}
+  .shead h3{font-size:15px;font-weight:800}
+  .shead .sub{font-size:12px;color:var(--muted);font-weight:500;margin-top:1px}
+  .chev{margin-left:auto;color:var(--faint);font-size:13px}
+  .sbody{padding:4px 22px 22px;border-top:1px solid #F1F5F9}
+
+  /* toggle */
+  .togrow{display:flex;align-items:center;gap:14px;padding:14px 0}
+  .tog{position:relative;width:46px;height:26px;flex-shrink:0;cursor:pointer}
+  .tog input{display:none}
+  .tog .tr{position:absolute;inset:0;background:#CBD5E1;border-radius:999px;transition:.15s}
+  .tog .th{position:absolute;top:3px;left:3px;width:20px;height:20px;border-radius:50%;background:#fff;transition:.15s;box-shadow:0 1px 3px rgba(0,0,0,.25)}
+  .tog input:checked + .tr{background:var(--green)}
+  .tog input:checked + .tr + .th{left:23px}
+  .togrow .lbl{font-size:14px;font-weight:700}
+  .togrow .d{font-size:12px;color:var(--muted);margin-top:2px;font-weight:500}
+
+  .f label{display:block;font-size:11px;font-weight:700;letter-spacing:.5px;color:var(--muted);margin-bottom:6px}
+  textarea.blurb{width:100%;border:1px solid var(--border);border-radius:9px;padding:11px 13px;font-size:13.5px;font-family:'Manrope',sans-serif;resize:none;height:74px}
+  textarea.blurb:focus{outline:2px solid var(--accent-border)}
+  .cnt{font-size:11.5px;font-weight:700;color:var(--faint);text-align:right;margin-top:5px}
+  .cnt.warn{color:var(--amber)} .cnt.max{color:var(--red)}
+
+  .share{display:flex;flex-wrap:wrap;gap:6px;margin:10px 0 4px}
+  .share span{font-size:11px;font-weight:700;background:#F1F5F9;color:var(--text-dim);border-radius:999px;padding:4px 11px}
+  .note{font-size:11.5px;color:var(--faint);margin-top:6px}
+
+  /* preview card */
+  .pv{border:1px dashed var(--accent-border);border-radius:12px;padding:14px 16px;background:var(--accent-soft);margin-top:16px}
+  .pv .pvt{font-size:10.5px;font-weight:800;letter-spacing:.8px;color:var(--accent);margin-bottom:10px}
+  .mcard{background:#fff;border:1px solid var(--border);border-radius:10px;padding:16px 18px;max-width:420px}
+  .mtop{display:flex;align-items:center;gap:11px;margin-bottom:8px}
+  .mav{width:38px;height:38px;border-radius:9px;background:var(--primary);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:14px}
+  .mcard h4{font-size:14px;font-weight:700}
+  .loc{font-size:12px;color:var(--faint)}
+  .mcage{font-size:11px;font-family:'Source Code Pro',monospace;font-weight:700;color:var(--accent);background:var(--accent-soft);border:1px solid var(--accent-border);border-radius:5px;padding:2px 7px;margin-left:auto}
+  .mblurb{font-size:12px;color:var(--text-dim);line-height:1.5;margin:8px 0 2px;padding:8px 11px;background:#F8FAFC;border-radius:7px;font-style:italic}
+  .mrow{font-size:12.5px;color:var(--muted);margin:5px 0}
+  .pill{display:inline-block;font-size:11px;font-weight:700;border-radius:999px;padding:3px 10px;margin-right:4px}
+  .pill.b{background:var(--accent-soft);color:var(--accent)} .pill.a{background:var(--amber-soft);color:var(--amber)}
+  .chips{display:flex;flex-wrap:wrap;gap:5px;margin-top:9px}
+  .chip{font-size:11px;font-weight:600;background:#F1F5F9;color:var(--text-dim);border-radius:5px;padding:3px 8px;font-family:'Source Code Pro',monospace}
+  .btn{display:inline-flex;align-items:center;gap:7px;border-radius:8px;padding:9px 18px;font-size:13px;font-weight:700;cursor:pointer;border:1px solid var(--border);background:#fff;color:var(--text);font-family:'Manrope',sans-serif}
+  .btn.primary{background:var(--accent);border-color:var(--accent);color:#fff}
+  .savebar{display:flex;justify-content:flex-end;margin-top:14px}
+  .logout{color:var(--red);font-weight:700;padding:17px 22px;display:flex;align-items:center;gap:9px;cursor:pointer}
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <div class="topbar-left">
+    <a href="Vendor_Page.html"><img src="https://govscraper.com/assets/BigLogo-7gv5uAxF.png" alt="GovScraper" class="topbar-logo"></a>
+    <div class="topbar-divider"></div>
+    <div class="mode-switcher">
+      <button class="mode-btn active-member"><span class="mode-dot"></span>Member Portal</button>
+      <button class="mode-btn inactive"><span class="mode-dot"></span>Supplier Portal</button>
+    </div>
+    <div class="topbar-divider"></div>
+    <div class="breadcrumb">Settings &amp; Account</div>
+  </div>
+  <div class="avatar">TB</div>
+</header>
+
+<div class="shell">
+<div class="side">
+  <div class="sgroup">MAIN</div>
+  <div class="sitem"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>Dashboard</div>
+  <div class="sitem"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/></svg>My RFQs</div>
+  <div class="sgroup">VENDORS</div>
+  <div class="sitem" onclick="location.href='Vendor_Page.html'"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 21h18"/><path d="M5 21V7l7-4 7 4v14"/><path d="M9 21v-6h6v6"/></svg>My Vendors</div>
+  <div class="sgroup">INTELLIGENCE</div>
+  <div class="sitem"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>NSN Search</div>
+  <div class="sitem"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9.5 12 4l9 5.5"/><path d="M5 10v10h14V10"/></svg>CAGE Search</div>
+  <div class="sitem"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6h16M4 12h16M4 18h16"/></svg>FSC Lookup</div>
+  <div class="sgroup">RESULTS</div>
+  <div class="sitem"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.1V12a10 10 0 1 1-5.93-9.14"/><path d="m9 11 3 3L22 4"/></svg>Awarded Contracts</div>
+  <div class="sitem"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 9h18"/></svg>Archived RFQs</div>
+  <div class="sgroup">COMMUNITY</div>
+  <div class="sitem"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>Community</div>
+  <div class="sfoot">
+    <div class="sitem on"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 21v-1a7 7 0 0 1 14 0v1"/></svg>Settings &amp; Account</div>
+  </div>
+</div>
+
+<div class="main"><div class="wrap">
+  <h1>Settings &amp; Account</h1>
+  <div class="signed">Signed in as <b>HoanDemo</b> · <b>help@tristom.com</b></div>
+
+  <div class="scard">
+    <div class="shead"><div class="sico b">👤</div><div><h3>Profile</h3><div class="sub">Name, email, company, photo</div></div><span class="chev">▾</span></div>
+  </div>
+
+  <div class="scard">
+    <div class="shead"><div class="sico g">🔒</div><div><h3>Change Password</h3><div class="sub">Send a secure reset link</div></div><span class="chev">▾</span></div>
+  </div>
+
+  <div class="scard">
+    <div class="shead"><div class="sico a">💳</div><div><h3>Subscription</h3><div class="sub">MAXX plan · renews Feb 19, 2025</div></div><span class="chev">▾</span></div>
+  </div>
+
+  <div class="scard">
+    <div class="shead"><div class="sico p">📋</div><div><h3>FSC / CAGE List</h3><div class="sub">32 FSCs · 11 CAGEs tracked</div></div><span class="chev">▾</span></div>
+  </div>
+
+  <!-- NEW: MEMBER DIRECTORY VISIBILITY -->
+  <div class="scard" style="border-color:var(--accent-border)">
+    <div class="shead"><div class="sico b">🤝</div><div><h3>Member Directory</h3><div class="sub">Control whether other GovScraper members can find you</div></div><span class="chev">▴</span></div>
+    <div class="sbody">
+      <div class="togrow">
+        <label class="tog"><input type="checkbox" id="visTog" checked onchange="togVis()"><span class="tr"></span><span class="th"></span></label>
+        <div><div class="lbl">Show me in the Member Directory</div>
+        <div class="d">Other members can see your card and contact you for teaming, sourcing, and split-award opportunities.</div></div>
+      </div>
+
+      <div id="visBody">
+        <div style="font-size:12px;font-weight:700;color:var(--muted);letter-spacing:.5px;margin-top:4px">WHAT GETS SHARED</div>
+        <div class="share"><span>Company name</span><span>City &amp; state</span><span>Email &amp; phone</span><span>CAGE code</span><span>Set-asides</span><span>FSCs you target</span><span>Your blurb</span></div>
+
+        <div class="f" style="margin-top:16px">
+          <label>ABOUT YOUR COMPANY — 100 CHARACTERS MAX</label>
+          <textarea class="blurb" id="blurb" maxlength="100" oninput="upd()" placeholder="One line on what you do. e.g. Build-to-print CNC machine shop — brackets, bushings, shafts.">SDVOSB sourcing &amp; machining broker — DLA hardware, electrical, and ground-vehicle parts.</textarea>
+          <div class="cnt" id="cnt">0/100</div>
+        </div>
+
+        <div class="pv">
+          <div class="pvt">PREVIEW — HOW OTHER MEMBERS SEE YOU</div>
+          <div class="mcard">
+            <div class="mtop"><div class="mav">MS</div><div><h4>MeND Sourcing Solutions</h4><div class="loc">Los Angeles, CA</div></div><span class="mcage">CAGE 9JD21</span></div>
+            <div class="mblurb" id="pvBlurb">“”</div>
+            <div class="mrow">✉ help@tristom.com</div>
+            <div class="mrow">✆ (661) 644-5509</div>
+            <div style="margin-top:8px"><span class="pill b">SB</span><span class="pill a">SDVOSB</span></div>
+            <div class="chips"><span class="chip">5340</span><span class="chip">5930</span><span class="chip">2510</span><span class="chip">5365</span><span class="chip">3040</span><span class="chip">4730</span><span class="chip">5925</span><span class="chip">5945</span><span class="chip">5315</span><span class="chip">5325</span><span class="chip">3130</span><span class="chip">3110</span><span class="chip">2815</span><span class="chip">2910</span><span class="chip">4140</span><span class="chip">2590</span></div>
+          </div>
+        </div>
+
+        <div class="savebar"><button class="btn primary" onclick="this.textContent='✓ Saved'">Save Directory Profile</button></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="scard">
+    <div class="shead"><div class="sico g">✉️</div><div><h3>Email Integration</h3><div class="sub">govscraper@outlook.com</div></div><span class="chev">▾</span></div>
+  </div>
+
+  <div class="scard">
+    <div class="shead"><div class="sico b">🔔</div><div><h3>Email Preferences</h3><div class="sub">Choose which emails you receive</div></div><span class="chev">▾</span></div>
+  </div>
+
+  <div class="scard"><div class="logout">⎋ Log Out</div></div>
+</div></div>
+</div>
+
+<script>
+function upd(){
+  const t=document.getElementById('blurb');
+  const c=document.getElementById('cnt');
+  c.textContent=t.value.length+'/100';
+  c.className='cnt'+(t.value.length>=100?' max':(t.value.length>85?' warn':''));
+  document.getElementById('pvBlurb').textContent='“'+(t.value||'Your blurb appears here')+'”';
+}
+function togVis(){
+  const on=document.getElementById('visTog').checked;
+  document.getElementById('visBody').style.display=on?'':'none';
+}
+upd();
+</script>
+</body>
+</html>

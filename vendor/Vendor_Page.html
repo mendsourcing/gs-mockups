@@ -1,0 +1,921 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>Vendors — GovScraper</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Source+Code+Pro:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --primary:#1E293B; --accent:#2563EB; --accent-soft:#EFF6FF; --accent-border:#BFDBFE; --accent-hover:#1D4ED8;
+    --red:#DC2626; --red-bg:#FEF2F2; --green:#16A34A; --green-soft:#F0FDF4; --amber:#D97706; --amber-soft:#FFF7ED;
+    --bg:#F8FAFC; --surface:#fff; --border:#E2E8F0; --border-strong:#CBD5E1;
+    --text:#1E293B; --text-dim:#475569; --muted:#6B7280; --faint:#94A3B8;
+  }
+  *{box-sizing:border-box;margin:0}
+  body{font-family:'Manrope',sans-serif;background:var(--bg);color:var(--text);font-size:13px}
+  a{color:var(--accent);text-decoration:none}
+
+  /* ===== TOP BAR (matches 1B_Dashboard) ===== */
+  .topbar{height:56px;background:var(--surface);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;padding:0 24px;position:sticky;top:0;z-index:100;box-shadow:0 1px 3px rgba(0,0,0,0.06)}
+  .topbar-left{display:flex;align-items:center;gap:20px}
+  .topbar-logo{height:30px;width:auto;display:block}
+  .topbar-divider{width:1px;height:24px;background:var(--border)}
+  .mode-switcher{display:flex;align-items:center;background:#F1F5F9;border:1.5px solid var(--border-strong);border-radius:9px;padding:3px}
+  .mode-btn{font-family:'Manrope',sans-serif;font-size:12px;font-weight:700;padding:6px 14px;border-radius:6px;border:none;cursor:pointer;display:flex;align-items:center;gap:7px}
+  .mode-btn.inactive{background:transparent;color:var(--muted)}
+  .mode-btn.inactive:hover{background:#E2E8F0;color:var(--text-dim)}
+  .mode-btn.active-member{background:#1B2A4A;color:#fff;box-shadow:0 1px 4px rgba(27,42,74,0.3)}
+  .mode-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0;display:inline-block}
+  .mode-btn.inactive .mode-dot.green{background:#BE1E2D}
+  .mode-btn.active-member .mode-dot{background:rgba(255,255,255,0.6)}
+  .breadcrumb{font-size:12px;color:var(--muted);font-weight:500;letter-spacing:0.2px}
+  .avatar{width:36px;height:36px;border-radius:9px;border:2px solid #E2E8F0;background:linear-gradient(135deg,var(--accent),#1D4ED8);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:11px}
+
+  /* ===== LAYOUT ===== */
+  .shell{display:flex;min-height:calc(100vh - 56px)}
+  .side{width:224px;background:var(--surface);border-right:1px solid var(--border);padding:14px 0;flex-shrink:0}
+  .sgroup{font-size:10.5px;font-weight:700;letter-spacing:0.8px;color:var(--faint);padding:14px 16px 6px}
+  .sitem{display:flex;align-items:center;gap:9px;padding:8px 16px;font-size:12.5px;color:var(--text-dim);font-weight:500;cursor:pointer;border-left:3px solid transparent}
+  .sitem:hover{background:var(--accent-soft);color:var(--accent);border-left-color:var(--accent-border)}
+  .sitem.on{background:var(--accent-soft);color:var(--accent);font-weight:700;border-left-color:var(--accent)}
+  .sitem.sub{padding-left:38px;font-size:12px}
+  .sitem svg{width:16px;height:16px;flex-shrink:0}
+  .newtag{margin-left:auto;font-size:9.5px;font-weight:700;background:var(--red);color:#fff;border-radius:4px;padding:2px 5px;letter-spacing:.5px}
+
+  .main{flex:1;padding:22px 28px;min-width:0}
+  .pagehead{display:flex;align-items:center;gap:14px;margin-bottom:16px}
+  h1{font-size:21px;font-weight:700}
+  .btn{display:inline-flex;align-items:center;gap:7px;border-radius:8px;padding:8px 15px;font-size:13px;font-weight:600;cursor:pointer;border:1px solid var(--border);background:#fff;color:var(--text)}
+  .btn.primary{background:var(--accent);border-color:var(--accent);color:#fff}
+  .btn.primary:hover{background:#1d4ed8}
+  .pagehead .btn{margin-left:0}
+  .spacer{flex:1}
+
+  /* stat strip */
+  .stats{background:#fff;border:1px solid var(--border);border-radius:10px;display:flex;align-items:center;padding:14px 22px;gap:34px;margin-bottom:16px;flex-wrap:wrap}
+  .stat{display:flex;align-items:baseline;gap:8px}
+  .stat b{font-size:19px;font-weight:700;color:var(--accent)}
+  .stat.g b{color:var(--green)} .stat.a b{color:var(--amber)} .stat.n b{color:var(--primary)} .stat.r b{color:var(--red)}
+  .stat span{font-size:12.5px;color:var(--muted);font-weight:500}
+  .stat.clickable{cursor:pointer;border-radius:7px;padding:4px 8px;margin:-4px -8px}
+  .stat.clickable:hover{background:var(--accent-soft)}
+  .stat.clickable:hover span{color:var(--accent);text-decoration:underline}
+  .fpills{display:flex;gap:7px;margin-bottom:14px}
+  .fpill{font-size:12px;font-weight:700;border:1.5px solid var(--border);background:#fff;color:var(--muted);border-radius:999px;padding:6px 15px;cursor:pointer;font-family:'Manrope',sans-serif}
+  .fpill.on{background:var(--accent);border-color:var(--accent);color:#fff}
+  .vr{width:1px;height:26px;background:var(--border)}
+
+  /* tabs */
+  .tabs{display:flex;gap:4px;border-bottom:2px solid var(--border);margin-bottom:16px}
+  .tab{padding:10px 18px;font-size:13.5px;font-weight:600;color:var(--muted);cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-2px;display:flex;align-items:center;gap:7px}
+  .tab.on{color:var(--accent);border-bottom-color:var(--accent)}
+  .tab .cnt{font-size:11px;background:#f1f5f9;color:var(--muted);border-radius:999px;padding:1px 8px;font-weight:700}
+  .tab.on .cnt{background:var(--accent-soft);color:var(--accent)}
+
+  /* toolbar */
+  .toolbar{display:flex;gap:10px;margin-bottom:14px;align-items:center}
+  .search{flex:1;max-width:360px;min-width:230px;position:relative}
+  .search input{width:100%;border:1px solid var(--border);border-radius:8px;padding:9px 12px 9px 34px;font-size:13px;background:#fff}
+  .search svg{position:absolute;left:11px;top:10px;width:15px;height:15px;color:var(--faint)}
+  select.flt{border:1px solid var(--border);border-radius:8px;padding:9px 12px;font-size:13px;background:#fff;color:var(--text)}
+
+  /* table */
+  .card{background:#fff;border:1px solid var(--border);border-radius:10px;overflow:hidden}
+  table{width:100%;border-collapse:collapse;font-size:13px}
+  th{text-align:left;font-size:11px;letter-spacing:.6px;font-weight:700;color:var(--faint);padding:11px 14px;border-bottom:1px solid var(--border);background:#fafbfc;white-space:nowrap}
+  td{padding:12px 14px;border-bottom:1px solid #f1f3f6;vertical-align:middle;white-space:nowrap}
+  tr:last-child td{border-bottom:none}
+  tbody tr{cursor:pointer}
+  tbody tr:hover{background:#f8faff}
+  .co{font-weight:600;color:var(--accent)}
+  .sub2{font-size:11.5px;color:var(--faint);font-weight:400;margin-top:1px}
+  .pill{display:inline-block;font-size:11px;font-weight:700;border-radius:999px;padding:3px 10px}
+  .pill.b{background:var(--accent-soft);color:var(--accent)}
+  .pill.g{background:var(--green-soft);color:var(--green)}
+  .pill.a{background:var(--amber-soft);color:var(--amber)}
+  .pill.r{background:#fef2f2;color:var(--red)}
+  .pill.gr{background:#f1f5f9;color:var(--muted)}
+  .mono{font-family:'Source Code Pro',monospace;font-size:12px}
+
+  /* member cards */
+  .mgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(330px,1fr));gap:14px}
+  .mcard{background:#fff;border:1px solid var(--border);border-radius:10px;padding:16px 18px}
+  .mcard .mtop{display:flex;align-items:center;gap:11px;margin-bottom:10px}
+  .mav{width:38px;height:38px;border-radius:9px;background:var(--primary);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:14px;flex-shrink:0}
+  .mcard h4{font-size:14px;font-weight:700}
+  .mcard .loc{font-size:12px;color:var(--faint)}
+  .mrow{font-size:12.5px;color:var(--muted);margin:5px 0;display:flex;gap:7px;align-items:center}
+  .mrow svg{width:13px;height:13px;color:var(--faint);flex-shrink:0}
+  .chips{display:flex;flex-wrap:wrap;gap:5px;margin-top:9px}
+  .chip{font-size:11px;font-weight:600;background:#F1F5F9;color:var(--text-dim);border-radius:5px;padding:3px 8px;font-family:'Source Code Pro',monospace}
+  .mcage{font-size:11px;font-family:'Source Code Pro',monospace;font-weight:700;color:var(--accent);background:var(--accent-soft);border:1px solid var(--accent-border);border-radius:5px;padding:2px 7px;margin-left:auto}
+  .mblurb{font-size:12px;color:var(--text-dim);line-height:1.5;margin:8px 0 2px;padding:8px 11px;background:#F8FAFC;border-radius:7px;font-style:italic}
+  .optin{border-left:4px solid var(--accent);background:var(--accent-soft);padding:11px 15px;border-radius:0 8px 8px 0;font-size:12.5px;color:#334155;margin-bottom:16px}
+
+  /* ===== VENDOR DETAIL ===== */
+  .back{display:inline-flex;align-items:center;gap:6px;font-size:13px;font-weight:600;color:var(--muted);cursor:pointer;margin-bottom:14px}
+  .back:hover{color:var(--accent)}
+  .vhead{background:#fff;border:1px solid var(--border);border-radius:10px;padding:20px 24px;display:flex;gap:18px;align-items:flex-start;margin-bottom:16px;flex-wrap:wrap}
+  .vav{width:52px;height:52px;border-radius:11px;background:var(--accent);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:19px;flex-shrink:0}
+  .vhead h2{font-size:19px;font-weight:700;margin-bottom:2px}
+  .vmeta{display:flex;gap:22px;flex-wrap:wrap;margin-top:10px}
+  .vmeta div{font-size:12.5px}
+  .vmeta label{display:block;font-size:10.5px;font-weight:700;letter-spacing:.7px;color:var(--faint);margin-bottom:2px}
+  .vnotes{font-size:12.5px;color:var(--muted);margin-top:10px;max-width:640px}
+  .sec{background:#fff;border:1px solid var(--border);border-radius:10px;margin-bottom:16px;overflow:hidden}
+  .sechead{display:flex;align-items:center;padding:13px 18px;border-bottom:1px solid var(--border);background:#fafbfc}
+  .sechead h3{font-size:12px;font-weight:700;letter-spacing:.8px;color:var(--primary)}
+  .sechead .hint{margin-left:auto;font-size:11.5px;color:var(--faint)}
+
+  /* modal */
+  .ovl{position:fixed;inset:0;background:rgba(15,23,42,.45);display:none;align-items:flex-start;justify-content:center;padding:60px 20px;z-index:100}
+  .ovl.open{display:flex}
+  .modal{background:#fff;border-radius:12px;width:560px;max-width:100%;max-height:82vh;overflow:auto;box-shadow:0 20px 50px rgba(0,0,0,.25)}
+  .mhead{display:flex;align-items:center;padding:16px 22px;border-bottom:1px solid var(--border)}
+  .mhead h3{font-size:15px;font-weight:700}
+  .x{margin-left:auto;cursor:pointer;color:var(--faint);font-size:20px;line-height:1}
+  .mbody{padding:18px 22px}
+  .frow{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px}
+  .frow.one{grid-template-columns:1fr}
+  .f label{display:block;font-size:11px;font-weight:700;letter-spacing:.5px;color:var(--muted);margin-bottom:5px}
+  .f input,.f select,.f textarea{width:100%;border:1px solid var(--border);border-radius:7px;padding:9px 11px;font-size:13px;font-family:inherit}
+  .mfoot{display:flex;gap:10px;justify-content:flex-end;padding:14px 22px;border-top:1px solid var(--border)}
+  .note{font-size:11.5px;color:var(--faint);margin-top:4px}
+
+  .integr{border:1px dashed var(--accent-border);background:var(--accent-soft);border-radius:10px;padding:13px 17px;font-size:12.5px;color:#334155;margin-top:16px}
+  .integr b{color:var(--accent)}
+  /* FSC tag input */
+  .tagbox{display:flex;flex-wrap:wrap;gap:6px;align-items:center;border:1px solid var(--border);border-radius:7px;padding:6px 8px;background:#fff;cursor:text;min-height:38px}
+  .tagbox:focus-within{outline:2px solid var(--accent-border)}
+  .tagbox input{border:none !important;outline:none !important;flex:1;min-width:110px;padding:4px 2px !important;font-size:13px;font-family:'Manrope',sans-serif}
+  .tag{display:inline-flex;align-items:center;gap:6px;background:var(--accent-soft);color:var(--accent);border:1px solid var(--accent-border);border-radius:999px;padding:4px 7px 4px 11px;font-size:12px;font-weight:700;font-family:'Source Code Pro',monospace}
+  .tag i{font-style:normal;cursor:pointer;font-weight:800;color:var(--accent);opacity:.65;padding:0 4px}
+  .tag i:hover{opacity:1}
+  .fscmenu{position:relative;display:none}
+  .fscmenu .inner{position:absolute;top:4px;left:0;right:0;background:#fff;border:1.5px solid var(--accent-border);border-radius:12px;box-shadow:0 12px 32px rgba(15,23,42,.14);z-index:300;max-height:240px;overflow-y:auto;padding:4px 0}
+  .fsc-item{padding:11px 16px;font-size:13.5px;font-weight:700;color:var(--text);cursor:pointer;border-bottom:1px solid #F1F5F9;font-family:'Manrope',sans-serif}
+  .fsc-item:last-child{border-bottom:none}
+  .fsc-item:hover{background:var(--accent-soft)}
+  .fsc-item .code{font-family:'Source Code Pro',monospace;color:var(--accent);margin-right:8px}
+  .fsc-item small{color:var(--faint);font-weight:500}
+  .covl{position:fixed;inset:0;background:rgba(15,23,42,.45);display:none;align-items:flex-start;justify-content:center;padding:40px 20px;z-index:500}
+  .covl.open{display:flex}
+  .cmodal{background:#fff;border-radius:16px;width:880px;max-width:100%;max-height:88vh;display:flex;flex-direction:column;box-shadow:0 24px 70px rgba(0,0,0,.3);overflow:hidden;font-family:'Manrope',sans-serif}
+  .chead{display:flex;align-items:center;gap:10px;padding:16px 24px;background:#F8FAFC;border-bottom:1px solid var(--border)}
+  .chead h3{font-size:17px;font-weight:800}
+  .tplchip{margin-left:auto;display:inline-flex;align-items:center;gap:8px;border:1.5px solid var(--accent);border-radius:10px;background:#fff;padding:7px 13px;font-size:12.5px;font-weight:700;cursor:pointer;font-family:'Manrope',sans-serif}
+  .cx{font-size:19px;color:var(--muted);cursor:pointer;padding:4px 8px;background:none;border:none}
+  .cfield{padding:12px 24px;border-bottom:1px solid var(--border);font-size:13.5px}
+  .cfield.from{color:var(--faint)}
+  .cfield input{width:100%;border:none;outline:none;font-size:13.5px;font-family:'Manrope',sans-serif;color:var(--text)}
+  .cbody{flex:1;overflow-y:auto;padding:14px 24px}
+  .cedit{border:1px solid var(--border);border-radius:10px;min-height:260px;padding:16px 20px;font-size:14px;line-height:1.65;outline:none}
+  .cedit .var{font-weight:800}
+  .cedit .sig{margin-top:22px}
+  .cedit .disc{color:var(--muted);font-size:12px;border-top:1px dashed var(--border-strong);margin-top:22px;padding-top:10px}
+  .cfoot{display:flex;align-items:center;gap:12px;padding:14px 24px;border-top:1px solid var(--border)}
+  .cfoot .sendbtn{margin-left:auto;background:var(--accent);color:#fff;border:none;border-radius:10px;padding:10px 20px;font-size:13.5px;font-weight:800;cursor:pointer;display:inline-flex;align-items:center;gap:8px;font-family:'Manrope',sans-serif}
+  .agentbar{display:flex;align-items:center;gap:11px;background:#F0FDF4;border:1px solid #BBF7D0;border-radius:10px;padding:12px 16px;font-size:12.5px;color:#334155;margin-bottom:14px}
+  .agentbar b{color:var(--green)}
+  .agentdot{width:9px;height:9px;border-radius:50%;background:var(--green);flex-shrink:0;box-shadow:0 0 0 4px rgba(22,163,74,.15)}
+  .btn.mini{padding:5px 11px;font-size:11.5px;border-radius:7px;color:var(--accent);border-color:var(--accent-border);background:var(--accent-soft);font-weight:700}
+  .vok{color:var(--green);font-weight:800;font-size:11px}
+  .btn.nudge{color:var(--amber);border-color:#FDE68A;background:var(--amber-soft)}
+  .dupwarn{margin-top:7px;border:1px solid #FDE68A;background:var(--amber-soft);color:#92400E;border-radius:8px;padding:9px 12px;font-size:12px;font-weight:600}
+  .dupwarn a{font-weight:800}
+</style>
+</head>
+<body>
+
+<!-- TOP BAR -->
+<header class="topbar">
+  <div class="topbar-left">
+    <a href="#"><img src="https://govscraper.com/assets/BigLogo-7gv5uAxF.png" alt="GovScraper" class="topbar-logo"></a>
+    <div class="topbar-divider"></div>
+    <div class="mode-switcher">
+      <button class="mode-btn active-member"><span class="mode-dot"></span>Member Portal</button>
+      <button class="mode-btn inactive"><span class="mode-dot green"></span>Supplier Portal</button>
+    </div>
+    <div class="topbar-divider"></div>
+    <div class="breadcrumb">Vendors</div>
+  </div>
+  <div class="avatar" onclick="location.href='Settings_Page.html'" title="Settings & Account" style="cursor:pointer">TB</div>
+</header>
+
+<div class="shell">
+
+<!-- SIDEBAR -->
+<div class="side">
+  <div class="sgroup">MAIN</div>
+  <div class="sitem"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>Dashboard</div>
+  <div class="sitem"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/></svg>My RFQs</div>
+  <div class="sitem sub">Private List of RFQs</div>
+  <div class="sitem sub">Public List of RFQs</div>
+
+  <div class="sgroup">VENDORS</div>
+  <div class="sitem on"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 21h18"/><path d="M5 21V7l7-4 7 4v14"/><path d="M9 21v-6h6v6"/></svg>My Vendors<span class="newtag">NEW</span></div>
+  <div class="sitem sub" onclick="openModal()">+ Add Vendor</div>
+
+  <div class="sgroup">INTELLIGENCE</div>
+  <div class="sitem"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>NSN Search</div>
+  <div class="sitem"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9.5 12 4l9 5.5"/><path d="M5 10v10h14V10"/></svg>CAGE Search</div>
+  <div class="sitem"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6h16M4 12h16M4 18h16"/></svg>FSC Lookup</div>
+  <div class="sitem"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg>NSN Watch List</div>
+
+  <div class="sgroup">RESULTS</div>
+  <div class="sitem"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.1V12a10 10 0 1 1-5.93-9.14"/><path d="m9 11 3 3L22 4"/></svg>Awarded Contracts</div>
+  <div class="sitem"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 9h18"/></svg>Archived RFQs</div>
+
+  <div class="sgroup">ALERTS</div>
+  <div class="sitem"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/></svg>RFQ Alerts</div>
+
+  <div class="sgroup">COMMUNITY</div>
+  <div class="sitem"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>Community</div>
+
+  <div class="sgroup">TOOLS</div>
+  <div class="sitem"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 8V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v3"/><rect x="3" y="8" width="18" height="13" rx="2"/></svg>GovPacking</div>
+</div>
+
+<!-- MAIN -->
+<div class="main">
+
+<!-- ============ LIST VIEW ============ -->
+<div id="listView">
+  <div class="pagehead">
+    <h1>Vendors</h1>
+    <div class="spacer"></div>
+    <button class="btn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="M7 10l5 5 5-5"/><path d="M12 15V3"/></svg>Export</button>
+    <button class="btn primary" onclick="openModal()">+ Add Vendor</button>
+  </div>
+
+  <div class="stats">
+    <div class="stat"><b>12</b><span>Total Vendors</span></div><div class="vr"></div>
+    <div class="stat n clickable" onclick="showRfqs('all')" title="View all RFQs sent"><b>18</b><span>RFQs Sent (30 days)</span></div><div class="vr"></div>
+    <div class="stat g clickable" onclick="showRfqs('quoted')" title="View RFQs with pricing back"><b>11</b><span>Quotes Received</span></div><div class="vr"></div>
+    <div class="stat a clickable" onclick="showRfqs('awaiting')" title="View RFQs awaiting response"><b>4</b><span>Awaiting Response</span></div><div class="vr"></div>
+    <div class="stat r clickable" onclick="showRfqs('nobid')" title="View RFQs vendors declined"><b>3</b><span>No Bid / Declined</span></div>
+  </div>
+
+  <div class="tabs">
+    <div class="tab on" id="tabV" onclick="showTab('v')">My Vendors <span class="cnt">12</span></div>
+    <div class="tab" id="tabM" onclick="showTab('m')">GovScraper Member Directory <span class="cnt">48</span></div>
+    <div class="tab" id="tabP" onclick="showTab('p')">Vendor Pool <span class="cnt">2,847</span></div>
+  </div>
+
+  <!-- TAB: MY VENDORS -->
+  <div id="paneV">
+    <div class="toolbar">
+      <div class="search"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg><input placeholder="Search vendors by name, email, CAGE, or part..."></div>
+      <div style="flex:0 1 340px;min-width:220px">
+        <div class="tagbox" id="fscBox2" onclick="document.getElementById('fscIn2').focus()">
+          <input id="fscIn2" placeholder="Filter by FSC…" autocomplete="off" oninput="fscSuggest('2')" onkeydown="fscKey(event,'2')" onblur="setTimeout(()=>fscHide('2'),120)" onfocus="fscSuggest('2')">
+        </div>
+        <div id="fscMenu2" class="fscmenu"></div>
+      </div>
+      <select class="flt"><option>All Types</option><option>MFG</option><option>Distributor</option><option>Packaging House</option></select>
+      <select class="flt"><option>Sort: Last Activity</option><option>Sort: Name A–Z</option><option>Sort: Most Quotes</option><option>Sort: Fastest Response</option></select>
+    </div>
+
+    <div class="card">
+      <table>
+        <thead><tr>
+          <th>VENDOR</th><th>PRIMARY CONTACT</th><th>EMAIL</th><th>PHONE</th><th>LOCATION</th><th>RFQS SENT</th><th>QUOTES BACK</th><th>FSCS PROVIDED</th>
+        </tr></thead>
+        <tbody>
+          <tr onclick="showDetail()">
+            <td><div class="co">Apex Switchgear Corp</div><div class="sub2">CAGE 4XK29 · MFG</div></td>
+            <td>Dana Whitfield</td><td>dana@apexswitchgear.com</td><td>(303) 555-0141</td><td>Denver, CO</td>
+            <td><span class="pill b">9</span></td><td><span class="pill g">7</span></td><td><div class="chips" style="margin-top:0"><span class="chip">5930</span><span class="chip">5925</span><span class="chip">5945</span></div></td>
+          </tr>
+          <tr onclick="showDetail()">
+            <td><div class="co">Precision Sleeve &amp; Bushing Co</div><div class="sub2">CAGE 5TW02 · MFG</div></td>
+            <td>Marcus Teller</td><td>quotes@precisionsleeve.com</td><td>(614) 555-0188</td><td>Columbus, OH</td>
+            <td><span class="pill b">6</span></td><td><span class="pill g">5</span></td><td><div class="chips" style="margin-top:0"><span class="chip">3120</span><span class="chip">5365</span><span class="chip">5342</span></div></td>
+          </tr>
+          <tr onclick="showDetail()">
+            <td><div class="co">Northline Electro Mfg</div><div class="sub2">CAGE 7PD41 · MFG</div></td>
+            <td>Sue Caldwell</td><td>s.caldwell@northline-mfg.com</td><td>(814) 555-0122</td><td>Erie, PA</td>
+            <td><span class="pill b">5</span></td><td><span class="pill g">3</span></td><td><div class="chips" style="margin-top:0"><span class="chip">5930</span><span class="chip">6110</span><span class="chip">5950</span></div></td>
+          </tr>
+          <tr onclick="showDetail()">
+            <td><div class="co">Midwest Bearing Works</div><div class="sub2">CAGE 9QF63 · Distributor</div></td>
+            <td>Ray Okafor</td><td>rfq@midwestbearing.com</td><td>(316) 555-0167</td><td>Wichita, KS</td>
+            <td><span class="pill b">4</span></td><td><span class="pill g">2</span></td><td><div class="chips" style="margin-top:0"><span class="chip">3110</span><span class="chip">3130</span><span class="chip">3120</span></div></td>
+          </tr>
+          <tr onclick="showDetail()">
+            <td><div class="co">Calder Components LLC</div><div class="sub2">CAGE 1MR88 · Distributor</div></td>
+            <td>Jen Marsh</td><td>jen@caldercomponents.com</td><td>(480) 555-0190</td><td>Mesa, AZ</td>
+            <td><span class="pill b">4</span></td><td><span class="pill g">2</span></td><td><div class="chips" style="margin-top:0"><span class="chip">5305</span><span class="chip">5310</span><span class="chip">5340</span></div></td>
+          </tr>
+          <tr onclick="showDetail()">
+            <td><div class="co">Allied Motion Parts Inc</div><div class="sub2">CAGE 2HV50 · MFG</div></td>
+            <td>Tom Reyes</td><td>treyes@alliedmotionparts.com</td><td>(423) 555-0135</td><td>Chattanooga, TN</td>
+            <td><span class="pill b">3</span></td><td><span class="pill g">1</span></td><td><div class="chips" style="margin-top:0"><span class="chip">3040</span><span class="chip">3010</span><span class="chip">5365</span></div></td>
+          </tr>
+          <tr onclick="showDetail()">
+            <td><div class="co">Gulf Coast Castings</div><div class="sub2">No CAGE · MFG</div></td>
+            <td>Pat Nguyen</td><td>sales@gulfcoastcastings.com</td><td>(251) 555-0109</td><td>Mobile, AL</td>
+            <td><span class="pill b">3</span></td><td><span class="pill gr">0</span></td><td><div class="chips" style="margin-top:0"><span class="chip">5340</span><span class="chip">2510</span><span class="chip">2590</span></div></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="integr">
+      <b>⚡ RFQ Page Integration:</b> every vendor saved here feeds the <b>Vendor Reference</b> autocomplete on the RFQ info page. Start typing "Apex..." in the Send-RFQ box and the contact email, phone, and CAGE fill in automatically — no manual typing. Quotes logged from that page flow back into this vendor's pricing history.
+    </div>
+  </div>
+
+  <!-- TAB: MEMBER DIRECTORY -->
+  <div id="paneM" style="display:none">
+    <div class="optin">
+      <b>Opt-in directory.</b> Only members who turned on <b>"Show me in the Member Directory"</b> in Settings appear here. Share your profile to be discovered by other members for teaming, sourcing, and split-award opportunities. <a href="Settings_Page.html">Manage my visibility →</a>
+    </div>
+
+    <div class="toolbar">
+      <div class="search"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg><input placeholder="Search members by company, FSC, or state..."></div>
+      <select class="flt"><option>All Set-Asides</option><option>SB</option><option>SDVOSB</option><option>HUBZone</option><option>WOSB</option><option>8(a)</option></select>
+      <select class="flt"><option>All FSCs</option><option>5340</option><option>5365</option><option>3040</option><option>5930</option><option>1680</option></select>
+    </div>
+
+    <div class="mgrid">
+      <div class="mcard">
+        <div class="mtop"><div class="mav">RA</div><div><h4>Right Ascension Machining</h4><div class="loc">Huntsville, AL</div></div><span class="mcage">CAGE 8KD34</span></div><div class="mblurb">“Build-to-print CNC machine shop — lathe &amp; mill work: brackets, bushings, shafts, pins.”</div>
+        <div class="mrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16v16H4z" opacity="0"/><path d="M22 6 12 13 2 6"/><rect x="2" y="4" width="20" height="16" rx="2"/></svg>bids@rightascension.com</div>
+        <div class="mrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6A19.79 19.79 0 0 1 2.08 4.18 2 2 0 0 1 4.06 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.22a2 2 0 0 1 2.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"/></svg>(256) 555-0144</div>
+        <div style="margin-top:8px"><span class="pill b">SB</span></div>
+        <div class="chips"><span class="chip">5340</span><span class="chip">5365</span><span class="chip">3040</span><span class="chip">4730</span><span class="chip">5315</span><span class="chip">3130</span><span class="chip">3110</span><span class="chip">2815</span><span class="chip">2910</span><span class="chip">2510</span><span class="chip">4140</span><span class="chip">5325</span></div>
+      </div>
+      <div class="mcard">
+        <div class="mtop"><div class="mav">VS</div><div><h4>Valley Spring Defense</h4><div class="loc">Shreveport, LA</div></div><span class="mcage">CAGE 6TR91</span></div><div class="mblurb">“SDVOSB electronics shop: switches, relays &amp; control assemblies for DLA and Navy programs.”</div>
+        <div class="mrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 6 12 13 2 6"/><rect x="2" y="4" width="20" height="16" rx="2"/></svg>contracts@valleyspringdef.com</div>
+        <div class="mrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6A19.79 19.79 0 0 1 2.08 4.18 2 2 0 0 1 4.06 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.22a2 2 0 0 1 2.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"/></svg>(318) 555-0171</div>
+        <div style="margin-top:8px"><span class="pill b">SB</span> <span class="pill a">SDVOSB</span></div>
+        <div class="chips"><span class="chip">5930</span><span class="chip">5945</span><span class="chip">6110</span><span class="chip">5925</span><span class="chip">5950</span><span class="chip">6150</span></div>
+      </div>
+      <div class="mcard">
+        <div class="mtop"><div class="mav">BH</div><div><h4>Blue Harbor Supply Group</h4><div class="loc">Norfolk, VA</div></div><span class="mcage">CAGE 3WN57</span></div><div class="mblurb">“Fittings &amp; valve distributor, deep Navy sourcing. HUBZone pricing edge on open RFQs.”</div>
+        <div class="mrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 6 12 13 2 6"/><rect x="2" y="4" width="20" height="16" rx="2"/></svg>team@blueharborsupply.com</div>
+        <div class="mrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6A19.79 19.79 0 0 1 2.08 4.18 2 2 0 0 1 4.06 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.22a2 2 0 0 1 2.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"/></svg>(757) 555-0126</div>
+        <div style="margin-top:8px"><span class="pill b">SB</span> <span class="pill g">HUBZone</span></div>
+        <div class="chips"><span class="chip">4730</span><span class="chip">4820</span><span class="chip">5331</span><span class="chip">4710</span><span class="chip">4720</span><span class="chip">5330</span><span class="chip">5340</span><span class="chip">4810</span></div>
+      </div>
+      <div class="mcard">
+        <div class="mtop"><div class="mav">SM</div><div><h4>Sierra Metalforms</h4><div class="loc">Reno, NV</div></div><span class="mcage">CAGE 1PV62</span></div><div class="mblurb">“Woman-owned sheet metal &amp; machined hardware MFG — plates, brackets, vehicle components.”</div>
+        <div class="mrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 6 12 13 2 6"/><rect x="2" y="4" width="20" height="16" rx="2"/></svg>rfq@sierrametalforms.com</div>
+        <div class="mrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6A19.79 19.79 0 0 1 2.08 4.18 2 2 0 0 1 4.06 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.22a2 2 0 0 1 2.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"/></svg>(775) 555-0183</div>
+        <div style="margin-top:8px"><span class="pill b">SB</span> <span class="pill r">WOSB</span></div>
+        <div class="chips"><span class="chip">5340</span><span class="chip">9535</span><span class="chip">2510</span><span class="chip">2540</span><span class="chip">2590</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TAB: VENDOR POOL -->
+  <div id="paneP" style="display:none">
+
+    <div class="toolbar">
+      <div class="search"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg><input placeholder="Search pool by company, CAGE, FSC, or state..."></div>
+      <select class="flt"><option>All FSCs</option><option>3040</option><option>5930</option><option>5340</option><option>3120</option></select>
+      <select class="flt"><option>All Profiles</option><option>Verified</option><option>Unverified</option><option>GovScraper Member</option><option>In My Vendors</option></select>
+    </div>
+
+    <div class="card">
+      <table>
+        <thead><tr><th>COMPANY</th><th>CAGE</th><th>LOCATION</th><th>FSCS</th><th>FOUND VIA</th><th>CONTACT</th><th>PROFILE</th><th></th></tr></thead>
+        <tbody>
+          <tr>
+            <td><div class="co">Sikorsky Aircraft Corporation</div><div class="sub2">Mfg · Design control holder</div></td>
+            <td class="mono" style="color:var(--accent)">78286</td><td>Stratford, CT</td>
+            <td><div class="chips" style="margin-top:0"><span class="chip">3040</span><span class="chip">1560</span><span class="chip">1615</span></div></td>
+            <td><span class="pill b">Approved source · 41 RFQs</span></td>
+            <td>supplier.quotes@sikorsky.com <span class="vok">✓</span></td>
+            <td><span class="pill g">Verified</span></td>
+            <td><button class="btn mini" onclick="event.stopPropagation();confirmAdd(this)">+ My Vendors</button></td>
+          </tr>
+          <tr>
+            <td><div class="co">Equitable Engineering Company</div><div class="sub2">Dist · Secondary reference</div></td>
+            <td class="mono" style="color:var(--accent)">11867</td><td>Troy, MI</td>
+            <td><div class="chips" style="margin-top:0"><span class="chip">3040</span><span class="chip">3120</span></div></td>
+            <td><span class="pill g">Won 6 awards</span></td>
+            <td>sales@equitableeng.com <span class="vok">✓</span></td>
+            <td><span class="pill b">GovScraper Member</span></td>
+            <td><button class="btn mini" onclick="event.stopPropagation();confirmAdd(this)">+ My Vendors</button></td>
+          </tr>
+          <tr>
+            <td><div class="co">PCX Aerosystems–Manchester, LLC</div><div class="sub2">Dist</div></td>
+            <td class="mono" style="color:var(--accent)">15152</td><td>Manchester, CT</td>
+            <td><div class="chips" style="margin-top:0"><span class="chip">3040</span><span class="chip">1615</span></div></td>
+            <td><span class="pill b">Approved source · 18 RFQs</span></td>
+            <td>rfq@pcxaero.com <span class="vok">✓</span></td>
+            <td><span class="pill g">Verified</span></td>
+            <td><button class="btn mini" onclick="event.stopPropagation();confirmAdd(this)">+ My Vendors</button></td>
+          </tr>
+          <tr>
+            <td><div class="co">Precision Gear Industries LLC</div><div class="sub2">Dist</div></td>
+            <td class="mono" style="color:var(--accent)">21540</td><td>College Point, NY</td>
+            <td><div class="chips" style="margin-top:0"><span class="chip">3040</span><span class="chip">3010</span></div></td>
+            <td><span class="pill b">Approved source · 9 RFQs</span></td>
+            <td>info@precisiongear.com</td>
+            <td><span class="pill a">Unverified</span></td>
+            <td><button class="btn mini" onclick="event.stopPropagation();confirmAdd(this)">+ My Vendors</button></td>
+          </tr>
+          <tr>
+            <td><div class="co">Rotair Aerospace Corp</div><div class="sub2">Dist</div></td>
+            <td class="mono" style="color:var(--accent)">54878</td><td>Bridgeport, CT</td>
+            <td><div class="chips" style="margin-top:0"><span class="chip">3040</span><span class="chip">1615</span><span class="chip">1680</span></div></td>
+            <td><span class="pill g">Won 3 awards</span></td>
+            <td>quotes@rotair.com <span class="vok">✓</span></td>
+            <td><span class="pill g">Verified</span></td>
+            <td><button class="btn mini" onclick="event.stopPropagation();confirmAdd(this)">+ My Vendors</button></td>
+          </tr>
+          <tr>
+            <td><div class="co">Apex Manufacturing Company, Inc.</div><div class="sub2">Dist</div></td>
+            <td class="mono" style="color:var(--accent)">2V343</td><td>Sun Valley, CA</td>
+            <td><div class="chips" style="margin-top:0"><span class="chip">3040</span><span class="chip">5340</span></div></td>
+            <td><span class="pill b">Approved source · 5 RFQs</span></td>
+            <td style="color:var(--faint)">Agent searching…</td>
+            <td><span class="pill a">Unverified</span></td>
+            <td><button class="btn mini" onclick="event.stopPropagation();confirmAdd(this)">+ My Vendors</button></td>
+          </tr>
+          <tr>
+            <td><div class="co">Lakeshore CNC &amp; Gear Works</div><div class="sub2">Mfg · Job shop</div></td>
+            <td class="mono" style="color:var(--faint)">No CAGE</td><td>Muskegon, MI</td>
+            <td><div class="chips" style="margin-top:0"><span class="chip">3040</span><span class="chip">3130</span></div></td>
+            <td><span class="pill gr">Web discovery</span></td>
+            <td>shop@lakeshorecnc.com <span class="vok">✓</span></td>
+            <td><span class="pill a">Unverified</span></td>
+            <td><button class="btn mini" onclick="event.stopPropagation();confirmAdd(this)">+ My Vendors</button></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="integr" style="margin-top:14px">
+      <b>How the pool fills itself:</b> the agent seeds companies from <b>approved-source lists</b> and <b>award winners</b> already in GovScraper data, enriches each CAGE through SAM.gov + web discovery, verifies emails, and marks profiles <b>Verified</b> once contact info checks out. <b>GovScraper Member</b> means the company registered on the GovScraper Supplier Portal and maintains its own info. Add any company to <b>My Vendors</b> with one click — then they appear in the RFQ page autocomplete.
+    </div>
+  </div>
+</div>
+
+<!-- ============ DETAIL VIEW ============ -->
+<div id="detailView" style="display:none">
+  <div class="back" onclick="showList()">← Back to Vendors</div>
+
+  <div class="vhead">
+    <div class="vav" id="vdAv">A</div>
+    <div style="flex:1;min-width:280px">
+      <h2 id="vdName">Apex Switchgear Corp</h2>
+      <div style="font-size:12.5px;color:var(--muted)" id="vdSub">MFG · Switches &amp; Rotary Components &nbsp;·&nbsp; <span class="mono" style="color:var(--accent)">CAGE 4XK29</span></div>
+      <div class="vmeta">
+        <div><label>PRIMARY CONTACT</label><span id="vdContact">Dana Whitfield</span></div>
+        <div><label>EMAIL</label><a href="#" id="vdEmail">dana@apexswitchgear.com</a></div>
+        <div><label>PHONE</label><span id="vdPhone">(303) 555-0141</span></div>
+        <div><label>ADDRESS</label><span id="vdAddr">2200 Steele St, Denver, CO 80205</span></div>
+        <div><label>PAYMENT TERMS</label><span id="vdTerms">Net 30</span></div>
+      </div>
+      <div class="vnotes"><b>Notes:</b> <span id="vdNotes">Best source for rotary switches &amp; breakers. Always quotes within 48 hours. Ask for Dana directly — main inbox is slow. Will do small quantities.</span></div>
+    </div>
+    <div style="display:flex;gap:8px">
+      <button class="btn" onclick="editVendor()">Edit Vendor</button>
+    </div>
+  </div>
+
+  <div class="stats" id="vdStats">
+    <div class="stat"><b>9</b><span>RFQs Sent</span></div><div class="vr"></div>
+    <div class="stat g"><b>7</b><span>Quotes Received</span></div><div class="vr"></div>
+    <div class="stat n"><b>78%</b><span>Response Rate</span></div><div class="vr"></div>
+    <div class="stat n"><b>1.8 days</b><span>Avg Response Time</span></div><div class="vr"></div>
+    <div class="stat a"><b>45 days</b><span>Avg Lead Time</span></div><div class="vr"></div>
+    <div class="stat g"><b>2</b><span>Awards Won</span></div>
+  </div>
+
+  <!-- RFQs sent -->
+  <div class="sec">
+    <div class="sechead"><h3>REQUEST FOR QUOTES SENT</h3><span class="hint">Logged automatically when you send from an RFQ page</span></div>
+    <table>
+      <thead><tr><th>DATE SENT</th><th>SOLICITATION #</th><th>NSN</th><th>ITEM</th><th>QTY</th><th>STATUS</th><th>THEIR QUOTE</th></tr></thead>
+      <tbody id="vdRfqs">
+        <tr><td>10/28/2026</td><td><a class="mono" href="RFQ_Page.html" title="Open this RFQ">SPE7MO-26-T-068Y</a></td><td class="mono">5930-01-659-8559</td><td>SWITCH, ROTARY</td><td>1 EA</td><td><span class="pill g">Quoted</span></td><td><b>$512.40</b> / EA</td></tr>
+        <tr><td>10/21/2026</td><td><a class="mono" href="RFQ_Page.html" title="Open this RFQ">SPE7M1-26-Q-2210</a></td><td class="mono">5930-01-421-7703</td><td>SWITCH, TOGGLE</td><td>24 EA</td><td><span class="pill g">Quoted</span></td><td><b>$88.15</b> / EA</td></tr>
+        <tr><td>10/14/2026</td><td><a class="mono" href="RFQ_Page.html" title="Open this RFQ">SPE7L3-26-T-5541</a></td><td class="mono">5925-01-338-9021</td><td>CIRCUIT BREAKER</td><td>12 EA</td><td><span class="pill a">Awaiting · 16d</span></td><td><button class="btn mini nudge" onclick="nudged(this)">🔔 Nudge</button></td></tr>
+        <tr><td>09/30/2026</td><td><a class="mono" href="Award_Page.html" title="Open this award">SPE7M4-26-V-5103</a></td><td class="mono">5930-00-655-1514</td><td>SWITCH, PUSH</td><td>60 EA</td><td><span class="pill g">Quoted</span></td><td><b>$41.90</b> / EA</td></tr>
+        <tr><td>09/18/2026</td><td><a class="mono" href="RFQ_Page.html" title="Open this RFQ">SPE7L1-26-T-4420</a></td><td class="mono">5945-01-118-6671</td><td>RELAY, ARMATURE</td><td>8 EA</td><td><span class="pill r">No Response</span></td><td>—</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- awards won through this vendor -->
+  <div class="sec">
+    <div class="sechead"><h3>AWARDS</h3><span class="hint">RFQs you won sourcing from this vendor — logged when an RFQ moves to Award Won</span></div>
+    <table>
+      <thead><tr><th>AWARD DATE</th><th>AWARD #</th><th>NSN</th><th>ITEM</th><th>QTY</th><th>VENDOR COST</th><th>AWARD PRICE</th><th>MARGIN</th><th>STATUS</th></tr></thead>
+      <tbody id="vdAwards">
+        <tr>
+          <td>10/06/2026</td><td><a class="mono" href="Award_Page.html" title="Open this award">SPE7M4-26-V-5103</a></td><td class="mono">5930-00-655-1514</td><td>SWITCH, PUSH</td><td>60 EA</td>
+          <td>$41.90 / EA</td><td><b style="color:var(--accent)">$53.75 / EA</b></td><td><b style="color:var(--green)">22.0% · $711</b></td><td><span class="pill g">Delivered</span></td>
+        </tr>
+        <tr>
+          <td>08/14/2026</td><td><a class="mono" href="Award_Page.html" title="Open this award">SPE7M1-26-V-2284</a></td><td class="mono">5930-01-421-7703</td><td>SWITCH, TOGGLE</td><td>24 EA</td>
+          <td>$88.15 / EA</td><td><b style="color:var(--accent)">$109.00 / EA</b></td><td><b style="color:var(--green)">19.1% · $500</b></td><td><span class="pill b">PO Sent</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- pricing history -->
+  <div class="sec">
+    <div class="sechead"><h3>PARTS &amp; PRICING HISTORY</h3><span class="hint">Every price this vendor has given you, newest first</span></div>
+    <table>
+      <thead><tr><th>PART NUMBER</th><th>NSN</th><th>ITEM</th><th>UNIT PRICE</th><th>QTY BREAK</th><th>LEAD TIME</th><th>DATE QUOTED</th><th>VALID UNTIL</th></tr></thead>
+      <tbody id="vdPricing">
+        <tr><td class="mono">N125-61038-00</td><td class="mono">5930-01-659-8559</td><td>SWITCH, ROTARY</td><td><b style="color:var(--green)">$512.40</b> / EA</td><td>1–10</td><td>45 days</td><td>10/29/2026</td><td>01/27/2027</td></tr>
+        <tr><td class="mono">MS24524-23</td><td class="mono">5930-01-421-7703</td><td>SWITCH, TOGGLE</td><td><b style="color:var(--green)">$88.15</b> / EA</td><td>10–50</td><td>30 days</td><td>10/22/2026</td><td>12/21/2026</td></tr>
+        <tr><td class="mono">MS24524-23</td><td class="mono">5930-01-421-7703</td><td>SWITCH, TOGGLE</td><td>$96.80 / EA</td><td>1–9</td><td>30 days</td><td>10/22/2026</td><td>12/21/2026</td></tr>
+        <tr><td class="mono">8521K9</td><td class="mono">5930-00-655-1514</td><td>SWITCH, PUSH</td><td><b style="color:var(--green)">$41.90</b> / EA</td><td>50–100</td><td>60 days</td><td>10/01/2026</td><td>11/30/2026</td></tr>
+        <tr><td class="mono">CB-4420-T</td><td class="mono">5925-01-227-4483</td><td>CIRCUIT BREAKER</td><td>$214.00 / EA</td><td>5–25</td><td>75 days</td><td>07/11/2026</td><td style="color:var(--red)">Expired</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- ============ RFQ ACTIVITY VIEW ============ -->
+<div id="rfqView" style="display:none">
+  <div class="back" onclick="showList()">← Back to Vendors</div>
+  <div class="pagehead">
+    <h1 id="rfqTitle">RFQs Sent — Last 30 Days</h1>
+    <div class="spacer"></div>
+    <button class="btn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="M7 10l5 5 5-5"/><path d="M12 15V3"/></svg>Export</button>
+  </div>
+  <div class="fpills">
+    <button class="fpill" id="fp-all" onclick="renderRfqs('all')">All Sent <span id="c-all"></span></button>
+    <button class="fpill" id="fp-quoted" onclick="renderRfqs('quoted')">Quotes Received <span id="c-quoted"></span></button>
+    <button class="fpill" id="fp-awaiting" onclick="renderRfqs('awaiting')">Awaiting Response <span id="c-awaiting"></span></button>
+    <button class="fpill" id="fp-nobid" onclick="renderRfqs('nobid')">No Bid / Declined <span id="c-nobid"></span></button>
+  </div>
+  <div class="card">
+    <table>
+      <thead><tr><th>DATE SENT</th><th>VENDOR</th><th>SOLICITATION #</th><th>NSN</th><th>ITEM</th><th>QTY</th><th>STATUS</th><th>THEIR QUOTE</th><th>LEAD TIME</th></tr></thead>
+      <tbody id="rfqRows"></tbody>
+    </table>
+  </div>
+</div>
+
+</div><!-- /main -->
+</div><!-- /shell -->
+
+<!-- NUDGE COMPOSE MODAL -->
+<div class="covl" id="covl" onclick="if(event.target===this)closeCompose()">
+  <div class="cmodal">
+    <div class="chead"><h3>Compose Email</h3><button class="tplchip">📋 Follow-Up Template ▾</button><button class="cx" onclick="closeCompose()">✕</button></div>
+    <div class="cfield from">govscraper@outlook.com</div>
+    <div class="cfield"><input id="cTo" placeholder="To"></div>
+    <div class="cfield"><input id="cSubj" placeholder="Subject"></div>
+    <div class="cbody"><div class="cedit" contenteditable="true" id="cEdit"></div></div>
+    <div class="cfoot"><button class="btn" onclick="closeCompose()">Cancel</button><button class="sendbtn" onclick="sendCompose()">Send ➤</button></div>
+  </div>
+</div>
+
+<!-- CONFIRM ADD TO MY VENDORS -->
+<div class="ovl" id="cvOvl" onclick="if(event.target===this)cvClose()">
+  <div class="modal" style="width:470px">
+    <div class="mhead"><h3>Add to My Vendors?</h3><span class="x" onclick="cvClose()">×</span></div>
+    <div class="mbody">
+      <div style="display:flex;gap:12px;align-items:center;margin-bottom:12px">
+        <div class="mav" id="cvAv" style="width:44px;height:44px;border-radius:10px;font-size:16px;background:var(--accent)">S</div>
+        <div><div style="font-size:15px;font-weight:800" id="cvName">—</div><div style="font-size:12px;color:var(--muted)" id="cvSub">—</div></div>
+      </div>
+      <div style="font-size:12.5px;color:var(--text-dim);line-height:1.7" id="cvInfo"></div>
+      <div class="chips" id="cvChips" style="margin:10px 0 2px"></div>
+      <div style="border-left:4px solid var(--accent);background:var(--accent-soft);padding:10px 14px;border-radius:0 8px 8px 0;font-size:12px;color:#334155;margin-top:12px">
+        Once added, <b id="cvNoteName">this company</b> appears in <b>My Vendors</b> — and when you type a vendor name on any RFQ, they'll show up as a suggestion with their email filled in automatically. You can edit their contact info, type, FSCs, and notes anytime from your list.
+      </div>
+      <div style="border-left:4px solid var(--amber);background:var(--amber-soft);padding:10px 14px;border-radius:0 8px 8px 0;font-size:12px;color:#92400E;margin-top:10px">
+        <b>Your copy is yours alone.</b> Edits you make in My Vendors never change the shared Vendor Pool record — and pool updates won't overwrite your edits.
+      </div>
+    </div>
+    <div class="mfoot"><button class="btn" onclick="cvClose()">Cancel</button><button class="btn primary" onclick="cvOkay()">Okay — Add Vendor</button></div>
+  </div>
+</div>
+
+<!-- ADD VENDOR MODAL -->
+<div class="ovl" id="ovl" onclick="if(event.target===this)closeModal()">
+  <div class="modal">
+    <div class="mhead"><h3 id="mTitle">Add New Vendor</h3><span class="x" onclick="closeModal()">×</span></div>
+    <div class="mbody">
+      <div class="frow one"><div class="f"><label>COMPANY NAME *</label><input id="vName" placeholder="e.g. Apex Switchgear Corp" oninput="checkDup()"><div class="note">This name powers the autocomplete on the RFQ page.</div><div id="dupWarn" style="display:none"></div></div></div>
+      <div class="frow"><div class="f"><label>PRIMARY CONTACT *</label><input placeholder="First Last"></div><div class="f"><label>TITLE</label><input placeholder="Sales Manager"></div></div>
+      <div class="frow"><div class="f"><label>EMAIL *</label><input placeholder="quotes@vendor.com"><div class="note">Auto-fills when you send RFQs to this vendor.</div></div><div class="f"><label>PHONE</label><input placeholder="(555) 555-0100"></div></div>
+      <div class="frow"><div class="f"><label>CAGE CODE (OPTIONAL)</label><input id="vCage" placeholder="4XK29" oninput="checkDup()"><div class="note">Links vendor to their CAGE page if they have one.</div></div><div class="f"><label>VENDOR TYPE</label><select><option>MFG</option><option>Distributor</option><option>Packaging House</option></select></div></div>
+      <div class="frow one"><div class="f"><label>FSCS THEY PROVIDE</label>
+        <div class="tagbox" id="fscBox" onclick="document.getElementById('fscIn').focus()">
+          <span class="tag">5930 <i onclick="this.parentNode.remove()">×</i></span>
+          <input id="fscIn" placeholder="Type an FSC…" autocomplete="off" oninput="fscSuggest('')" onkeydown="fscKey(event,'')" onblur="setTimeout(()=>fscHide(''),120)" onfocus="fscSuggest('')">
+        </div>
+        <div id="fscMenu" class="fscmenu"></div>
+        <div class="note">Type the FSC, pick the match, press Enter — it becomes a bubble. Shows as chips on the vendor list and powers FSC matching on RFQs.</div>
+      </div></div>
+      <div class="frow"><div class="f"><label>CITY</label><input placeholder="Denver"></div><div class="f"><label>STATE</label><input placeholder="CO"></div></div>
+      <div class="frow"><div class="f"><label>PAYMENT TERMS</label><select><option>Net 30</option><option>Net 45</option><option>Net 60</option><option>Prepay</option><option>CC on order</option></select></div><div class="f"><label>WEBSITE</label><input placeholder="https://"></div></div>
+      <div class="frow one"><div class="f"><label>NOTES</label><textarea rows="3" placeholder="Quoting habits, who to ask for, minimums, what they're best at..."></textarea></div></div>
+    </div>
+    <div class="mfoot"><button class="btn" onclick="closeModal()">Cancel</button><button class="btn primary" id="mSave" onclick="saveVendor()">Save Vendor</button></div>
+  </div>
+</div>
+
+<script>
+function showTab(t){
+  document.getElementById('paneV').style.display = t==='v'?'':'none';
+  document.getElementById('paneM').style.display = t==='m'?'':'none';
+  document.getElementById('paneP').style.display = t==='p'?'':'none';
+  document.getElementById('tabV').classList.toggle('on', t==='v');
+  document.getElementById('tabM').classList.toggle('on', t==='m');
+  document.getElementById('tabP').classList.toggle('on', t==='p');
+}
+function hideAll(){['listView','detailView','rfqView'].forEach(id=>document.getElementById(id).style.display='none');}
+let ORIG=null;
+function cacheOrig(){
+  if(ORIG) return;
+  ORIG={
+    stats:document.getElementById('vdStats').innerHTML,
+    rfqs:document.getElementById('vdRfqs').innerHTML,
+    awards:document.getElementById('vdAwards').innerHTML,
+    pricing:document.getElementById('vdPricing').innerHTML,
+    name:document.getElementById('vdName').textContent,
+    sub:document.getElementById('vdSub').innerHTML,
+    contact:document.getElementById('vdContact').textContent,
+    email:document.getElementById('vdEmail').textContent,
+    phone:document.getElementById('vdPhone').textContent,
+    addr:document.getElementById('vdAddr').textContent,
+    terms:document.getElementById('vdTerms').textContent,
+    notes:document.getElementById('vdNotes').textContent
+  };
+}
+function emptyRow(cols,msg){return '<tr><td colspan="'+cols+'" style="text-align:center;color:var(--faint);padding:22px;font-style:italic">'+msg+'</td></tr>';}
+function showDetail(e){
+  cacheOrig();
+  const tr=e&&e.currentTarget&&e.currentTarget.tagName==='TR'?e.currentTarget:null;
+  const isPool=tr&&tr.querySelector('.sub2')&&tr.querySelector('.sub2').textContent.includes('from Vendor Pool');
+  if(isPool){
+    const name=tr.querySelector('.co').textContent;
+    const sub2=tr.querySelector('.sub2').textContent;
+    const cage=(sub2.match(/CAGE\s+(\S+)/)||[,'—'])[1];
+    const type=sub2.includes('MFG')?'MFG':'Distributor';
+    document.getElementById('vdName').textContent=name;
+    document.getElementById('vdAv').textContent=name[0];
+    document.getElementById('vdSub').innerHTML=type+' · from Vendor Pool · <span class="mono" style="color:var(--accent)">CAGE '+cage+'</span>';
+    document.getElementById('vdContact').textContent=tr.cells[1].textContent;
+    document.getElementById('vdEmail').textContent=tr.cells[2].textContent;
+    document.getElementById('vdPhone').textContent=tr.cells[3].textContent;
+    document.getElementById('vdAddr').textContent=tr.cells[4].textContent;
+    document.getElementById('vdTerms').textContent='—';
+    document.getElementById('vdNotes').textContent='No notes yet — click Edit Vendor to fill in contact details, payment terms, and notes.';
+    document.getElementById('vdStats').innerHTML='<div class="stat"><b>0</b><span>RFQs Sent</span></div><div class="vr"></div><div class="stat g"><b>0</b><span>Quotes Received</span></div><div class="vr"></div><div class="stat n"><b>—</b><span>Response Rate</span></div><div class="vr"></div><div class="stat a"><b>—</b><span>Avg Lead Time</span></div><div class="vr"></div><div class="stat g"><b>0</b><span>Awards Won</span></div>';
+    document.getElementById('vdRfqs').innerHTML=emptyRow(7,'No RFQs sent to this vendor yet — send one from any RFQ page and it logs here automatically.');
+    document.getElementById('vdAwards').innerHTML=emptyRow(9,'No awards through this vendor yet.');
+    document.getElementById('vdPricing').innerHTML=emptyRow(8,'No pricing history yet — quotes they return will build this table.');
+  } else {
+    document.getElementById('vdName').textContent=ORIG.name;
+    document.getElementById('vdAv').textContent=ORIG.name[0];
+    document.getElementById('vdSub').innerHTML=ORIG.sub;
+    document.getElementById('vdContact').textContent=ORIG.contact;
+    document.getElementById('vdEmail').textContent=ORIG.email;
+    document.getElementById('vdPhone').textContent=ORIG.phone;
+    document.getElementById('vdAddr').textContent=ORIG.addr;
+    document.getElementById('vdTerms').textContent=ORIG.terms;
+    document.getElementById('vdNotes').textContent=ORIG.notes;
+    document.getElementById('vdStats').innerHTML=ORIG.stats;
+    document.getElementById('vdRfqs').innerHTML=ORIG.rfqs;
+    document.getElementById('vdAwards').innerHTML=ORIG.awards;
+    document.getElementById('vdPricing').innerHTML=ORIG.pricing;
+  }
+  hideAll();document.getElementById('detailView').style.display='';window.scrollTo(0,0);
+}
+function showList(){hideAll();document.getElementById('listView').style.display='';window.scrollTo(0,0);}
+function openModal(){
+  editMode=false;
+  document.getElementById('mTitle').textContent='Add New Vendor';
+  document.getElementById('mSave').textContent='Save Vendor';
+  document.getElementById('ovl').classList.add('open');
+}
+let editMode=false, editOrigName='';
+function saveVendor(){
+  if(editMode){
+    const inps=document.querySelectorAll('#ovl .mbody input');
+    const sels=document.querySelectorAll('#ovl .mbody select');
+    const v={name:inps[0].value,contact:inps[1].value,email:inps[3].value,phone:inps[4].value,cage:inps[5].value,
+             city:inps[7].value,state:inps[8].value,type:sels[0].value,terms:sels[1].value,
+             notes:document.querySelector('#ovl .mbody textarea').value,chips:fscChips('')};
+    // detail header
+    document.getElementById('vdName').textContent=v.name;
+    document.getElementById('vdAv').textContent=v.name[0]||'?';
+    document.getElementById('vdSub').innerHTML=v.type+' · Switches &amp; Rotary Components · <span class="mono" style="color:var(--accent)">CAGE '+v.cage+'</span>';
+    document.getElementById('vdContact').textContent=v.contact;
+    document.getElementById('vdEmail').textContent=v.email;
+    document.getElementById('vdPhone').textContent=v.phone;
+    document.getElementById('vdAddr').textContent='2200 Steele St, '+v.city+', '+v.state+' 80205';
+    document.getElementById('vdTerms').textContent=v.terms;
+    document.getElementById('vdNotes').textContent=v.notes;
+    // list row
+    const row=[...document.querySelectorAll('#paneV tbody tr')].find(r=>r.querySelector('.co')&&r.querySelector('.co').textContent===editOrigName);
+    if(row){
+      row.querySelector('.co').textContent=v.name;
+      row.querySelector('.sub2').textContent='CAGE '+v.cage+' · '+v.type;
+      row.cells[1].textContent=v.contact;
+      row.cells[2].textContent=v.email;
+      row.cells[3].textContent=v.phone;
+      row.cells[4].textContent=v.city+', '+v.state;
+      row.cells[7].innerHTML='<div class="chips" style="margin-top:0">'+v.chips.map(c=>'<span class="chip">'+c+'</span>').join('')+'</div>';
+    }
+    editMode=false;
+  }
+  closeModal();
+}
+function editVendor(){
+  editMode=true; editOrigName=document.getElementById('vdName').textContent;
+  const inps=document.querySelectorAll('#ovl .mbody input');
+  const sels=document.querySelectorAll('#ovl .mbody select');
+  const addr=document.getElementById('vdAddr').textContent.split(', ');
+  const vals=[document.getElementById('vdName').textContent,document.getElementById('vdContact').textContent,'Sales Manager',document.getElementById('vdEmail').textContent,document.getElementById('vdPhone').textContent,(document.getElementById('vdSub').textContent.match(/CAGE\s+(\S+)/)||[,''])[1],null,addr[1]||'Denver',(addr[2]||'CO 80205').split(' ')[0],'https://apexswitchgear.com'];
+  inps.forEach((el,i)=>{if(vals[i]!==null&&vals[i]!==undefined)el.value=vals[i];});
+  sels[0].value='MFG'; sels[1].value='Net 30';
+  document.querySelector('#ovl .mbody textarea').value=document.getElementById('vdNotes').textContent;
+  document.querySelectorAll('#fscBox .tag').forEach(t=>t.remove());
+  ['5930','5925','5945'].forEach(c=>{
+    const sp=document.createElement('span'); sp.className='tag';
+    sp.innerHTML=c+' <i onclick="this.parentNode.remove()">×</i>';
+    document.getElementById('fscBox').insertBefore(sp, document.getElementById('fscIn'));
+  });
+  document.getElementById('dupWarn').style.display='none';
+  document.getElementById('ovl').classList.add('open');
+  document.getElementById('mTitle').textContent='Edit Vendor — '+document.getElementById('vdName').textContent;
+  document.getElementById('mSave').textContent='Save Changes';
+}
+function closeModal(){document.getElementById('ovl').classList.remove('open');}
+
+// ===== RFQ ACTIVITY (18 sent = 11 quoted + 4 awaiting + 3 no bid) =====
+const RFQS = [
+ {d:"10/28/2026",v:"Apex Switchgear Corp",s:"SPE7MO-26-T-068Y",n:"5930-01-659-8559",i:"SWITCH, ROTARY",q:"1 EA",st:"quoted",p:"$512.40 / EA",lt:"45 days"},
+ {d:"10/28/2026",v:"Precision Sleeve & Bushing Co",s:"SPE7L1-26-T-3036",n:"3120-01-412-8831",i:"BUSHING, SLEEVE",q:"38 EA",st:"quoted",p:"$61.20 / EA",lt:"30 days"},
+ {d:"10/27/2026",v:"Midwest Bearing Works",s:"SPE7L3-26-T-1618",n:"3110-01-227-6640",i:"BEARING, BALL",q:"12 EA",st:"quoted",p:"$148.00 / EA",lt:"21 days"},
+ {d:"10/26/2026",v:"Calder Components LLC",s:"SPE7M4-26-Q-8812",n:"5340-00-291-0043",i:"BRACKET, ANGLE",q:"60 EA",st:"quoted",p:"$18.75 / EA",lt:"14 days"},
+ {d:"10/24/2026",v:"Northline Electro Mfg",s:"SPE7M1-26-Q-2210",n:"5930-01-421-7703",i:"SWITCH, TOGGLE",q:"24 EA",st:"quoted",p:"$88.15 / EA",lt:"60 days"},
+ {d:"10/23/2026",v:"Allied Motion Parts Inc",s:"SPE7L1-27-T-3028",n:"3040-01-518-2290",i:"SHAFT, SHOULDERED",q:"6 EA",st:"quoted",p:"$212.00 / EA",lt:"38 days"},
+ {d:"10/22/2026",v:"Precision Sleeve & Bushing Co",s:"SPE7M1-27-U-0984",n:"5365-01-338-1147",i:"SPACER, RING",q:"100 EA",st:"quoted",p:"$9.40 / EA",lt:"30 days"},
+ {d:"10/20/2026",v:"Apex Switchgear Corp",s:"SPE7M4-26-Q-9905",n:"5930-00-655-1514",i:"SWITCH, PUSH",q:"60 EA",st:"quoted",p:"$41.90 / EA",lt:"60 days"},
+ {d:"10/17/2026",v:"Calder Components LLC",s:"SPE7M1-27-U-0983",n:"5310-00-809-4058",i:"WASHER, FLAT",q:"500 EA",st:"quoted",p:"$0.84 / EA",lt:"14 days"},
+ {d:"10/15/2026",v:"Midwest Bearing Works",s:"SPE4A6-27-T-7584",n:"3130-01-155-6621",i:"HOUSING, BEARING",q:"4 EA",st:"quoted",p:"$390.00 / EA",lt:"28 days"},
+ {d:"10/13/2026",v:"Northline Electro Mfg",s:"SPE7M1-27-U-0988",n:"6110-01-493-0027",i:"CONTROL, REMOTE SWITCHING",q:"2 EA",st:"quoted",p:"$1,120.00 / EA",lt:"75 days"},
+ {d:"10/27/2026",v:"Apex Switchgear Corp",s:"SPE7L3-26-T-5541",n:"5925-01-338-9021",i:"CIRCUIT BREAKER",q:"12 EA",st:"awaiting",p:"",lt:""},
+ {d:"10/26/2026",v:"Gulf Coast Castings",s:"SPE7L7-26-T-2217",n:"2510-01-602-3348",i:"HINGE, DOOR, VEHICLE",q:"16 EA",st:"awaiting",p:"",lt:""},
+ {d:"10/25/2026",v:"Allied Motion Parts Inc",s:"SPE7L2-26-T-8830",n:"3010-00-731-2244",i:"COUPLING, SHAFT",q:"10 EA",st:"awaiting",p:"",lt:""},
+ {d:"10/24/2026",v:"Gulf Coast Castings",s:"SPE7L7-26-T-2290",n:"5340-01-227-8873",i:"CLEVIS, ROD END",q:"40 EA",st:"awaiting",p:"",lt:""},
+ {d:"10/21/2026",v:"Midwest Bearing Works",s:"SPE7L3-26-T-0441",n:"3120-01-078-2214",i:"BEARING, SLEEVE",q:"75 EA",st:"nobid",p:"",lt:""},
+ {d:"10/18/2026",v:"Northline Electro Mfg",s:"SPE7L1-26-T-4420",n:"5945-01-118-6671",i:"RELAY, ARMATURE",q:"8 EA",st:"nobid",p:"",lt:""},
+ {d:"10/14/2026",v:"Gulf Coast Castings",s:"SPE7L7-26-T-1105",n:"2590-01-447-2031",i:"BRACKET, VEHICLE MOUNT",q:"20 EA",st:"nobid",p:"",lt:""}
+];
+const ST = {quoted:['g','Quoted'],awaiting:['a','Awaiting'],nobid:['r','No Bid']};
+const TITLES = {all:'RFQs Sent — Last 30 Days',quoted:'Quotes Received — Priced by Vendors',awaiting:'Awaiting Vendor Response',nobid:'No Bid / Declined by Vendor'};
+function daysSince(d){return Math.round((new Date('2026-10-30')-new Date(d))/86400000);}
+const VEMAIL={"Apex Switchgear Corp":"dana@apexswitchgear.com","Precision Sleeve & Bushing Co":"quotes@precisionsleeve.com","Northline Electro Mfg":"s.caldwell@northline-mfg.com","Midwest Bearing Works":"rfq@midwestbearing.com","Calder Components LLC":"jen@caldercomponents.com","Allied Motion Parts Inc":"treyes@alliedmotionparts.com","Gulf Coast Castings":"sales@gulfcoastcastings.com"};
+let nudgeBtn=null;
+function nudged(btn){
+  nudgeBtn=btn;
+  const tr=btn.closest('tr');
+  let vendor, sol, item, qty, sent;
+  if(tr.closest('#rfqView')){
+    sent=tr.cells[0].textContent; vendor=tr.cells[1].textContent.trim(); sol=tr.cells[2].textContent.trim();
+    item=tr.cells[4].textContent; qty=tr.cells[5].textContent;
+  } else {
+    sent=tr.cells[0].textContent; vendor=document.getElementById('vdName')?document.getElementById('vdName').textContent:'Apex Switchgear Corp';
+    sol=tr.cells[1].textContent.trim(); item=tr.cells[3].textContent; qty=tr.cells[4].textContent;
+  }
+  document.getElementById('cTo').value=VEMAIL[vendor]||'';
+  document.getElementById('cSubj').value='Re: RFQ - '+item+' ('+sol+')';
+  document.getElementById('cEdit').innerHTML=
+    '<p>Hi '+vendor.split(' ')[0]+',</p>'+
+    '<p>Just following up on the request for quote we sent over on <span class="var">'+sent+'</span> for <span class="var">'+item+'</span> (Qty <span class="var">'+qty+'</span>).</p>'+
+    '<p>Have you had a chance to review? We would love to include your pricing before this solicitation closes — a quick yes/no either way helps us plan.</p>'+
+    '<p><b>As a reminder, please note the following with your quote:</b></p>'+
+    '<ul><li>Lead Time</li><li>Stock (if any)</li><li>Type of Certs</li><li>Country of Origin</li><li>Cert Charge</li></ul>'+
+    '<div class="sig">Best,<br><br><b>TRISTAN <span style="color:#BE1E2D">THOMAS</span></b><br><b>MANAGING DIRECTOR</b><br>(661) 644-5509<br><a href="#">tristan@MeNDSourcing.com</a><br>Los Angeles, CA USA</div>'+
+    '<div class="disc">On '+sent+' we wrote: "I was hoping you could help with a quote for '+item+'. If so, please quote this government rated order/part..."</div>';
+  document.getElementById('covl').classList.add('open');
+}
+function closeCompose(){document.getElementById('covl').classList.remove('open');nudgeBtn=null;}
+function sendCompose(){
+  if(nudgeBtn){nudgeBtn.textContent='✓ Reminder sent';nudgeBtn.disabled=true;nudgeBtn.style.opacity=.7;}
+  document.getElementById('covl').classList.remove('open');nudgeBtn=null;
+}
+let cvBtn=null;
+function confirmAdd(btn){
+  cvBtn=btn;
+  const tr=btn.closest('tr');
+  const name=tr.querySelector('.co').textContent;
+  const sub=tr.querySelector('.sub2').textContent;
+  const cage=tr.cells[1].textContent.trim();
+  const loc=tr.cells[2].textContent.trim();
+  const contact=tr.cells[5].textContent.replace('✓','').trim();
+  document.getElementById('cvName').textContent=name;
+  document.getElementById('cvNoteName').textContent=name;
+  document.getElementById('cvAv').textContent=name[0];
+  document.getElementById('cvSub').textContent=sub+' · '+loc;
+  document.getElementById('cvInfo').innerHTML='<b>CAGE:</b> '+cage+'<br><b>Contact:</b> '+contact;
+  document.getElementById('cvChips').innerHTML=[...tr.cells[3].querySelectorAll('.chip')].map(c=>'<span class="chip">'+c.textContent+'</span>').join('');
+  window.cvData={name:name,sub:sub,cage:cage,loc:loc,contact:contact,chips:[...tr.cells[3].querySelectorAll('.chip')].map(c=>c.textContent)};
+  document.getElementById('cvOvl').classList.add('open');
+}
+function cvClose(){document.getElementById('cvOvl').classList.remove('open');cvBtn=null;}
+function cvOkay(){
+  if(cvBtn){
+    cvBtn.textContent='✓ In My Vendors';
+    cvBtn.style.cssText='color:var(--green);border-color:#BBF7D0;background:var(--green-soft)';
+    cvBtn.disabled=true;
+    const cnt=document.querySelector('#tabV .cnt'); cnt.textContent=parseInt(cnt.textContent)+1;
+    const tot=document.querySelector('.stats .stat b'); tot.textContent=parseInt(tot.textContent)+1;
+    const d=window.cvData;
+    const type=d.sub.toLowerCase().startsWith('mfg')?'MFG':'Distributor';
+    const tb=document.querySelector('#paneV tbody');
+    const tr=document.createElement('tr');
+    tr.onclick=showDetail;
+    tr.innerHTML='<td><div class="co">'+d.name+'</div><div class="sub2">'+(d.cage.includes('No')?'No CAGE':'CAGE '+d.cage)+' · '+type+' · <span style="color:var(--accent)">from Vendor Pool</span></div></td>'+
+      '<td>—</td><td>'+d.contact+'</td><td>—</td><td>'+d.loc+'</td>'+
+      '<td><span class="pill gr">0</span></td><td><span class="pill gr">0</span></td>'+
+      '<td><div class="chips" style="margin-top:0">'+d.chips.map(c=>'<span class="chip">'+c+'</span>').join('')+'</div></td>';
+    tb.insertBefore(tr, tb.firstChild);
+  }
+  cvClose();
+}
+function checkDup(){
+  const existing={'apex switchgear corp':'4XK29','precision sleeve & bushing co':'5TW02','northline electro mfg':'7PD41','midwest bearing works':'9QF63','calder components llc':'1MR88','allied motion parts inc':'2HV50','gulf coast castings':'','sikorsky aircraft corporation':'78286','equitable engineering company':'11867'};
+  const name=(document.getElementById('vName').value||'').trim().toLowerCase();
+  const cage=(document.getElementById('vCage').value||'').trim().toUpperCase();
+  const w=document.getElementById('dupWarn');
+  let hit=null;
+  for(const [n,c] of Object.entries(existing)){
+    if((name.length>3 && n.includes(name)) || (cage && c===cage)){hit=n;break;}
+  }
+  if(hit){
+    const label=hit.replace(/\b\w/g,m=>m.toUpperCase());
+    w.className='dupwarn'; w.style.display='block';
+    w.innerHTML=`⚠ <b>${label}</b> already exists in My Vendors / Vendor Pool. <a href="#" onclick="closeModal();return false">Open existing profile</a> or <a href="#" onclick="return false">merge into it</a> instead of creating a duplicate.`;
+  } else w.style.display='none';
+}
+function renderRfqs(f){
+  const rows = RFQS.filter(r=>f==='all'||r.st===f);
+  document.getElementById('rfqRows').innerHTML = rows.map(r=>{
+    const [cls,label]=ST[r.st];
+    const stTxt = r.st==='awaiting' ? `Awaiting · ${daysSince(r.d)}d` : label;
+    const quote = r.st==='awaiting' ? `<button class="btn mini nudge" onclick="nudged(this)">🔔 Nudge</button>`
+                : (r.p?'<b>'+r.p.split(' / ')[0]+'</b> / '+r.p.split(' / ')[1]:'—');
+    return `<tr><td>${r.d}</td><td><span class="co">${r.v}</span></td><td><a class="mono" href="RFQ_Page.html" title="Open this RFQ">${r.s}</a></td><td class="mono">${r.n}</td><td>${r.i}</td><td>${r.q}</td><td><span class="pill ${cls}">${stTxt}</span></td><td>${quote}</td><td>${r.lt||'—'}</td></tr>`;
+  }).join('');
+  ['all','quoted','awaiting','nobid'].forEach(k=>{
+    document.getElementById('fp-'+k).classList.toggle('on',k===f);
+    document.getElementById('c-'+k).textContent = '('+RFQS.filter(r=>k==='all'||r.st===k).length+')';
+  });
+  document.getElementById('rfqTitle').textContent = TITLES[f];
+}
+function showRfqs(f){hideAll();document.getElementById('rfqView').style.display='';renderRfqs(f);window.scrollTo(0,0);}
+
+// ===== FSC tag input =====
+const FSC = {
+ "1560":"Airframe Structural Components","2510":"Vehicular Cab, Body & Frame Parts","2540":"Vehicular Furniture & Accessories","2590":"Misc Vehicular Components","2815":"Diesel Engines & Components","2910":"Engine Fuel System Components","3040":"Misc Power Transmission Equipment","3110":"Bearings, Antifriction","3120":"Bearings, Plain","3130":"Bearings, Mounted","4140":"Fans & Air Circulators","4730":"Hose, Pipe & Tube Fittings","5305":"Screws","5306":"Bolts","5310":"Nuts & Washers","5315":"Pins & Keys","5325":"Fastening Devices","5340":"Hardware, Commercial","5342":"Hardware, Weapon System","5365":"Bushings, Rings, Shims & Spacers","5925":"Circuit Breakers","5930":"Switches","5945":"Relays & Solenoids","6110":"Electrical Control Equipment","9905":"Signs & Identification Plates"
+};
+function fscChips(sfx){return [...document.querySelectorAll('#fscBox'+sfx+' .tag')].map(t=>t.textContent.replace('×','').trim());}
+function fscAdd(code,sfx){
+  sfx=sfx||'';
+  if(fscChips(sfx).includes(code)) { fscReset(sfx); return; }
+  const sp=document.createElement('span'); sp.className='tag';
+  sp.innerHTML=code+' <i onclick="this.parentNode.remove()">×</i>';
+  document.getElementById('fscBox'+sfx).insertBefore(sp, document.getElementById('fscIn'+sfx));
+  fscReset(sfx);
+}
+function fscReset(sfx){const i=document.getElementById('fscIn'+sfx); i.value=''; fscHide(sfx); i.focus();}
+function fscHide(sfx){document.getElementById('fscMenu'+sfx).style.display='none';}
+function fscSuggest(sfx){
+  const q=document.getElementById('fscIn'+sfx).value.trim().toLowerCase();
+  const menu=document.getElementById('fscMenu'+sfx);
+  const hits=Object.keys(FSC).filter(c=>!fscChips(sfx).includes(c)&&(c.startsWith(q)||FSC[c].toLowerCase().includes(q))).slice(0,7);
+  if(!q||!hits.length){fscHide(sfx);return;}
+  menu.innerHTML='<div class="inner">'+hits.map(c=>`<div class="fsc-item" onmousedown="event.preventDefault();fscAdd('${c}','${sfx}')"><span class="code">${c}</span>${FSC[c]}</div>`).join('')+'</div>';
+  menu.style.display='block';
+}
+function fscKey(e,sfx){
+  if(e.key==='Enter'){
+    e.preventDefault();
+    const q=e.target.value.trim();
+    const hits=Object.keys(FSC).filter(c=>c.startsWith(q)||FSC[c].toLowerCase().includes(q.toLowerCase()));
+    if(hits.length) fscAdd(hits[0],sfx);
+    else if(/^\d{4}$/.test(q)) fscAdd(q,sfx);
+  }
+  if(e.key==='Backspace'&&!e.target.value){
+    const tags=document.querySelectorAll('#fscBox'+sfx+' .tag');
+    if(tags.length) tags[tags.length-1].remove();
+  }
+  if(e.key==='Escape') fscHide(sfx);
+}
+</script>
+</body>
+</html>
