@@ -573,7 +573,7 @@
     <div class="cfield"><input id="cTo" placeholder="To"></div>
     <div class="cfield"><input id="cSubj" placeholder="Subject"></div>
     <div class="cbody"><div class="cedit" contenteditable="true" id="cEdit"></div></div>
-    <div class="cfoot"><button class="btn" onclick="closeCompose()">Cancel</button><button class="sendbtn" onclick="sendCompose()">Send ➤</button></div>
+    <div class="cfoot"><button class="btn" onclick="closeCompose()">Cancel</button><label style="display:inline-flex;align-items:center;gap:8px;font-size:12.5px;font-weight:600;color:var(--text-dim);border:1px solid var(--border);border-radius:10px;padding:9px 14px;cursor:pointer"><input type="checkbox" checked onchange="toggleQL(this)"> 🔗 Include online quote link</label><button class="sendbtn" onclick="sendCompose()">Send ➤</button></div>
   </div>
 </div>
 
@@ -780,6 +780,13 @@ const TITLES = {all:'RFQs Sent — Last 30 Days',quoted:'Quotes Received — Pri
 function daysSince(d){return Math.round((new Date('2026-10-30')-new Date(d))/86400000);}
 const VEMAIL={"Apex Switchgear Corp":"dana@apexswitchgear.com","Precision Sleeve & Bushing Co":"quotes@precisionsleeve.com","Northline Electro Mfg":"s.caldwell@northline-mfg.com","Midwest Bearing Works":"rfq@midwestbearing.com","Calder Components LLC":"jen@caldercomponents.com","Allied Motion Parts Inc":"treyes@alliedmotionparts.com","Gulf Coast Castings":"sales@gulfcoastcastings.com"};
 let nudgeBtn=null;
+function qlinkBlock(vendor){
+  const tok=((vendor||'VND').replace(/[^A-Za-z]/g,'').toUpperCase().slice(0,3))+'-068Y-4XK29';
+  return '<div id="qlink" contenteditable="false" style="margin:16px 0;padding:15px;border:1px solid #BFDBFE;background:#EFF6FF;border-radius:10px;text-align:center">'+
+    '<a href="Quote_Page.html" target="_blank" style="display:inline-block;background:#2563EB;color:#fff;font-weight:800;border-radius:9px;padding:11px 20px;text-decoration:none">Quote online in 2 minutes →</a>'+
+    '<div style="font-size:11px;color:#64748B;margin-top:7px;font-family:\'Source Code Pro\',monospace">govscraper.com/q/'+tok+' · unique to you</div></div>';
+}
+function toggleQL(cb){const b=document.getElementById('qlink'); if(b) b.style.display=cb.checked?'':'none';}
 function nudged(btn){
   nudgeBtn=btn;
   const tr=btn.closest('tr');
@@ -799,6 +806,7 @@ function nudged(btn){
     '<p>Have you had a chance to review? We would love to include your pricing before this solicitation closes — a quick yes/no either way helps us plan.</p>'+
     '<p><b>As a reminder, please note the following with your quote:</b></p>'+
     '<ul><li>Lead Time</li><li>Stock (if any)</li><li>Type of Certs</li><li>Country of Origin</li><li>Cert Charge</li></ul>'+
+    qlinkBlock(vendor)+
     '<div class="sig">Best,<br><br><b>TRISTAN <span style="color:#BE1E2D">THOMAS</span></b><br><b>MANAGING DIRECTOR</b><br>(661) 644-5509<br><a href="#">tristan@MeNDSourcing.com</a><br>Los Angeles, CA USA</div>'+
     '<div class="disc">On '+sent+' we wrote: "I was hoping you could help with a quote for '+item+'. If so, please quote this government rated order/part..."</div>';
   document.getElementById('covl').classList.add('open');

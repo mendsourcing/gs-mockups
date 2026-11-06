@@ -337,6 +337,7 @@
     </div>
     <div class="cfoot">
       <button class="btn" onclick="closeCompose()">Cancel</button>
+      <label class="attach" title="Adds a 'Quote online' button — submissions auto-fill this vendor's row"><input type="checkbox" id="qlTog" checked onchange="toggleQL(this)"> 🔗 Include online quote link</label>
       <label class="attach"><input type="checkbox"> 📎 Attach the RFQ PDF</label>
       <button class="sendbtn" onclick="sendCompose()">Send <span>➤</span></button>
     </div>
@@ -382,6 +383,16 @@ function markSent(btn){
 }
 // ===== compose email modal =====
 let composeRow=null;
+function qlinkBlock(vendor){
+  const tok=((vendor||'VND').replace(/[^A-Za-z]/g,'').toUpperCase().slice(0,3))+'-068Y-4XK29';
+  return '<div id="qlink" contenteditable="false" style="margin:18px 0;padding:16px;border:1px solid #BFDBFE;background:#EFF6FF;border-radius:10px;text-align:center">'+
+    '<a href="Quote_Page.html" target="_blank" style="display:inline-block;background:#2563EB;color:#fff;font-weight:800;border-radius:9px;padding:12px 22px;text-decoration:none">Quote online in 2 minutes →</a>'+
+    '<div style="font-size:11px;color:#64748B;margin-top:8px;font-family:\'Source Code Pro\',monospace">govscraper.com/q/'+tok+' · unique to you · expires 11/09/2026</div></div>';
+}
+function toggleQL(cb){
+  const b=document.getElementById('qlink');
+  if(b) b.style.display=cb.checked?'':'none';
+}
 function openCompose(btn){
   composeNudgeBtn=null;
   document.getElementById('tplChip').innerHTML='📋 Template 1 ▾';
@@ -400,8 +411,10 @@ function openCompose(btn){
     'Quantity Quote of: <span class="var">'+qty+'</span></p>'+
     '<p><b>**Please make sure to note the following:**</b></p>'+
     '<ul><li>Lead Time</li><li>Stock (if any)</li><li>Type of Certs</li><li>Country of Origin</li><li>Cert Charge</li></ul>'+
+    qlinkBlock(vendor)+
     '<div class="sig">Best,<br><br><b>TRISTAN <span style="color:#BE1E2D">THOMAS</span></b><br><b>MANAGING DIRECTOR</b><br>(661) 644-5509<br><a href="#">tristan@MeNDSourcing.com</a><br>Los Angeles, CA USA<br><a href="#">See Our Services Here</a></div>'+
     '<div class="disc">This email, including any attachments, is intended only for the recipient(s) and may contain confidential information. If you are not the intended recipient, please contact the sender and destroy all copies and attachments of the original message.</div>';
+  const t=document.getElementById('qlTog'); if(t){t.checked=true;}
   document.getElementById('covl').classList.add('open');
 }
 function closeCompose(){document.getElementById('covl').classList.remove('open');composeRow=null;}
@@ -437,6 +450,7 @@ function nudgeRow(btn){
     '<p>Have you had a chance to review? We would love to include your pricing before this solicitation closes — a quick yes/no either way helps us plan.</p>'+
     '<p><b>As a reminder, please note the following with your quote:</b></p>'+
     '<ul><li>Lead Time</li><li>Stock (if any)</li><li>Type of Certs</li><li>Country of Origin</li><li>Cert Charge</li></ul>'+
+    qlinkBlock(vendor)+
     '<div class="sig">Best,<br><br><b>TRISTAN <span style="color:#BE1E2D">THOMAS</span></b><br><b>MANAGING DIRECTOR</b><br>(661) 644-5509<br><a href="#">tristan@MeNDSourcing.com</a><br>Los Angeles, CA USA<br><a href="#">See Our Services Here</a></div>'+
     '<div class="disc">On '+sent+' we wrote: "I was hoping you could help with a quote for Part Number '+part+'. If so, please quote this government rated order/part..."</div>';
   document.getElementById('covl').classList.add('open');
