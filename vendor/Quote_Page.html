@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>Submit Your Quote — GovScraper Supplier Portal</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Source+Code+Pro:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --primary:#1E293B; --accent:#2563EB; --accent-soft:#EFF6FF; --accent-border:#BFDBFE; --accent-hover:#1D4ED8;
+    --red:#DC2626; --red-bg:#FEF2F2; --green:#16A34A; --green-soft:#F0FDF4; --amber:#D97706; --amber-soft:#FFF7ED;
+    --bg:#F8FAFC; --surface:#fff; --border:#E2E8F0; --border-strong:#CBD5E1;
+    --text:#1E293B; --text-dim:#475569; --muted:#6B7280; --faint:#94A3B8; --navy:#1B2A4A;
+  }
+  *{box-sizing:border-box;margin:0}
+  body{font-family:'Manrope',sans-serif;background:var(--bg);color:var(--text);font-size:14px}
+  a{color:var(--accent);text-decoration:none}
+  .mono{font-family:'Source Code Pro',monospace}
+
+  .topbar{height:60px;background:var(--surface);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;padding:0 28px;box-shadow:0 1px 3px rgba(0,0,0,0.06)}
+  .topbar-logo{height:32px}
+  .tb-tag{font-size:12px;font-weight:700;color:var(--muted);border-left:1px solid var(--border);padding-left:16px;margin-left:16px}
+  .tb-left{display:flex;align-items:center}
+  .claimbtn{background:var(--navy);color:#fff;border:none;border-radius:9px;padding:10px 18px;font-size:13px;font-weight:800;cursor:pointer;font-family:'Manrope',sans-serif}
+
+  .wrap{max-width:1150px;margin:0 auto;padding:28px 24px 80px}
+
+  /* request banner */
+  .reqbar{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:22px 28px;display:flex;align-items:center;gap:18px;margin-bottom:20px;flex-wrap:wrap}
+  .reqav{width:54px;height:54px;border-radius:12px;background:linear-gradient(135deg,var(--accent),#1D4ED8);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:19px;flex-shrink:0}
+  .reqbar h1{font-size:19px;font-weight:800}
+  .reqbar .sub{font-size:13px;color:var(--muted);margin-top:3px}
+  .reqbar .sub b{color:var(--text)}
+  .duechip{margin-left:auto;background:var(--amber-soft);border:1px solid #FDE68A;color:var(--amber);font-weight:800;font-size:13px;border-radius:10px;padding:10px 16px;text-align:center}
+  .duechip small{display:block;font-size:10px;letter-spacing:.6px;font-weight:700;opacity:.8}
+
+  .cols{display:grid;grid-template-columns:1fr 420px;gap:20px;align-items:start}
+  @media(max-width:900px){.cols{grid-template-columns:1fr}}
+
+  .card{background:var(--surface);border:1px solid var(--border);border-radius:14px;margin-bottom:20px;overflow:hidden}
+  .chead{padding:15px 24px;border-bottom:1px solid var(--border);display:flex;align-items:center}
+  .chead h3{font-size:13px;font-weight:800;letter-spacing:.7px;color:var(--primary)}
+  .chead .hint{margin-left:auto;font-size:11.5px;color:var(--faint)}
+  .cbody{padding:20px 24px}
+
+  /* part summary */
+  .pgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+  .pf label{display:block;font-size:10.5px;font-weight:700;letter-spacing:.7px;color:var(--faint);margin-bottom:4px}
+  .pf .v{font-size:14px;font-weight:700}
+
+  /* pricing intel */
+  .target{display:flex;align-items:center;gap:16px;background:var(--green-soft);border:1px solid #BBF7D0;border-radius:12px;padding:16px 20px;margin-bottom:14px}
+  .target .big{font-size:26px;font-weight:800;color:var(--green)}
+  .target .lbl{font-size:12px;color:var(--text-dim);font-weight:600;line-height:1.5}
+  .awtable{width:100%;border-collapse:collapse;font-size:13px;margin-bottom:12px}
+  .awtable th{text-align:left;font-size:10.5px;letter-spacing:.6px;color:var(--faint);padding:8px 10px;border-bottom:1px solid var(--border);font-weight:700}
+  .awtable td{padding:9px 10px;border-bottom:1px solid #F1F3F6;font-weight:600}
+  .range{display:flex;align-items:center;gap:10px;font-size:12.5px;color:var(--text-dim);font-weight:600}
+  .rangebar{flex:1;height:8px;border-radius:999px;background:linear-gradient(90deg,#86EFAC,#FDE68A,#FCA5A5);position:relative}
+  .rangebar .tick{position:absolute;top:-4px;width:2.5px;height:16px;background:var(--primary);border-radius:2px;left:12%}
+
+  /* form */
+  .frow{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px}
+  .frow.one{grid-template-columns:1fr}
+  .f label{display:block;font-size:11px;font-weight:800;letter-spacing:.5px;color:var(--text-dim);margin-bottom:6px}
+  .f label .req{color:var(--red)}
+  .f input,.f select,.f textarea{width:100%;border:1px solid var(--border);border-radius:9px;padding:11px 13px;font-size:14px;font-family:'Manrope',sans-serif}
+  .f input:focus{outline:2px solid var(--accent-border)}
+  .pricewrap{position:relative}
+  .pricefb{font-size:11.5px;font-weight:700;margin-top:5px;min-height:15px}
+  .pricefb.good{color:var(--green)} .pricefb.warn{color:var(--amber)} .pricefb.bad{color:var(--red)}
+  .upload{border:1.5px dashed var(--border-strong);border-radius:10px;text-align:center;padding:18px;color:var(--faint);font-size:12.5px;cursor:pointer}
+  .upload b{color:var(--accent)}
+  .submitbtn{width:100%;background:var(--accent);color:#fff;border:none;border-radius:11px;padding:15px;font-size:15px;font-weight:800;cursor:pointer;font-family:'Manrope',sans-serif;margin-top:6px}
+  .submitbtn:hover{background:var(--accent-hover)}
+  .subnote{text-align:center;font-size:11.5px;color:var(--faint);margin-top:9px}
+
+  /* marketing rail */
+  .mkt{background:var(--navy);border-radius:14px;color:#fff;padding:26px 26px;margin-bottom:20px}
+  .mkt h3{font-size:17px;font-weight:800;line-height:1.35;margin-bottom:8px}
+  .mkt p{font-size:13px;color:#C7D2E4;line-height:1.6;margin-bottom:14px}
+  .mkt .stat{display:flex;gap:18px;margin:16px 0;flex-wrap:wrap}
+  .mkt .stat div b{display:block;font-size:20px;font-weight:800;color:#fff}
+  .mkt .stat div span{font-size:11px;color:#9FB0CC;font-weight:600}
+  .mktbtn{display:block;text-align:center;background:#fff;color:var(--navy);border-radius:10px;padding:13px;font-size:14px;font-weight:800;margin-top:6px}
+  .mkt .cage{font-family:'Source Code Pro',monospace;background:rgba(255,255,255,.12);border-radius:7px;padding:2px 9px}
+
+  .trust{display:flex;gap:10px;align-items:center;background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:14px 18px;font-size:12px;color:var(--muted)}
+  .trust b{color:var(--text)}
+
+  /* success overlay */
+  .ok{position:fixed;inset:0;background:rgba(15,23,42,.55);display:none;align-items:center;justify-content:center;padding:20px;z-index:100}
+  .ok.open{display:flex}
+  .okcard{background:#fff;border-radius:18px;max-width:560px;width:100%;padding:40px 42px;text-align:center;box-shadow:0 30px 80px rgba(0,0,0,.35)}
+  .okcard .ic{width:64px;height:64px;border-radius:50%;background:var(--green-soft);color:var(--green);font-size:30px;display:flex;align-items:center;justify-content:center;margin:0 auto 18px}
+  .okcard h2{font-size:21px;font-weight:800;margin-bottom:10px}
+  .okcard p{font-size:13.5px;color:var(--text-dim);line-height:1.65;margin-bottom:10px}
+  .okcard .pill{display:inline-block;background:var(--accent-soft);color:var(--accent);font-weight:700;border-radius:999px;padding:5px 14px;font-size:12px;margin-bottom:16px}
+  .okcard .mktbtn{background:var(--navy);color:#fff}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="tb-left">
+    <img src="https://govscraper.com/assets/BigLogo-7gv5uAxF.png" alt="GovScraper" class="topbar-logo">
+    <span class="tb-tag">SUPPLIER QUOTE PORTAL</span>
+  </div>
+  <button class="claimbtn">Claim Your Free Supplier Profile →</button>
+</div>
+
+<div class="wrap">
+
+  <!-- WHO'S ASKING -->
+  <div class="reqbar">
+    <div class="reqav">MS</div>
+    <div>
+      <h1>MeND Sourcing Solutions requests your quote</h1>
+      <div class="sub">Sent by <b>Tristan Thomas</b> (tristan@MeNDSourcing.com) to <b>Dana Whitfield · Apex Switchgear Corp</b> &nbsp;·&nbsp; RFQ ref <b class="mono">SPE7MO-26-T-068Y</b></div>
+    </div>
+    <div class="duechip"><small>QUOTE NEEDED BY</small>Nov 12, 2026</div>
+  </div>
+
+  <div class="cols">
+    <div><!-- LEFT COLUMN -->
+
+      <!-- PART -->
+      <div class="card">
+        <div class="chead"><h3>WHAT WE NEED PRICED</h3><span class="hint">Government rated order · DLA solicitation</span></div>
+        <div class="cbody">
+          <div class="pgrid">
+            <div class="pf"><label>ITEM</label><div class="v">SWITCH, ROTARY</div></div>
+            <div class="pf"><label>PART NUMBER</label><div class="v mono">N125-61038-00</div></div>
+            <div class="pf"><label>NSN</label><div class="v mono">5930-01-659-8559</div></div>
+            <div class="pf"><label>QUANTITY</label><div class="v">12 EA</div></div>
+            <div class="pf"><label>CONDITION</label><div class="v">New / surplus acceptable w. cert</div></div>
+            <div class="pf"><label>PACKAGING</label><div class="v">Standard commercial</div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- PRICING INTEL -->
+      <div class="card">
+        <div class="chead"><h3>PRICING GUIDANCE — WHAT DLA HAS PAID</h3><span class="hint">Public DLA procurement history</span></div>
+        <div class="cbody">
+          <div class="target">
+            <div class="big">≤ $512.40</div>
+            <div class="lbl"><b>Target unit price to be competitive.</b><br>Quotes at or under this number have the strongest shot at turning into a purchase order.</div>
+          </div>
+          <table class="awtable">
+            <thead><tr><th>LAST TWO DLA AWARDS</th><th>QTY</th><th>UNIT PRICE</th></tr></thead>
+            <tbody>
+              <tr><td>January 2024</td><td>2 EA</td><td>$497.68 / EA</td></tr>
+              <tr><td>August 2022</td><td>4 EA</td><td>$810.69 / EA</td></tr>
+            </tbody>
+          </table>
+          <div class="range"><span>Historical range</span><div class="rangebar"><span class="tick"></span></div><span class="mono">$469 – $811 / EA</span></div>
+        </div>
+      </div>
+
+      <!-- QUOTE FORM -->
+      <div class="card">
+        <div class="chead"><h3>YOUR QUOTE</h3><span class="hint">2 minutes — goes straight to MeND Sourcing</span></div>
+        <div class="cbody">
+          <div class="frow">
+            <div class="f"><label>UNIT PRICE (USD) <span class="req">*</span></label>
+              <div class="pricewrap"><input id="price" placeholder="$ 0.00 / EA" oninput="priceFb()"></div>
+              <div class="pricefb" id="pricefb"></div>
+            </div>
+            <div class="f"><label>LEAD TIME (DAYS ARO) <span class="req">*</span></label><input placeholder="e.g. 45"></div>
+          </div>
+          <div class="frow">
+            <div class="f"><label>STOCK ON HAND (IF ANY)</label><input placeholder="e.g. 8 EA on shelf"></div>
+            <div class="f"><label>TYPE OF CERTS</label><select><option>Certificate of Conformance (CoC)</option><option>Full manufacturer cert / trace</option><option>Test reports included</option><option>No certs available</option></select></div>
+          </div>
+          <div class="frow">
+            <div class="f"><label>COUNTRY OF ORIGIN</label><input placeholder="e.g. USA"></div>
+            <div class="f"><label>CERT CHARGE (IF ANY)</label><input placeholder="$ 0.00"></div>
+          </div>
+          <div class="frow">
+            <div class="f"><label>QUOTE VALID UNTIL</label><input placeholder="mm/dd/yyyy"></div>
+            <div class="f"><label>YOUR NAME &amp; EMAIL</label><input value="Dana Whitfield · dana@apexswitchgear.com"></div>
+          </div>
+          <div class="frow one">
+            <div class="f"><label>NOTES (OPTIONAL)</label><textarea rows="2" placeholder="MOQ, alternates, exceptions..."></textarea></div>
+          </div>
+          <div class="frow one"><div class="upload">📎 <b>Attach formal quote / spec sheet</b> (optional) — PDF up to 10MB</div></div>
+          <button class="submitbtn" onclick="document.getElementById('ok').classList.add('open')">Submit Quote to MeND Sourcing →</button>
+          <div class="subnote">Your pricing goes only to the requester. Submitting creates no obligation to sell.</div>
+        </div>
+      </div>
+    </div>
+
+    <div><!-- RIGHT COLUMN -->
+      <div class="mkt">
+        <h3>1,200+ defense contractors source parts on GovScraper every day.</h3>
+        <p>This quote request reached you through GovScraper — the platform contractors use to win DLA contracts. Suppliers with a claimed profile get found first.</p>
+        <div class="stat">
+          <div><b>59,057</b><span>live RFQs tracked</span></div>
+          <div><b>1,200+</b><span>buying members</span></div>
+          <div><b>Free</b><span>supplier profile</span></div>
+        </div>
+        <p>Your company already has a page: <span class="cage">CAGE 4XK29</span>. Claim it, list your line card, and every member sourcing your parts sees you — without the cold emails.</p>
+        <a class="mktbtn" href="#">Claim CAGE 4XK29 — Free →</a>
+      </div>
+
+      <div class="trust">🔒 <div><b>Why this is safe:</b> your quote is private to MeND Sourcing Solutions. GovScraper never resells pricing. One submission, one requester.</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- SUCCESS -->
+<div class="ok" id="ok" onclick="if(event.target===this)this.classList.remove('open')">
+  <div class="okcard">
+    <div class="ic">✓</div>
+    <h2>Quote submitted to MeND Sourcing</h2>
+    <div class="pill mono">Filed to RFQ SPE7MO-26-T-068Y</div>
+    <p>Your price and lead time just landed in MeND Sourcing's GovScraper workspace — straight into their vendor table for this RFQ. Tristan is notified and will follow up if your quote is selected.</p>
+    <p><b>While you're here:</b> claim your free supplier profile and get found by every contractor sourcing switches &amp; rotary components on GovScraper.</p>
+    <a class="mktbtn" href="#">Claim CAGE 4XK29 — takes 2 minutes</a>
+  </div>
+</div>
+
+<script>
+function priceFb(){
+  const raw=document.getElementById('price').value.replace(/[^0-9.]/g,'');
+  const fb=document.getElementById('pricefb');
+  if(!raw){fb.textContent='';return;}
+  const v=parseFloat(raw);
+  if(v<=512.40){fb.textContent='✓ At or under the target — highly competitive';fb.className='pricefb good';}
+  else if(v<=811){fb.textContent='Within historical range — competitive, but above target';fb.className='pricefb warn';}
+  else{fb.textContent='Above every past award for this NSN — unlikely to be selected';fb.className='pricefb bad';}
+}
+</script>
+</body>
+</html>
