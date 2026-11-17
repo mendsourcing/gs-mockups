@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>Dashboard — GovScraper</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Source+Code+Pro:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --primary:#1E293B; --accent:#2563EB; --accent-soft:#EFF6FF; --accent-border:#BFDBFE; --accent-hover:#1D4ED8;
+    --red:#DC2626; --red-bg:#FEF2F2; --green:#16A34A; --green-soft:#F0FDF4; --amber:#D97706; --amber-soft:#FFF7ED;
+    --bg:#F8FAFC; --surface:#fff; --border:#E2E8F0; --border-strong:#CBD5E1;
+    --text:#1E293B; --text-dim:#475569; --muted:#6B7280; --faint:#94A3B8; --navy:#1B2A4A;
+  }
+  *{box-sizing:border-box;margin:0}
+  body{font-family:'Manrope',sans-serif;background:var(--bg);color:var(--text);font-size:13px}
+  a{color:var(--accent);text-decoration:none}
+  .mono{font-family:'Source Code Pro',monospace}
+  .topbar{height:56px;background:var(--surface);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;padding:0 24px;position:sticky;top:0;z-index:100;box-shadow:0 1px 3px rgba(0,0,0,0.06)}
+  .topbar-left{display:flex;align-items:center;gap:20px}
+  .topbar-logo{height:30px;width:auto;display:block}
+  .topbar-divider{width:1px;height:24px;background:var(--border)}
+  .mode-switcher{display:flex;align-items:center;background:#F1F5F9;border:1.5px solid var(--border-strong);border-radius:9px;padding:3px}
+  .mode-btn{font-family:'Manrope',sans-serif;font-size:12px;font-weight:700;padding:6px 14px;border-radius:6px;border:none;cursor:pointer;display:flex;align-items:center;gap:7px}
+  .mode-btn.inactive{background:transparent;color:var(--muted)}
+  .mode-btn.active-member{background:#1B2A4A;color:#fff;box-shadow:0 1px 4px rgba(27,42,74,0.3)}
+  .mode-dot{width:7px;height:7px;border-radius:50%;display:inline-block}
+  .mode-btn.inactive .mode-dot{background:#BE1E2D}
+  .mode-btn.active-member .mode-dot{background:rgba(255,255,255,0.6)}
+  .breadcrumb{font-size:12px;color:var(--muted);font-weight:500}
+  .avatar{width:36px;height:36px;border-radius:9px;border:2px solid #E2E8F0;background:linear-gradient(135deg,var(--accent),#1D4ED8);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:11px;cursor:pointer}
+
+  .shell{display:flex;min-height:calc(100vh - 56px)}
+  .side{width:224px;background:var(--surface);border-right:1px solid var(--border);padding:14px 0;flex-shrink:0;display:flex;flex-direction:column}
+  .sgroup{font-size:10.5px;font-weight:700;letter-spacing:0.8px;color:var(--faint);padding:14px 16px 6px}
+  .sitem{display:flex;align-items:center;gap:9px;padding:8px 16px;font-size:12.5px;color:var(--text-dim);font-weight:500;cursor:pointer;border-left:3px solid transparent}
+  .sitem:hover{background:var(--accent-soft);color:var(--accent);border-left-color:var(--accent-border)}
+  .sitem.on{background:var(--accent-soft);color:var(--accent);font-weight:700;border-left-color:var(--accent)}
+  .sitem.sub{padding-left:38px;font-size:12px}
+  .sitem svg{width:16px;height:16px;flex-shrink:0}
+  .newtag{margin-left:auto;font-size:9.5px;font-weight:700;background:var(--red);color:#fff;border-radius:4px;padding:2px 5px;letter-spacing:.5px}
+  .tourbox{margin:14px 12px 10px;border:1px solid #E9D5FF;background:#FAF5FF;border-radius:10px;padding:11px 13px;font-size:11.5px;color:#7C3AED;font-weight:700;display:flex;gap:9px;align-items:center}
+  .tourbox small{display:block;color:#A78BFA;font-weight:500}
+
+  .main{flex:1;padding:22px 28px;min-width:0}
+  .greethead{display:flex;align-items:flex-start;gap:14px;margin-bottom:18px;flex-wrap:wrap}
+  h1{font-size:21px;font-weight:800}
+  .greethead .sub{font-size:13px;color:var(--muted);margin-top:4px}
+  .spacer{flex:1}
+  .chip{font-size:11.5px;font-weight:700;border-radius:8px;padding:8px 13px}
+  .chip.plan{background:var(--accent-soft);color:var(--accent);border:1px solid var(--accent-border)}
+  .chip.sync{background:#fff;color:var(--muted);border:1px solid var(--border)}
+
+  /* referral button — the NEW piece */
+  .refbtn{display:inline-flex;align-items:center;gap:9px;background:linear-gradient(135deg,#2563EB,#1B2A4A);color:#fff;border:none;border-radius:10px;padding:10px 18px;font-size:13px;font-weight:800;cursor:pointer;font-family:'Manrope',sans-serif;box-shadow:0 3px 10px rgba(37,99,235,.3)}
+  .refbtn:hover{transform:translateY(-1px)}
+  .refbtn .gift{font-size:15px}
+
+  .cards3{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:16px}
+  .fcard{background:#fff;border:1px solid var(--border);border-radius:12px;padding:20px 22px}
+  .fcard .ic{width:40px;height:40px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:17px;margin-bottom:12px}
+  .fcard .ic.b{background:var(--accent-soft);color:var(--accent)} .fcard .ic.g{background:var(--green-soft);color:var(--green)}
+  .fcard h3{font-size:14.5px;font-weight:800;margin-bottom:5px}
+  .fcard p{font-size:12.5px;color:var(--muted);line-height:1.55;margin-bottom:13px}
+  .btn{display:inline-flex;align-items:center;gap:7px;border-radius:8px;padding:8px 15px;font-size:12.5px;font-weight:700;cursor:pointer;border:1px solid var(--border);background:#fff;color:var(--text);font-family:'Manrope',sans-serif}
+  .btn.primary{background:var(--accent);border-color:var(--accent);color:#fff}
+  .btn.soft{background:#fff;border-color:var(--accent-border);color:var(--accent)}
+
+  .stats4{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:16px}
+  .scard{background:#fff;border:1px solid var(--border);border-radius:12px;border-top:3px solid var(--accent);padding:16px 20px}
+  .scard label{font-size:10.5px;font-weight:700;letter-spacing:.7px;color:var(--faint);display:flex;align-items:center;gap:7px}
+  .scard .big{font-size:30px;font-weight:800;color:var(--accent);margin:8px 0 3px}
+  .scard .sub{font-size:11.5px;color:var(--muted)}
+  .scard .up{color:var(--accent);font-weight:700}
+  .scard.award .big{font-size:24px}
+  .scard .flt{float:right;font-size:11px;font-weight:700;color:var(--accent);background:var(--accent-soft);border:1px solid var(--accent-border);border-radius:7px;padding:4px 10px;cursor:pointer}
+
+  .cols{display:grid;grid-template-columns:1fr 420px;gap:16px;margin-bottom:16px}
+  .panel{background:#fff;border:1px solid var(--border);border-radius:12px;padding:18px 22px}
+  .panel h3{font-size:12px;font-weight:800;letter-spacing:.7px;color:var(--primary);margin-bottom:14px}
+  .panel .right{float:right;font-size:11.5px;font-weight:700;color:var(--accent);background:var(--accent-soft);border:1px solid var(--accent-border);border-radius:7px;padding:5px 11px;cursor:pointer}
+  .bar{display:flex;align-items:center;gap:10px;margin:10px 0;font-size:12px}
+  .bar .lb{width:38px;font-weight:700;color:var(--text-dim)}
+  .bar .tr{flex:1;background:#F1F5F9;border-radius:6px;height:22px;position:relative}
+  .bar .fl{height:100%;border-radius:6px;background:var(--primary);display:flex;align-items:center;color:#fff;font-size:11px;font-weight:700;padding-left:9px;min-width:30px}
+  .bar .fl.b{background:var(--accent)}
+  .axis{display:flex;justify-content:space-between;font-size:10.5px;color:var(--faint);margin-top:6px;padding-left:48px}
+  .wins .num{font-size:30px;font-weight:800}
+  .wins .amt{font-size:19px;font-weight:800;color:var(--accent)}
+  .wins label{display:block;font-size:10.5px;font-weight:700;letter-spacing:.7px;color:var(--faint);margin-bottom:8px}
+  .wins .src{font-size:11px;color:var(--muted);margin-top:8px}
+  .pbs{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:6px}
+  .pbs div{background:#F8FAFC;border:1px solid var(--border);border-radius:9px;text-align:center;padding:12px 6px}
+  .pbs label{display:block;font-size:9.5px;font-weight:700;letter-spacing:.6px;color:var(--faint);margin-bottom:5px}
+  .pbs b{font-size:18px;font-weight:800}
+  .cols3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px}
+  .rowline{display:flex;align-items:center;padding:10px 0;border-bottom:1px solid #F1F3F6;font-size:12.5px;font-weight:600}
+  .rowline .pillnew{margin-left:auto;background:var(--accent-soft);color:var(--accent);font-weight:700;font-size:11px;border-radius:999px;padding:3px 10px}
+  .ratio{font-size:30px;font-weight:800;color:var(--red)}
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <div class="topbar-left">
+    <a href="#"><img src="https://govscraper.com/assets/BigLogo-7gv5uAxF.png" alt="GovScraper" class="topbar-logo"></a>
+    <div class="topbar-divider"></div>
+    <div class="mode-switcher">
+      <button class="mode-btn active-member"><span class="mode-dot"></span>Member Portal</button>
+      <button class="mode-btn inactive"><span class="mode-dot"></span>Supplier Portal</button>
+    </div>
+    <div class="topbar-divider"></div>
+    <div class="breadcrumb">Dashboard</div>
+  </div>
+  <div class="avatar" onclick="location.href='Settings_Page.html'">TB</div>
+</header>
+
+<div class="shell">
+<div class="side">
+  <div class="sgroup">MAIN</div>
+  <div class="sitem on"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>Dashboard</div>
+  <div class="sitem"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/></svg>My RFQs</div>
+  <div class="sitem sub">Private List of RFQs</div>
+  <div class="sitem sub">Public List of RFQs</div>
+  <div class="sgroup">VENDORS</div>
+  <div class="sitem" onclick="location.href='Vendor_Page.html'"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 21h18"/><path d="M5 21V7l7-4 7 4v14"/><path d="M9 21v-6h6v6"/></svg>My Vendors<span class="newtag">NEW</span></div>
+  <div class="sitem sub">+ Add Vendor</div>
+  <div class="sgroup">INTELLIGENCE</div>
+  <div class="sitem"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>NSN Search</div>
+  <div class="sitem"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9.5 12 4l9 5.5"/><path d="M5 10v10h14V10"/></svg>CAGE Search</div>
+  <div class="sitem"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6h16M4 12h16M4 18h16"/></svg>FSC Lookup</div>
+  <div class="sitem"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg>NSN Watch List</div>
+  <div class="sgroup">RESULTS</div>
+  <div class="sitem"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.1V12a10 10 0 1 1-5.93-9.14"/><path d="m9 11 3 3L22 4"/></svg>Awarded Contracts</div>
+  <div class="sitem"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 9h18"/></svg>Archived RFQs</div>
+  <div class="sgroup">ALERTS</div>
+  <div class="sitem"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/></svg>RFQ Alerts</div>
+  <div class="sgroup">COMMUNITY</div>
+  <div class="sitem"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>Community</div>
+  <div class="sgroup">TOOLS</div>
+  <div class="sitem"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 8V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v3"/><rect x="3" y="8" width="18" height="13" rx="2"/></svg>GovPacking</div>
+  <div style="margin-top:auto">
+    <div class="sitem"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 21v-1a7 7 0 0 1 14 0v1"/></svg>Settings &amp; Account</div>
+    <div class="tourbox">▶ <div>Replay MAXX Tour<small>Replay the walkthrough</small></div></div>
+  </div>
+</div>
+
+<div class="main">
+  <div class="greethead">
+    <div>
+      <h1>Good afternoon, Tris10 👋</h1>
+      <div class="sub">Here's your pipeline overview for today — Tuesday, November 17, 2026</div>
+    </div>
+    <div class="spacer"></div>
+    <button class="refbtn" onclick="location.href='Referral_Page.html'"><span class="gift">🎁</span> Invite a Friend, Earn $100</button>
+    <span class="chip plan">MAXX Plan</span>
+    <span class="chip sync">Last synced: 11/17/2026 11:23 AM</span>
+  </div>
+
+  <div class="cards3">
+    <div class="fcard"><div class="ic b">◎</div><h3>New Opportunities</h3><p>308 new RFQs match your FSC criteria since yesterday</p><button class="btn primary">Review Now</button></div>
+    <div class="fcard"><div class="ic g">⬡</div><h3>GovPacking</h3><p>Check MIL-SPEC packaging requirements for your active bids</p><button class="btn soft">Visit GovPacking</button></div>
+    <div class="fcard"><div class="ic b">💬</div><h3>Community Forum</h3><p>Connect with other DLA contractors and share insights</p><button class="btn">Join Discussion</button></div>
+  </div>
+
+  <div class="stats4">
+    <div class="scard"><label>◎ RFQS READY TO SOURCE</label><div class="big">308</div><div class="sub"><span class="up">↑ 11.8%</span> vs. prior 7 days</div></div>
+    <div class="scard"><label>CURRENTLY SOURCING</label><div class="big" style="color:var(--primary)">6</div><div class="sub">Awaiting vendor quotes</div></div>
+    <div class="scard"><label>READY TO BID</label><div class="big" style="color:var(--primary)">11</div><div class="sub">Pricing complete</div></div>
+    <div class="scard award"><span class="flt">≡ Filters</span><label>AWARD WON</label>
+      <div style="display:flex;gap:26px;margin-top:9px">
+        <div><div style="font-size:10px;font-weight:700;color:var(--faint);letter-spacing:.6px">TOTAL</div><div class="big" style="margin:2px 0;color:var(--primary)">2</div></div>
+        <div><div style="font-size:10px;font-weight:700;color:var(--faint);letter-spacing:.6px">AMOUNT</div><div class="big" style="margin:2px 0">$82,958</div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="cols">
+    <div class="panel">
+      <span class="right">View All FSCs</span>
+      <h3>FSC PERFORMANCE (30 DAY)</h3>
+      <div class="bar"><span class="lb">5306</span><div class="tr"><div class="fl" style="width:100%">116</div></div></div>
+      <div class="bar"><span class="lb">5305</span><div class="tr"><div class="fl b" style="width:7%">5</div></div></div>
+      <div class="bar"><span class="lb">5307</span><div class="tr"><div class="fl b" style="width:4%">1</div></div></div>
+      <div class="axis"><span>0</span><span>23</span><span>46</span><span>70</span><span>93</span><span>116</span></div>
+    </div>
+    <div>
+      <div class="panel wins" style="margin-bottom:16px">
+        <h3>MEMBER WINS</h3>
+        <label>TOTAL AWARD &amp; AMOUNT</label>
+        <span class="num">279</span> &nbsp;<span class="amt">$8.65M</span>
+        <div class="src">◎ Member Wins Powered by GovScraper</div>
+      </div>
+      <div class="panel">
+        <span class="right">≡ Filters</span>
+        <h3>POST BID STATISTICS</h3>
+        <div class="pbs">
+          <div><label>SUBMITTED</label><b>79</b></div>
+          <div><label>TRACE REQ.</label><b>10</b></div>
+          <div><label>WON</label><b>2</b></div>
+          <div><label>WIN RATE</label><b>2.5%</b></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="cols3">
+    <div class="panel">
+      <span class="right">+ Add / Edit</span>
+      <h3>SAVED SEARCHES</h3>
+      <div class="rowline">5306 above 20k <span class="pillnew">70 new</span></div>
+      <div class="rowline">SDVOSB electrical <span class="pillnew">12 new</span></div>
+    </div>
+    <div class="panel">
+      <span class="right">View All</span>
+      <h3>NSN WATCH LIST</h3>
+      <div class="rowline mono" style="font-weight:600">3010-01-418-9961 —</div>
+      <div class="rowline mono" style="font-weight:600">5930-01-659-8559 —</div>
+    </div>
+    <div class="panel">
+      <h3>BID TO AWARD RATIO</h3>
+      <div class="ratio">1.77%</div>
+    </div>
+  </div>
+</div>
+</div>
+</body>
+</html>
