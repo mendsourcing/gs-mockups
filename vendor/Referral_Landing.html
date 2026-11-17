@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>You're invited to GovScraper — 14-day free trial</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Source+Code+Pro:wght@500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --primary:#1E293B; --accent:#2563EB; --accent-soft:#EFF6FF; --accent-border:#BFDBFE; --accent-hover:#1D4ED8;
+    --green:#16A34A; --green-soft:#F0FDF4; --amber:#D97706;
+    --bg:#F8FAFC; --surface:#fff; --border:#E2E8F0; --text:#1E293B; --text-dim:#475569; --muted:#6B7280; --faint:#94A3B8; --navy:#1B2A4A;
+  }
+  *{box-sizing:border-box;margin:0}
+  body{font-family:'Manrope',sans-serif;background:var(--bg);color:var(--text);font-size:15px}
+  a{text-decoration:none}
+  .mono{font-family:'Source Code Pro',monospace}
+
+  .topbar{background:#fff;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;padding:14px 34px;position:sticky;top:0;z-index:50}
+  .topbar img{height:32px}
+  .signup{background:var(--accent);color:#fff;border:none;border-radius:10px;padding:11px 22px;font-size:14px;font-weight:800;cursor:pointer;font-family:'Manrope',sans-serif}
+  .signup:hover{background:var(--accent-hover)}
+
+  .hero{max-width:1180px;margin:0 auto;padding:70px 34px 50px;display:grid;grid-template-columns:1fr 1fr;gap:50px;align-items:center}
+  @media(max-width:860px){.hero{grid-template-columns:1fr}}
+  .kicker{display:inline-flex;align-items:center;gap:9px;background:var(--accent-soft);border:1px solid var(--accent-border);border-radius:999px;padding:7px 16px;font-size:12.5px;font-weight:800;color:var(--accent);margin-bottom:22px}
+  .kicker .av{width:22px;height:22px;border-radius:50%;background:linear-gradient(135deg,var(--accent),#1D4ED8);color:#fff;display:inline-flex;align-items:center;justify-content:center;font-size:10px;font-weight:800}
+  h1{font-size:44px;font-weight:800;line-height:1.16;letter-spacing:-.5px;margin-bottom:20px}
+  h1 .hl{color:var(--accent)}
+  .sub{font-size:16.5px;color:var(--text-dim);line-height:1.7;max-width:480px;margin-bottom:28px}
+  .cta{display:inline-block;background:var(--accent);color:#fff;border-radius:12px;padding:16px 30px;font-size:16px;font-weight:800;box-shadow:0 6px 18px rgba(37,99,235,.3)}
+  .cta:hover{background:var(--accent-hover)}
+  .ctanote{font-size:12px;color:var(--faint);margin-top:12px}
+
+  /* product mock */
+  .shot{background:#fff;border:1px solid var(--border);border-radius:16px;box-shadow:0 24px 60px rgba(15,23,42,.14);overflow:hidden}
+  .shot .bar{display:flex;gap:6px;background:#F1F5F9;padding:10px 14px;border-bottom:1px solid var(--border)}
+  .shot .dot{width:9px;height:9px;border-radius:50%;background:#CBD5E1}
+  .shot .inner{padding:18px}
+  .srow{display:flex;gap:10px;margin-bottom:12px}
+  .scard{flex:1;border:1px solid var(--border);border-radius:10px;padding:12px 14px;border-top:3px solid var(--accent)}
+  .scard label{font-size:8.5px;font-weight:800;letter-spacing:.6px;color:var(--faint)}
+  .scard b{display:block;font-size:20px;font-weight:800;color:var(--accent);margin-top:3px}
+  .scard b.dark{color:var(--primary)}
+  .srfq{display:flex;align-items:center;gap:10px;border:1px solid var(--border);border-radius:9px;padding:9px 12px;margin-bottom:7px;font-size:11px;font-weight:700}
+  .srfq .mono{color:var(--accent);font-size:10.5px}
+  .srfq .pill{margin-left:auto;background:var(--green-soft);color:var(--green);border-radius:999px;padding:2px 9px;font-size:9.5px;font-weight:800}
+  .srfq .pill.b{background:var(--accent-soft);color:var(--accent)}
+
+  /* trust strip */
+  .trust{border-top:1px solid var(--border);background:#fff}
+  .trust .in{max-width:1180px;margin:0 auto;padding:36px 34px;display:grid;grid-template-columns:repeat(3,1fr);gap:20px;text-align:center}
+  @media(max-width:860px){.trust .in{grid-template-columns:1fr}}
+  .laurel{font-size:15px;font-weight:800}
+  .laurel small{display:block;font-size:12px;color:var(--faint);font-weight:600;margin-top:4px}
+  .laurel::before{content:'🌿';margin-right:6px;opacity:.6}
+
+  .how{max-width:880px;margin:0 auto;padding:60px 34px;text-align:center}
+  .how h2{font-size:26px;font-weight:800;margin-bottom:34px}
+  .steps{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;text-align:left}
+  @media(max-width:860px){.steps{grid-template-columns:1fr}}
+  .step{background:#fff;border:1px solid var(--border);border-radius:13px;padding:22px}
+  .step .n{width:28px;height:28px;border-radius:50%;background:var(--accent-soft);color:var(--accent);font-weight:800;font-size:13px;display:flex;align-items:center;justify-content:center;margin-bottom:12px}
+  .step h4{font-size:14.5px;font-weight:800;margin-bottom:6px}
+  .step p{font-size:12.5px;color:var(--muted);line-height:1.6}
+  .foot{max-width:1180px;margin:0 auto;padding:26px 34px 50px;text-align:center;font-size:11.5px;color:var(--faint)}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <img src="https://govscraper.com/assets/BigLogo-7gv5uAxF.png" alt="GovScraper">
+  <button class="signup">Sign up</button>
+</div>
+
+<div class="hero">
+  <div>
+    <div class="kicker"><span class="av">TT</span> Invited by Tristan Thomas</div>
+    <h1>Tristan thinks you'll love GovScraper. Get a <span class="hl">14-day free trial</span> — double the standard.</h1>
+    <p class="sub">GovScraper finds the DLA RFQs that match your FSCs every morning, tracks pricing history on every NSN, and manages your vendors and bids in one place — so you win more government contracts with less wasted effort.</p>
+    <a class="cta" href="#">Claim your 14-day free trial</a>
+    <div class="ctanote">No charge until your trial ends. Referral code <span class="mono">tris10x7k2</span> applied automatically.</div>
+  </div>
+  <div class="shot">
+    <div class="bar"><span class="dot"></span><span class="dot"></span><span class="dot"></span></div>
+    <div class="inner">
+      <div class="srow">
+        <div class="scard"><label>RFQS READY TO SOURCE</label><b>308</b></div>
+        <div class="scard"><label>READY TO BID</label><b class="dark">11</b></div>
+        <div class="scard"><label>AWARD WON</label><b>$82,958</b></div>
+      </div>
+      <div class="srfq"><span class="mono">SPE7L1-27-T-3036</span> SHAFT,SHOULDERED <span class="pill b">$63,000 est.</span></div>
+      <div class="srfq"><span class="mono">SPE4A6-27-T-7584</span> CABLE ASSEMBLY <span class="pill b">$361,050 est.</span></div>
+      <div class="srfq"><span class="mono">SPE7M1-27-U-0984</span> HEADSET,ACOUSTICAL <span class="pill">Quoted</span></div>
+      <div class="srfq"><span class="mono">SPE7M4-26-V-5103</span> SWITCH, PUSH <span class="pill">Award Won</span></div>
+    </div>
+  </div>
+</div>
+
+<div class="trust"><div class="in">
+  <div class="laurel">Built by Government Contractors<small>for Government Contractors</small></div>
+  <div class="laurel">280+ Awards · $8M+ Won<small>by the team behind GovScraper</small></div>
+  <div class="laurel">59,057 Live RFQs Tracked<small>matched to your FSCs daily</small></div>
+</div></div>
+
+<div class="how">
+  <h2>How your invite works</h2>
+  <div class="steps">
+    <div class="step"><div class="n">1</div><h4>Sign up with Tristan's link</h4><p>Your 14-day free trial starts instantly — double the standard 7 days. Full platform, no card charged during trial.</p></div>
+    <div class="step"><div class="n">2</div><h4>Set your FSCs</h4><p>Tell GovScraper what you sell. Matching DLA RFQs land in your pipeline every morning with pricing history on every NSN.</p></div>
+    <div class="step"><div class="n">3</div><h4>Bid and win</h4><p>Source vendors, build your price sheet, submit, and track every award — all in one place.</p></div>
+  </div>
+</div>
+
+<div class="foot">© 2026 MeND Sourcing Solutions LLC · GovScraper · <a href="Referral_Terms.html" style="color:var(--accent)">Referral Program Terms</a></div>
+</body>
+</html>
