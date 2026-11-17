@@ -219,7 +219,8 @@
 <script>
 const REF_URL='https://govscraper.com/referral/tris10x7k2';
 const POST_TEXT="A system that I use often for my Government Contracts with the DLA is GovScraper. It is a great tool and I highly recommend that you check it out if you source Government Contracts as well. Get a 14 day free trial with my referral code:";
-const TAG_X='supertris10';  // post ends with "via @supertris10"
+const TAG_X='supertris10';
+const X_TEXT="A system I use often for my Government Contracts with the DLA is @supertris10's GovScraper. Great tool — highly recommend it if you source Government Contracts too. Get a 14-day free trial with my referral code:";
 function copyLink(){
   try{navigator.clipboard.writeText(REF_URL);}catch(e){}
   const t=document.getElementById('toast');
@@ -230,7 +231,7 @@ function shareText(){ location.href='sms:?&body='+encodeURIComponent(POST_TEXT+'
 function shareEmail(){ location.href='mailto:?subject='+encodeURIComponent('Your 14-day free trial of GovScraper')+'&body='+encodeURIComponent(POST_TEXT+'\n\n'+REF_URL+'\n\nIt finds the DLA RFQs that match your FSCs every morning — worth a look.'); }
 function shareFB(){ window.open('https://www.facebook.com/sharer/sharer.php?u='+encodeURIComponent(REF_URL)+'&quote='+encodeURIComponent(POST_TEXT),'_blank'); }
 function shareLI(){ window.open('https://www.linkedin.com/feed/?shareActive=true&text='+encodeURIComponent(POST_TEXT+' '+REF_URL+' @Tristan Thomas'),'_blank'); }
-function shareX(){ window.open('https://twitter.com/intent/tweet?text='+encodeURIComponent(POST_TEXT)+'&url='+encodeURIComponent(REF_URL)+'&via='+TAG_X,'_blank'); }
+function shareX(){ window.open('https://twitter.com/intent/tweet?text='+encodeURIComponent(X_TEXT)+'&url='+encodeURIComponent(REF_URL),'_blank'); }
 </script>
 </body>
 </html>
