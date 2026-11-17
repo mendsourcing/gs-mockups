@@ -257,6 +257,14 @@
     <select class="flt"><option>Sort: Last Activity</option><option>Sort: Name A–Z</option><option>Sort: Most Quotes</option></select>
   </div>
 
+  <div id="dupBanner" style="display:flex;align-items:center;gap:12px;border:1.5px solid #FDE68A;background:var(--amber-soft);border-radius:10px;padding:11px 16px;margin-bottom:12px;font-size:12.5px;color:#92400E">
+    <span style="font-size:16px">⚠</span>
+    <span><b>1 possible duplicate found in My Vendors:</b> "MS Aerospace" and "MS Aerosapce" look like the same company (matching FSC 5306, same city). Merging keeps all RFQ history, quotes and awards on one record.</span>
+    <span class="spacer"></span>
+    <button class="btn mini" style="color:#92400E;border-color:#FDE68A;background:#fff;white-space:nowrap" onclick="openMergeDupe()">Review &amp; merge →</button>
+    <span style="cursor:pointer;font-weight:800;color:#B45309" onclick="document.getElementById('dupBanner').style.display='none'" title="Dismiss">✕</span>
+  </div>
+
   <div class="mergebar" id="mergebar">
     <span id="selCount">2 vendors selected</span>
     <button class="btn mini" onclick="openMergeDupe()">⇄ Merge selected into one record</button>
@@ -569,6 +577,7 @@ function doMerge(){
     document.getElementById('keepRfq').textContent='11';
     document.getElementById('keepQ').textContent='8';
     const chip=document.querySelector('#rowKeep .dupchip'); if(chip) chip.remove();
+    document.getElementById('dupBanner').style.display='none';
     document.querySelectorAll('#listView tbody input[type=checkbox]').forEach(c=>c.checked=false);
     selChange();
   }
