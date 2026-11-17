@@ -51,6 +51,17 @@
   .btn.mini{padding:5px 11px;font-size:11.5px;border-radius:7px;color:var(--accent);border-color:var(--accent-border);background:var(--accent-soft);font-weight:700}
   .spacer{flex:1}
 
+  .tabs{display:flex;gap:10px;align-items:center;margin-bottom:16px}
+  .tab{padding:8px 16px;font-size:12.5px;font-weight:700;color:var(--text-dim);cursor:pointer;border:1px solid var(--border);border-radius:9px;background:#fff;display:flex;align-items:center;gap:7px}
+  .tab.on{color:var(--accent);border-color:var(--accent-border);background:var(--accent-soft)}
+  .tab .cnt{font-size:11px;background:#f1f5f9;color:var(--muted);border-radius:999px;padding:1px 8px;font-weight:700}
+  .tab.on .cnt{background:var(--accent-soft);color:var(--accent)}
+  .toolbar{display:flex;gap:10px;margin-bottom:14px;align-items:center}
+  .search{flex:1;max-width:360px;min-width:230px;position:relative}
+  .search input{width:100%;border:1px solid var(--border);border-radius:8px;padding:9px 12px 9px 34px;font-size:13px;background:#fff}
+  .search svg{position:absolute;left:11px;top:10px;width:15px;height:15px;color:var(--faint)}
+  select.flt{border:1px solid var(--border);border-radius:8px;padding:9px 12px;font-size:13px;background:#fff;color:var(--text);font-family:'Manrope',sans-serif}
+
   .card{background:#fff;border:1px solid var(--border);border-radius:10px;overflow:hidden}
   table{width:100%;border-collapse:collapse;font-size:13px}
   th{text-align:left;font-size:11px;letter-spacing:.6px;font-weight:700;color:var(--faint);padding:11px 14px;border-bottom:1px solid var(--border);background:#fafbfc;white-space:nowrap}
@@ -115,8 +126,22 @@
   .frow{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px}
   .frow.one{grid-template-columns:1fr}
   .f label{display:block;font-size:11px;font-weight:700;letter-spacing:.5px;color:var(--muted);margin-bottom:5px}
-  .f input,.f select{width:100%;border:1px solid var(--border);border-radius:7px;padding:9px 11px;font-size:13px;font-family:inherit}
+  .f input,.f select,.f textarea{width:100%;border:1px solid var(--border);border-radius:7px;padding:9px 11px;font-size:13px;font-family:inherit}
   .note{font-size:11.5px;color:var(--faint);margin-top:4px}
+
+  /* FSC tag input (matches prod) */
+  .tagbox{display:flex;flex-wrap:wrap;gap:6px;align-items:center;border:1px solid var(--border);border-radius:7px;padding:6px 8px;background:#fff;cursor:text;min-height:38px}
+  .tagbox:focus-within{outline:2px solid var(--accent-border)}
+  .tagbox input{border:none !important;outline:none !important;flex:1;min-width:110px;padding:4px 2px !important;font-size:13px;font-family:'Manrope',sans-serif;width:auto !important}
+  .tag{display:inline-flex;align-items:center;gap:6px;background:var(--accent-soft);color:var(--accent);border:1px solid var(--accent-border);border-radius:999px;padding:4px 7px 4px 11px;font-size:12px;font-weight:700;font-family:'Source Code Pro',monospace}
+  .tag i{font-style:normal;cursor:pointer;font-weight:800;color:var(--accent);opacity:.65;padding:0 4px}
+  .tag i:hover{opacity:1}
+  .fscmenu{position:relative;display:none}
+  .fscmenu .inner{position:absolute;top:4px;left:0;right:0;background:#fff;border:1.5px solid var(--accent-border);border-radius:12px;box-shadow:0 12px 32px rgba(15,23,42,.14);z-index:300;max-height:240px;overflow-y:auto;padding:4px 0}
+  .fsc-item{padding:11px 16px;font-size:13.5px;font-weight:700;color:var(--text);cursor:pointer;border-bottom:1px solid #F1F5F9;font-family:'Manrope',sans-serif}
+  .fsc-item:last-child{border-bottom:none}
+  .fsc-item:hover{background:var(--accent-soft)}
+  .fsc-item .code{font-family:'Source Code Pro',monospace;color:var(--accent);margin-right:8px}
 
   /* merge banner inside Add Vendor */
   .mergehit{display:none;margin-top:8px;border:1.5px solid var(--accent-border);background:var(--accent-soft);border-radius:10px;padding:12px 14px;font-size:12.5px;color:#1E3A8A;line-height:1.6}
@@ -202,17 +227,34 @@
 
 <!-- ============ LIST VIEW ============ -->
 <div id="listView">
-  <div class="pagehead">
-    <h1>My Vendors — Merge &amp; Duplicate Handling</h1>
-    <div class="spacer"></div>
-    <button class="btn primary" onclick="openAdd()">+ Add Vendor</button>
-  </div>
-
   <div class="tryme">
     <b>▶ Three things to try on this page:</b><br>
     <b>1.</b> Click the <span class="dupchip" style="margin-left:0;cursor:default">⚠ Possible duplicate</span> chip on either MS Aerospace row — merge the typo duplicate.<br>
     <b>2.</b> Click the <b>Honeywell International</b> row — one vendor card holding multiple CAGE codes.<br>
     <b>3.</b> Click <b>+ Add Vendor</b> and type CAGE <span class="k">4XK29</span> (same-CAGE merge) — then clear it and type <span class="k">94580</span> (new Honeywell CAGE → add to existing record).
+  </div>
+
+  <div class="stats">
+    <div class="stat"><b>12</b><span>Total Vendors</span></div><div class="vr"></div>
+    <div class="stat n"><b>18</b><span>RFQs Sent (30 days)</span></div><div class="vr"></div>
+    <div class="stat g"><b>11</b><span>Quotes Received</span></div><div class="vr"></div>
+    <div class="stat a"><b>4</b><span>Awaiting Response</span></div><div class="vr"></div>
+    <div class="stat" style="--x:0"><b style="color:var(--red)">3</b><span>No Bid / Declined</span></div>
+  </div>
+
+  <div class="tabs">
+    <div class="tab on">My Vendors <span class="cnt">12</span></div>
+    <div class="tab" onclick="location.href='Vendor_Page.html'">GovScraper Member Directory <span class="cnt">48</span></div>
+    <div class="tab" onclick="location.href='Vendor_Page.html'">Vendor Pool <span class="cnt">33,969</span></div>
+    <div class="spacer"></div>
+    <button class="btn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="M7 10l5 5 5-5"/><path d="M12 15V3"/></svg>Export</button>
+    <button class="btn primary" onclick="openAdd()">+ Add Vendor</button>
+  </div>
+
+  <div class="toolbar">
+    <div class="search"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg><input placeholder="Search vendors by name, email, CAGE, or part..."></div>
+    <select class="flt"><option>All Types</option><option>MFG</option><option>Distributor</option><option>Packaging House</option></select>
+    <select class="flt"><option>Sort: Last Activity</option><option>Sort: Name A–Z</option><option>Sort: Most Quotes</option></select>
   </div>
 
   <div class="mergebar" id="mergebar">
@@ -224,43 +266,78 @@
   <div class="card">
     <table>
       <thead><tr>
-        <th style="width:34px"></th><th>VENDOR</th><th>PRIMARY CONTACT</th><th>EMAIL</th><th>LOCATION</th><th>RFQS SENT</th><th>QUOTES BACK</th><th>FSCS PROVIDED</th>
+        <th style="width:34px"></th><th>VENDOR</th><th>PRIMARY CONTACT</th><th>EMAIL</th><th>PHONE</th><th>LOCATION</th><th>RFQS SENT</th><th>QUOTES BACK</th><th>FSCS PROVIDED</th>
       </tr></thead>
       <tbody>
         <tr id="rowHoney" onclick="showHoney()" style="cursor:pointer">
           <td onclick="event.stopPropagation()"><input type="checkbox" onchange="selChange()"></td>
           <td><div class="co">Honeywell International Inc</div><div class="sub2" id="honeySub">3 CAGEs: 55939 · 06481 · 70210 &nbsp;· MFG</div></td>
-          <td>Gov Quotes Desk</td><td>gov.quotes@honeywell.com</td><td>Phoenix, AZ</td>
+          <td>Gov Quotes Desk</td><td>gov.quotes@honeywell.com</td><td>(602) 555-0150</td><td>Phoenix, AZ</td>
           <td><span class="pill b">14</span></td><td><span class="pill g">9</span></td>
           <td><div class="chips"><span class="chip">1680</span><span class="chip">2915</span><span class="chip">6610</span></div></td>
         </tr>
         <tr id="rowKeep">
           <td><input type="checkbox" onchange="selChange()"></td>
           <td><div class="co">MS Aerospace<span class="dupchip" onclick="event.stopPropagation();openMergeDupe()">⚠ Possible duplicate</span></div><div class="sub2">CAGE 3CAE5 · MFG</div></td>
-          <td>Dana Whitfield</td><td>quotes@msaerospace.com</td><td>Sylmar, CA</td>
+          <td>Dana Whitfield</td><td>quotes@msaerospace.com</td><td>(818) 555-0162</td><td>Sylmar, CA</td>
           <td><span class="pill b" id="keepRfq">9</span></td><td><span class="pill g" id="keepQ">7</span></td>
           <td><div class="chips"><span class="chip">5306</span><span class="chip">5305</span><span class="chip">3040</span></div></td>
         </tr>
         <tr id="rowDupe">
           <td><input type="checkbox" onchange="selChange()"></td>
           <td><div class="co">MS Aerosapce<span class="dupchip" onclick="event.stopPropagation();openMergeDupe()">⚠ Possible duplicate</span></div><div class="sub2">No CAGE · MFG</div></td>
-          <td>—</td><td>sales@ms-aerospace.com</td><td>Sylmar, CA</td>
+          <td>—</td><td>sales@ms-aerospace.com</td><td>—</td><td>Sylmar, CA</td>
           <td><span class="pill b">2</span></td><td><span class="pill g">1</span></td>
           <td><div class="chips"><span class="chip">5306</span></div></td>
         </tr>
         <tr>
           <td><input type="checkbox" onchange="selChange()"></td>
           <td><div class="co">Apex Switchgear Corp</div><div class="sub2">CAGE 4XK29 · MFG</div></td>
-          <td>Dana Whitfield</td><td>dana@apexswitchgear.com</td><td>Denver, CO</td>
+          <td>Dana Whitfield</td><td>dana@apexswitchgear.com</td><td>(303) 555-0141</td><td>Denver, CO</td>
           <td><span class="pill b">9</span></td><td><span class="pill g">7</span></td>
           <td><div class="chips"><span class="chip">5930</span><span class="chip">5925</span><span class="chip">5945</span></div></td>
         </tr>
         <tr>
           <td><input type="checkbox" onchange="selChange()"></td>
           <td><div class="co">Precision Sleeve &amp; Bushing Co</div><div class="sub2">CAGE 5TW02 · MFG</div></td>
-          <td>Marcus Teller</td><td>quotes@precisionsleeve.com</td><td>Columbus, OH</td>
+          <td>Marcus Teller</td><td>quotes@precisionsleeve.com</td><td>(614) 555-0188</td><td>Columbus, OH</td>
           <td><span class="pill b">6</span></td><td><span class="pill g">5</span></td>
           <td><div class="chips"><span class="chip">3120</span><span class="chip">5365</span><span class="chip">5342</span></div></td>
+        </tr>
+        <tr>
+          <td><input type="checkbox" onchange="selChange()"></td>
+          <td><div class="co">Northline Electro Mfg</div><div class="sub2">CAGE 7PD41 · MFG</div></td>
+          <td>Sue Caldwell</td><td>s.caldwell@northline-mfg.com</td><td>(814) 555-0122</td><td>Erie, PA</td>
+          <td><span class="pill b">5</span></td><td><span class="pill g">3</span></td>
+          <td><div class="chips"><span class="chip">5930</span><span class="chip">6110</span><span class="chip">5950</span></div></td>
+        </tr>
+        <tr>
+          <td><input type="checkbox" onchange="selChange()"></td>
+          <td><div class="co">Midwest Bearing Works</div><div class="sub2">CAGE 9QF63 · Distributor</div></td>
+          <td>Ray Okafor</td><td>rfq@midwestbearing.com</td><td>(316) 555-0167</td><td>Wichita, KS</td>
+          <td><span class="pill b">4</span></td><td><span class="pill g">2</span></td>
+          <td><div class="chips"><span class="chip">3110</span><span class="chip">3130</span><span class="chip">3120</span></div></td>
+        </tr>
+        <tr>
+          <td><input type="checkbox" onchange="selChange()"></td>
+          <td><div class="co">Calder Components LLC</div><div class="sub2">CAGE 1MR88 · Distributor</div></td>
+          <td>Jen Marsh</td><td>jen@caldercomponents.com</td><td>(480) 555-0190</td><td>Mesa, AZ</td>
+          <td><span class="pill b">4</span></td><td><span class="pill g">2</span></td>
+          <td><div class="chips"><span class="chip">5305</span><span class="chip">5310</span><span class="chip">5340</span></div></td>
+        </tr>
+        <tr>
+          <td><input type="checkbox" onchange="selChange()"></td>
+          <td><div class="co">Allied Motion Parts Inc</div><div class="sub2">CAGE 2HV50 · MFG</div></td>
+          <td>Tom Reyes</td><td>treyes@alliedmotionparts.com</td><td>(423) 555-0135</td><td>Chattanooga, TN</td>
+          <td><span class="pill b">3</span></td><td><span class="pill g">1</span></td>
+          <td><div class="chips"><span class="chip">3040</span><span class="chip">3010</span><span class="chip">5365</span></div></td>
+        </tr>
+        <tr>
+          <td><input type="checkbox" onchange="selChange()"></td>
+          <td><div class="co">Gulf Coast Castings</div><div class="sub2">No CAGE · MFG</div></td>
+          <td>Pat Nguyen</td><td>sales@gulfcoastcastings.com</td><td>(251) 555-0109</td><td>Mobile, AL</td>
+          <td><span class="pill b">3</span></td><td><span class="pill gr">0</span></td>
+          <td><div class="chips"><span class="chip">5340</span><span class="chip">2510</span><span class="chip">2590</span></div></td>
         </tr>
       </tbody>
     </table>
@@ -408,12 +485,22 @@
           </div>
         </div>
       </div></div>
-      <div class="frow one"><div class="f"><label>COMPANY NAME *</label><input id="aName" placeholder="Auto-fills from CAGE" oninput="nameCheck()"><div class="mergehit warn" id="hitName">⚠ Looks similar to <b>MS Aerospace</b> (CAGE 3CAE5), already in My Vendors.
+      <div class="frow one"><div class="f"><label>COMPANY NAME *</label><input id="aName" placeholder="Auto-fills from CAGE" oninput="nameCheck()"><div class="note">This name powers the autocomplete on the RFQ page.</div><div class="mergehit warn" id="hitName">⚠ Looks similar to <b>MS Aerospace</b> (CAGE 3CAE5), already in My Vendors.
         <div class="acts"><button class="btn mini" onclick="closeAdd();openMergeDupe()">Review &amp; merge</button><button class="btn mini" style="color:var(--muted);border-color:var(--border);background:#fff" onclick="keepSep('hitName')">It's a different company</button></div>
       </div></div></div>
-      <div class="frow"><div class="f"><label>PRIMARY CONTACT</label><input placeholder="First Last"></div><div class="f"><label>EMAIL *</label><input id="aEmail" placeholder="quotes@vendor.com"></div></div>
-      <div class="frow"><div class="f"><label>PHONE</label><input id="aPhone" placeholder="(555) 555-0100"></div><div class="f"><label>VENDOR TYPE</label><select><option>MFG</option><option>Distributor</option><option>Packaging House</option></select></div></div>
+      <div class="frow"><div class="f"><label>PRIMARY CONTACT *</label><input placeholder="First Last"></div><div class="f"><label>TITLE</label><input placeholder="Sales Manager"></div></div>
+      <div class="frow"><div class="f"><label>EMAIL *</label><input id="aEmail" placeholder="quotes@vendor.com"><div class="note">Auto-fills when you send RFQs to this vendor.</div></div><div class="f"><label>PHONE</label><input id="aPhone" placeholder="(555) 555-0100"></div></div>
+      <div class="frow"><div class="f"><label>VENDOR TYPE</label><select><option>MFG</option><option>Distributor</option><option>Packaging House</option></select></div><div class="f"><label>PAYMENT TERMS</label><select><option>Net 30</option><option>Net 45</option><option>Net 60</option><option>Prepay</option><option>CC on order</option></select></div></div>
+      <div class="frow one"><div class="f"><label>FSCS THEY PROVIDE</label>
+        <div class="tagbox" id="fscBox" onclick="document.getElementById('fscIn').focus()">
+          <input id="fscIn" placeholder="Type an FSC…" autocomplete="off" oninput="fscSuggest()" onkeydown="fscKey(event)" onblur="setTimeout(fscHide,120)" onfocus="fscSuggest()">
+        </div>
+        <div id="fscMenu" class="fscmenu"></div>
+        <div class="note">Type the FSC, pick the match, press Enter — it becomes a bubble.</div>
+      </div></div>
       <div class="frow"><div class="f"><label>CITY</label><input id="aCity" placeholder="Auto-fills"></div><div class="f"><label>STATE</label><input id="aState" placeholder="—"></div></div>
+      <div class="frow"><div class="f"><label>WEBSITE</label><input placeholder="https://"></div><div class="f"><label>&nbsp;</label></div></div>
+      <div class="frow one"><div class="f"><label>NOTES</label><textarea rows="3" placeholder="Quoting habits, who to ask for, minimums, what they're best at..."></textarea></div></div>
     </div>
     <div class="mfoot"><button class="btn" onclick="closeAdd()">Cancel</button><button class="btn primary">Save Vendor</button></div>
   </div>
@@ -494,6 +581,7 @@ function closeAdd(){
   document.getElementById('addOvl').classList.remove('open');
   ['hitSame','hitMulti','hitName'].forEach(id=>document.getElementById(id).style.display='none');
   ['aCage','aName','aEmail','aPhone','aCity','aState'].forEach(id=>document.getElementById(id).value='');
+  document.querySelectorAll('#fscBox .tag').forEach(t=>t.remove());
 }
 let dismissed={};
 function keepSep(id){document.getElementById(id).style.display='none';dismissed[id]=true;
@@ -538,6 +626,43 @@ function addCage94580(){
   toast('CAGE <b>94580</b> added to <b>Honeywell International Inc</b> — now 4 CAGEs, one vendor card.');
 }
 function addCageFromModal(){ closeAdd(); addCage94580(); }
+
+/* ---- FSC tag input (matches prod) ---- */
+const FSC = {
+ "1560":"Airframe Structural Components","1680":"Misc Aircraft Accessories","2915":"Engine Fuel System Components, Aircraft","2510":"Vehicular Cab, Body & Frame Parts","3040":"Misc Power Transmission Equipment","3110":"Bearings, Antifriction","3120":"Bearings, Plain","3130":"Bearings, Mounted","4730":"Hose, Pipe & Tube Fittings","5305":"Screws","5306":"Bolts","5310":"Nuts & Washers","5315":"Pins & Keys","5340":"Hardware, Commercial","5365":"Bushings, Rings, Shims & Spacers","5925":"Circuit Breakers","5930":"Switches","5945":"Relays & Solenoids","6110":"Electrical Control Equipment","6610":"Flight Instruments"
+};
+function fscChips(){return [...document.querySelectorAll('#fscBox .tag')].map(t=>t.textContent.replace('×','').trim());}
+function fscAdd(code){
+  if(fscChips().includes(code)){fscReset();return;}
+  const sp=document.createElement('span'); sp.className='tag';
+  sp.innerHTML=code+' <i onclick="this.parentNode.remove()">×</i>';
+  document.getElementById('fscBox').insertBefore(sp, document.getElementById('fscIn'));
+  fscReset();
+}
+function fscReset(){const i=document.getElementById('fscIn'); i.value=''; fscHide(); i.focus();}
+function fscHide(){document.getElementById('fscMenu').style.display='none';}
+function fscSuggest(){
+  const q=document.getElementById('fscIn').value.trim().toLowerCase();
+  const menu=document.getElementById('fscMenu');
+  const hits=Object.keys(FSC).filter(c=>!fscChips().includes(c)&&(c.startsWith(q)||FSC[c].toLowerCase().includes(q))).slice(0,7);
+  if(!q||!hits.length){fscHide();return;}
+  menu.innerHTML='<div class="inner">'+hits.map(c=>`<div class="fsc-item" onmousedown="event.preventDefault();fscAdd('${c}')"><span class="code">${c}</span>${FSC[c]}</div>`).join('')+'</div>';
+  menu.style.display='block';
+}
+function fscKey(e){
+  if(e.key==='Enter'){
+    e.preventDefault();
+    const q=e.target.value.trim();
+    const hits=Object.keys(FSC).filter(c=>c.startsWith(q)||FSC[c].toLowerCase().includes(q.toLowerCase()));
+    if(hits.length) fscAdd(hits[0]);
+    else if(/^\d{4}$/.test(q)) fscAdd(q);
+  }
+  if(e.key==='Backspace'&&!e.target.value){
+    const tags=document.querySelectorAll('#fscBox .tag');
+    if(tags.length) tags[tags.length-1].remove();
+  }
+  if(e.key==='Escape') fscHide();
+}
 </script>
 </body>
 </html>

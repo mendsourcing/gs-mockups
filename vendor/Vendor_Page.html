@@ -611,10 +611,11 @@
   <div class="modal">
     <div class="mhead"><h3 id="mTitle">Add New Vendor</h3><span class="x" onclick="closeModal()">×</span></div>
     <div class="mbody">
-      <div class="frow one"><div class="f"><label>COMPANY NAME *</label><input id="vName" placeholder="e.g. Apex Switchgear Corp" oninput="checkDup()"><div class="note">This name powers the autocomplete on the RFQ page.</div><div id="dupWarn" style="display:none"></div></div></div>
+      <div class="frow one"><div class="f"><label>CAGE CODE *</label><input id="vCage" placeholder="4XK29" oninput="checkDup()" style="font-family:'Source Code Pro',monospace"><div class="note">Enter a CAGE and company, city &amp; state auto-fill from government records.</div></div></div>
+      <div class="frow one"><div class="f"><label>COMPANY NAME *</label><input id="vName" placeholder="Auto-fills from CAGE" oninput="checkDup()"><div class="note">This name powers the autocomplete on the RFQ page.</div><div id="dupWarn" style="display:none"></div></div></div>
       <div class="frow"><div class="f"><label>PRIMARY CONTACT *</label><input placeholder="First Last"></div><div class="f"><label>TITLE</label><input placeholder="Sales Manager"></div></div>
       <div class="frow"><div class="f"><label>EMAIL *</label><input placeholder="quotes@vendor.com"><div class="note">Auto-fills when you send RFQs to this vendor.</div></div><div class="f"><label>PHONE</label><input placeholder="(555) 555-0100"></div></div>
-      <div class="frow"><div class="f"><label>CAGE CODE (OPTIONAL)</label><input id="vCage" placeholder="4XK29" oninput="checkDup()"><div class="note">Links vendor to their CAGE page if they have one.</div></div><div class="f"><label>VENDOR TYPE</label><select><option>MFG</option><option>Distributor</option><option>Packaging House</option></select></div></div>
+      <div class="frow"><div class="f"><label>VENDOR TYPE</label><select><option>MFG</option><option>Distributor</option><option>Packaging House</option></select></div><div class="f"><label>PAYMENT TERMS</label><select><option>Net 30</option><option>Net 45</option><option>Net 60</option><option>Prepay</option><option>CC on order</option></select></div></div>
       <div class="frow one"><div class="f"><label>FSCS THEY PROVIDE</label>
         <div class="tagbox" id="fscBox" onclick="document.getElementById('fscIn').focus()">
           <span class="tag">5930 <i onclick="this.parentNode.remove()">×</i></span>
@@ -623,8 +624,8 @@
         <div id="fscMenu" class="fscmenu"></div>
         <div class="note">Type the FSC, pick the match, press Enter — it becomes a bubble. Shows as chips on the vendor list and powers FSC matching on RFQs.</div>
       </div></div>
-      <div class="frow"><div class="f"><label>CITY</label><input placeholder="Denver"></div><div class="f"><label>STATE</label><input placeholder="CO"></div></div>
-      <div class="frow"><div class="f"><label>PAYMENT TERMS</label><select><option>Net 30</option><option>Net 45</option><option>Net 60</option><option>Prepay</option><option>CC on order</option></select></div><div class="f"><label>WEBSITE</label><input placeholder="https://"></div></div>
+      <div class="frow"><div class="f"><label>CITY</label><input placeholder="Auto-fills"></div><div class="f"><label>STATE</label><input placeholder="—"></div></div>
+      <div class="frow one"><div class="f"><label>WEBSITE</label><input placeholder="https://"></div></div>
       <div class="frow one"><div class="f"><label>NOTES</label><textarea rows="3" placeholder="Quoting habits, who to ask for, minimums, what they're best at..."></textarea></div></div>
     </div>
     <div class="mfoot"><button class="btn" onclick="closeModal()">Cancel</button><button class="btn primary" id="mSave" onclick="saveVendor()">Save Vendor</button></div>
@@ -711,7 +712,7 @@ function saveVendor(){
   if(editMode){
     const inps=document.querySelectorAll('#ovl .mbody input');
     const sels=document.querySelectorAll('#ovl .mbody select');
-    const v={name:inps[0].value,contact:inps[1].value,email:inps[3].value,phone:inps[4].value,cage:inps[5].value,
+    const v={name:inps[1].value,contact:inps[2].value,email:inps[4].value,phone:inps[5].value,cage:inps[0].value,
              city:inps[7].value,state:inps[8].value,type:sels[0].value,terms:sels[1].value,
              notes:document.querySelector('#ovl .mbody textarea').value,chips:fscChips('')};
     // detail header
@@ -744,7 +745,7 @@ function editVendor(){
   const inps=document.querySelectorAll('#ovl .mbody input');
   const sels=document.querySelectorAll('#ovl .mbody select');
   const addr=document.getElementById('vdAddr').textContent.split(', ');
-  const vals=[document.getElementById('vdName').textContent,document.getElementById('vdContact').textContent,'Sales Manager',document.getElementById('vdEmail').textContent,document.getElementById('vdPhone').textContent,(document.getElementById('vdSub').textContent.match(/CAGE\s+(\S+)/)||[,''])[1],null,addr[1]||'Denver',(addr[2]||'CO 80205').split(' ')[0],'https://apexswitchgear.com'];
+  const vals=[(document.getElementById('vdSub').textContent.match(/CAGE\s+(\S+)/)||[,''])[1],document.getElementById('vdName').textContent,document.getElementById('vdContact').textContent,'Sales Manager',document.getElementById('vdEmail').textContent,document.getElementById('vdPhone').textContent,null,addr[1]||'Denver',(addr[2]||'CO 80205').split(' ')[0],'https://apexswitchgear.com'];
   inps.forEach((el,i)=>{if(vals[i]!==null&&vals[i]!==undefined)el.value=vals[i];});
   sels[0].value='MFG'; sels[1].value='Net 30';
   document.querySelector('#ovl .mbody textarea').value=document.getElementById('vdNotes').textContent;
@@ -864,8 +865,14 @@ function cvOkay(){
 }
 function checkDup(){
   const existing={'apex switchgear corp':'4XK29','precision sleeve & bushing co':'5TW02','northline electro mfg':'7PD41','midwest bearing works':'9QF63','calder components llc':'1MR88','allied motion parts inc':'2HV50','gulf coast castings':'','sikorsky aircraft corporation':'78286','equitable engineering company':'11867'};
-  const name=(document.getElementById('vName').value||'').trim().toLowerCase();
+  const fills={'4XK29':['Apex Switchgear Corp','Denver','CO'],'78286':['Sikorsky Aircraft Corporation','Stratford','CT'],'5TW02':['Precision Sleeve & Bushing Co','Columbus','OH']};
   const cage=(document.getElementById('vCage').value||'').trim().toUpperCase();
+  if(fills[cage]){
+    const inps=document.querySelectorAll('#ovl .mbody input');
+    document.getElementById('vName').value=fills[cage][0];
+    inps[7].value=fills[cage][1]; inps[8].value=fills[cage][2];
+  }
+  const name=(document.getElementById('vName').value||'').trim().toLowerCase();
   const w=document.getElementById('dupWarn');
   let hit=null;
   for(const [n,c] of Object.entries(existing)){
@@ -874,7 +881,7 @@ function checkDup(){
   if(hit){
     const label=hit.replace(/\b\w/g,m=>m.toUpperCase());
     w.className='dupwarn'; w.style.display='block';
-    w.innerHTML=`⚠ <b>${label}</b> already exists in My Vendors / Vendor Pool. <a href="#" onclick="closeModal();return false">Open existing profile</a> or <a href="#" onclick="return false">merge into it</a> instead of creating a duplicate.`;
+    w.innerHTML=`⚠ <b>${label}</b> already exists in My Vendors / Vendor Pool. <a href="#" onclick="closeModal();return false">Open existing profile</a> or <a href="Vendor_Merge.html">merge into it →</a> instead of creating a duplicate.`;
   } else w.style.display='none';
 }
 function renderRfqs(f){
