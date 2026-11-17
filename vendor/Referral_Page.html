@@ -99,6 +99,15 @@
   .tog input:checked + .tr{background:var(--green)}
   .tog input:checked + .tr + .th{left:23px}
 
+  .notebox{margin-top:14px;background:#F8FAFC;border:1px solid var(--border);border-radius:11px;padding:14px 16px}
+  .notebox label{display:block;font-size:11px;font-weight:800;letter-spacing:.5px;color:var(--text-dim);margin-bottom:7px}
+  .notebox textarea{width:100%;border:1px solid var(--border);border-radius:9px;padding:10px 12px;font-size:13px;font-family:'Manrope',sans-serif;resize:none;height:66px}
+  .notebox textarea:focus{outline:2px solid var(--accent-border)}
+  .notebox .row{display:flex;align-items:center;margin-top:7px}
+  .notebox .cnt{font-size:11px;font-weight:700;color:var(--faint)}
+  .notebox .cnt.max{color:var(--red)}
+  .notebox .save{margin-left:auto;background:var(--accent);color:#fff;border:none;border-radius:8px;padding:7px 15px;font-size:12px;font-weight:800;cursor:pointer;font-family:'Manrope',sans-serif}
+  .notebox .hint{font-size:11px;color:var(--faint);margin-top:6px}
   .toast{position:fixed;bottom:26px;left:50%;transform:translateX(-50%);background:var(--primary);color:#fff;font-size:12.5px;font-weight:700;padding:12px 20px;border-radius:10px;opacity:0;transition:.25s;pointer-events:none;z-index:200}
   .toast.show{opacity:1}
 </style>
@@ -163,6 +172,12 @@
         <div class="soc" style="color:#0A66C2" title="Share to LinkedIn" onclick="shareLI()">in</div>
         <div class="soc" title="Share to X" onclick="shareX()">𝕏</div>
       </div>
+      <div class="notebox">
+        <label>YOUR PERSONAL NOTE — SHOWN ON YOUR INVITE PAGE</label>
+        <textarea id="pnote" maxlength="200" oninput="pnoteCnt()">A system that I use often for my Government Contracts with the DLA is GovScraper. It is a great tool and I highly recommend that you check it out if you source Government Contracts as well.</textarea>
+        <div class="row"><span class="cnt" id="pnoteCnt">0/200</span><button class="save" onclick="this.textContent='✓ Saved'">Save Note</button></div>
+        <div class="hint">Everyone who opens your referral link sees this quote with your name. Leave it as is or make it yours. <a href="Referral_Landing.html" target="_blank">Preview your invite page →</a></div>
+      </div>
     </div>
   </div></div>
 
@@ -221,6 +236,11 @@ const REF_URL='https://govscraper.com/referral/tris10x7k2';
 const POST_TEXT="A system that I use often for my Government Contracts with the DLA is GovScraper. It is a great tool and I highly recommend that you check it out if you source Government Contracts as well. Get a 14 day free trial with my referral code:";
 const TAG_X='supertris10';
 const X_TEXT="A system I use often for my Government Contracts with the DLA is @supertris10's GovScraper. Great tool and I highly recommend it if you source Government Contracts too. Get a 14 day free trial with my referral code:";
+function pnoteCnt(){
+  const t=document.getElementById('pnote'), c=document.getElementById('pnoteCnt');
+  c.textContent=t.value.length+'/200';
+  c.className='cnt'+(t.value.length>=200?' max':'');
+}
 function copyLink(){
   try{navigator.clipboard.writeText(REF_URL);}catch(e){}
   const t=document.getElementById('toast');
@@ -235,6 +255,7 @@ function shareEmail(){
 function shareFB(){ window.open('https://www.facebook.com/sharer/sharer.php?u='+encodeURIComponent(REF_URL)+'&quote='+encodeURIComponent(POST_TEXT),'_blank'); }
 function shareLI(){ window.open('https://www.linkedin.com/feed/?shareActive=true&text='+encodeURIComponent(POST_TEXT+' '+REF_URL+' @Tristan Thomas'),'_blank'); }
 function shareX(){ window.open('https://twitter.com/intent/tweet?text='+encodeURIComponent(X_TEXT)+'&url='+encodeURIComponent(REF_URL),'_blank'); }
+pnoteCnt();
 </script>
 </body>
 </html>
