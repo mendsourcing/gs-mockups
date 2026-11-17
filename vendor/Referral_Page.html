@@ -118,6 +118,21 @@
   .notebox .cnt.max{color:var(--red)}
   .notebox .save{margin-left:auto;background:var(--accent);color:#fff;border:none;border-radius:8px;padding:7px 15px;font-size:12px;font-weight:800;cursor:pointer;font-family:'Manrope',sans-serif}
   .notebox .hint{font-size:11px;color:var(--faint);margin-top:6px}
+  .iovl{position:fixed;inset:0;background:rgba(15,23,42,.45);display:none;align-items:center;justify-content:center;padding:20px;z-index:300}
+  .iovl.open{display:flex}
+  .imodal{background:#fff;border-radius:16px;width:480px;max-width:100%;box-shadow:0 24px 70px rgba(0,0,0,.3);overflow:hidden}
+  .imodal .ihead{display:flex;align-items:center;padding:17px 24px;border-bottom:1px solid var(--border)}
+  .imodal h3{font-size:16px;font-weight:800}
+  .imodal .ix{margin-left:auto;color:var(--faint);font-size:19px;cursor:pointer}
+  .imodal .ibody{padding:20px 24px}
+  .imodal label{display:block;font-size:11px;font-weight:800;letter-spacing:.5px;color:var(--text-dim);margin-bottom:6px}
+  .imodal input{width:100%;border:1px solid var(--border);border-radius:9px;padding:11px 13px;font-size:14px;font-family:'Manrope',sans-serif}
+  .imodal input:focus{outline:2px solid var(--accent-border)}
+  .ipreview{background:#F8FAFC;border:1px solid var(--border);border-radius:10px;padding:12px 15px;font-size:12.5px;color:var(--text-dim);line-height:1.6;margin-top:14px;font-style:italic}
+  .ipreview b{display:block;font-style:normal;font-size:10.5px;letter-spacing:.6px;color:var(--faint);margin-bottom:5px}
+  .imodal .ifoot{display:flex;gap:10px;justify-content:flex-end;padding:15px 24px;border-top:1px solid var(--border)}
+  .ibtn{border-radius:9px;padding:10px 18px;font-size:13px;font-weight:800;cursor:pointer;font-family:'Manrope',sans-serif;border:1px solid var(--border);background:#fff}
+  .ibtn.primary{background:var(--accent);border-color:var(--accent);color:#fff}
   .toast{position:fixed;bottom:26px;left:50%;transform:translateX(-50%);background:var(--primary);color:#fff;font-size:12.5px;font-weight:700;padding:12px 20px;border-radius:10px;opacity:0;transition:.25s;pointer-events:none;z-index:200}
   .toast.show{opacity:1}
 </style>
@@ -188,7 +203,7 @@
   <div class="notebox">
         <label>YOUR PERSONAL NOTE — SHOWN ON YOUR INVITE PAGE</label>
         <textarea id="pnote" maxlength="200" oninput="pnoteCnt()">A system that I use often for my Government Contracts with the DLA is GovScraper. It is a great tool and I highly recommend that you check it out if you source Government Contracts as well.</textarea>
-        <div class="row"><span class="cnt" id="pnoteCnt">0/200</span><button class="save" onclick="this.textContent='✓ Saved'">Save Note</button></div>
+        <div class="row"><span class="cnt" id="pnoteCnt">0/200</span><button class="save" onclick="openInvite()">Send Invite</button></div>
         <div class="hint">Everyone who opens your referral link sees this quote with your name. Leave it as is or make it yours. <a href="Referral_Landing.html" target="_blank">Preview your invite page →</a></div>
       </div>
   </div></div>
@@ -272,12 +287,45 @@
 </div><!-- /mainarea -->
 </div><!-- /shell -->
 
+<div class="iovl" id="iovl" onclick="if(event.target===this)closeInvite()">
+  <div class="imodal">
+    <div class="ihead"><h3>Send your invite</h3><span class="ix" onclick="closeInvite()">✕</span></div>
+    <div class="ibody">
+      <label>FRIEND'S EMAIL</label>
+      <input id="invEmail" type="email" placeholder="name@company.com">
+      <div class="ipreview"><b>THEY'LL RECEIVE YOUR NOTE + LINK</b><span id="invPreview"></span><br><span class="mono" style="font-style:normal;color:var(--accent)">govscraper.com/referral/tris10x7k2</span> · 14-day free trial applied automatically</div>
+    </div>
+    <div class="ifoot"><button class="ibtn" onclick="closeInvite()">Cancel</button><button class="ibtn primary" onclick="sendInvite()">Send Invite ➤</button></div>
+  </div>
+</div>
+
 <div class="toast" id="toast">✓ Referral link copied — govscraper.com/referral/tris10x7k2</div>
 <script>
 const REF_URL='https://govscraper.com/referral/tris10x7k2';
 const POST_TEXT="A system that I use often for my Government Contracts with the DLA is GovScraper. It is a great tool and I highly recommend that you check it out if you source Government Contracts as well. Get a 14 day free trial with my referral code:";
 const TAG_X='supertris10';
 const X_TEXT="A system I use often for my Government Contracts with the DLA is @supertris10's GovScraper. Great tool and I highly recommend it if you source Government Contracts too. Get a 14 day free trial with my referral code:";
+function openInvite(){
+  document.getElementById('invPreview').textContent='"'+document.getElementById('pnote').value+'"';
+  document.getElementById('iovl').classList.add('open');
+  document.getElementById('invEmail').focus();
+}
+function closeInvite(){document.getElementById('iovl').classList.remove('open');}
+function sendInvite(){
+  const em=document.getElementById('invEmail').value.trim()||'your friend';
+  closeInvite();
+  const t=document.getElementById('toast');
+  t.textContent='✓ Invite sent to '+em;
+  t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'),2500);
+  const tb=document.querySelector('.rtable tbody');
+  if(tb && em.includes('@')){
+    const tr=document.createElement('tr');
+    tr.innerHTML='<td>'+em.split('@')[0]+'<span class="rsub">'+em+'</span></td><td>Just now</td><td><span class="rpill gr">Invited — hasn\'t signed up yet</span></td><td><span class="rpill gr">—</span></td>';
+    tb.insertBefore(tr, tb.firstChild);
+  }
+  document.getElementById('invEmail').value='';
+}
 function pnoteCnt(){
   const t=document.getElementById('pnote'), c=document.getElementById('pnoteCnt');
   c.textContent=t.value.length+'/200';
