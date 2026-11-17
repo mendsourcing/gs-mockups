@@ -20,8 +20,10 @@
 
   .topbar{background:#fff;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;padding:14px 36px;position:sticky;top:0;z-index:50}
   .topbar img{height:32px}
-  .signup{background:var(--accent);color:#fff;border:none;border-radius:10px;padding:11px 24px;font-size:14px;font-weight:800;cursor:pointer;font-family:'Manrope',sans-serif}
-  .signup:hover{background:var(--accent-hover)}
+  .tbright{display:flex;align-items:center;gap:22px}
+  .signin{font-size:14.5px;font-weight:700;color:var(--primary);cursor:pointer}
+  .signup{background:#0B1020;color:#fff;border:none;border-radius:999px;padding:14px 28px;font-size:15px;font-weight:800;cursor:pointer;font-family:'Manrope',sans-serif}
+  .signup:hover{opacity:.9}
 
   .hero{max-width:1360px;margin:0 auto;padding:60px 36px 54px;display:grid;grid-template-columns:0.85fr 1.15fr;gap:48px;align-items:center}
   @media(max-width:880px){.hero{grid-template-columns:1fr}}
@@ -85,7 +87,7 @@
 
 <div class="topbar">
   <img src="https://govscraper.com/assets/BigLogo-7gv5uAxF.png" alt="GovScraper">
-  <button class="signup">Sign up</button>
+  <div class="tbright"><span class="signin">Sign in</span><button class="signup">Start Your 14-Day Free Trial</button></div>
 </div>
 
 <div class="hero">
