@@ -65,7 +65,17 @@
   .yr .cap{margin-left:auto;font-size:12px;color:var(--muted);font-weight:600}
   .track{height:9px;border-radius:999px;background:#EEF2F6;margin:8px 30px 4px;overflow:hidden}
   .track .fill{height:100%;width:20%;background:var(--green);border-radius:999px}
-  .tiles{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;padding:16px 30px 24px}
+  .tiles{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;padding:16px 30px 10px}
+  .rtable{width:calc(100% - 60px);margin:10px 30px 26px;border-collapse:collapse;font-size:13px}
+  .rtable th{text-align:left;font-size:10.5px;letter-spacing:.6px;font-weight:700;color:var(--faint);padding:10px 12px;border-bottom:1px solid var(--border);background:#FAFBFC}
+  .rtable td{padding:12px;border-bottom:1px solid #F1F3F6;vertical-align:middle;font-weight:600}
+  .rtable tr:last-child td{border-bottom:none}
+  .rpill{display:inline-block;font-size:11px;font-weight:700;border-radius:999px;padding:3px 11px;white-space:nowrap}
+  .rpill.g{background:var(--green-soft);color:var(--green)}
+  .rpill.b{background:var(--accent-soft);color:var(--accent)}
+  .rpill.a{background:#FFF7ED;color:var(--amber)}
+  .rpill.gr{background:#F1F5F9;color:var(--muted)}
+  .rsub{display:block;font-size:11px;color:var(--faint);font-weight:500;margin-top:2px}
   .tile{background:#F8FAFC;border:1px solid var(--border);border-radius:11px;text-align:center;padding:20px 10px}
   .tile b{display:block;font-size:24px;font-weight:800}
   .tile b.money{color:var(--green)}
@@ -99,9 +109,9 @@
   .tog input:checked + .tr{background:var(--green)}
   .tog input:checked + .tr + .th{left:23px}
 
-  .notebox{margin-top:14px;background:#F8FAFC;border:1px solid var(--border);border-radius:11px;padding:14px 16px}
+  .notebox{margin-top:22px;background:#F8FAFC;border:1px solid var(--border);border-radius:11px;padding:14px 16px}
   .notebox label{display:block;font-size:11px;font-weight:800;letter-spacing:.5px;color:var(--text-dim);margin-bottom:7px}
-  .notebox textarea{width:100%;border:1px solid var(--border);border-radius:9px;padding:10px 12px;font-size:13px;font-family:'Manrope',sans-serif;resize:none;height:66px}
+  .notebox textarea{width:100%;border:1px solid var(--border);border-radius:9px;padding:12px 14px;font-size:13.5px;font-family:'Manrope',sans-serif;resize:none;height:96px}
   .notebox textarea:focus{outline:2px solid var(--accent-border)}
   .notebox .row{display:flex;align-items:center;margin-top:7px}
   .notebox .cnt{font-size:11px;font-weight:700;color:var(--faint)}
@@ -157,7 +167,7 @@
 <div class="wrap">
 
   <!-- HERO -->
-  <div class="card"><div class="pad hero">
+  <div class="card"><div class="pad"><div class="hero">
     <div>
       <h1>Give a 14-day free trial. Get $100.</h1>
       <p>Sharing GovScraper is a win-win. Your link gives another contractor a <b>14-day free trial</b> — double the standard 7 — and you receive a <b>$100 credit</b> when they make their first payment.</p>
@@ -172,13 +182,15 @@
         <div class="soc" style="color:#0A66C2" title="Share to LinkedIn" onclick="shareLI()">in</div>
         <div class="soc" title="Share to X" onclick="shareX()">𝕏</div>
       </div>
-      <div class="notebox">
+      
+    </div>
+  </div>
+  <div class="notebox">
         <label>YOUR PERSONAL NOTE — SHOWN ON YOUR INVITE PAGE</label>
         <textarea id="pnote" maxlength="200" oninput="pnoteCnt()">A system that I use often for my Government Contracts with the DLA is GovScraper. It is a great tool and I highly recommend that you check it out if you source Government Contracts as well.</textarea>
         <div class="row"><span class="cnt" id="pnoteCnt">0/200</span><button class="save" onclick="this.textContent='✓ Saved'">Save Note</button></div>
         <div class="hint">Everyone who opens your referral link sees this quote with your name. Leave it as is or make it yours. <a href="Referral_Landing.html" target="_blank">Preview your invite page →</a></div>
       </div>
-    </div>
   </div></div>
 
   <!-- REFERRAL STATS -->
@@ -187,10 +199,40 @@
     <div class="yr">2026 <span class="cap">$200 / $1,000</span></div>
     <div class="track"><div class="fill"></div></div>
     <div class="tiles">
-      <div class="tile"><b class="money">$200</b><span>CREDITS EARNED IN 2026</span></div>
-      <div class="tile"><b>3</b><span>IN TRIAL — PENDING</span></div>
-      <div class="tile"><b>2</b><span>PAID — CREDITED</span></div>
+      <div class="tile"><b class="money">$200</b><span>CREDITED TO YOU</span></div>
+      <div class="tile"><b>3</b><span>IN TRIAL — NOT CREDITED YET</span></div>
+      <div class="tile"><b>2</b><span>PAID — $100 EACH CREDITED</span></div>
     </div>
+    <table class="rtable">
+      <thead><tr><th>WHO YOU REFERRED</th><th>SIGNED UP</th><th>THEIR STATUS</th><th>YOUR CREDIT</th></tr></thead>
+      <tbody>
+        <tr>
+          <td>Jake Morrison<span class="rsub">jake@hdsupplyparts.com</span></td><td>Oct 28, 2026</td>
+          <td><span class="rpill g">Paid — PRO plan</span></td>
+          <td><span class="rpill g">✓ $100 credited</span><span class="rsub">Applied to your Dec 1 invoice</span></td>
+        </tr>
+        <tr>
+          <td>Maria Reyes<span class="rsub">maria@vectorsupply.co</span></td><td>Oct 3, 2026</td>
+          <td><span class="rpill g">Paid — GOLD plan</span></td>
+          <td><span class="rpill g">✓ $100 credited</span><span class="rsub">Applied to your Nov 1 invoice</span></td>
+        </tr>
+        <tr>
+          <td>Dan Lutz<span class="rsub">dan@lutzmachining.com</span></td><td>Nov 11, 2026</td>
+          <td><span class="rpill b">In trial — day 6 of 14</span></td>
+          <td><span class="rpill a">Pending their first payment</span></td>
+        </tr>
+        <tr>
+          <td>Sam Kessler<span class="rsub">sam@kesslerind.com</span></td><td>Nov 15, 2026</td>
+          <td><span class="rpill b">In trial — day 2 of 14</span></td>
+          <td><span class="rpill a">Pending their first payment</span></td>
+        </tr>
+        <tr>
+          <td>Chris Boone<span class="rsub">chris@boonefasteners.com</span></td><td>Sep 9, 2026</td>
+          <td><span class="rpill gr">Trial expired — didn't subscribe</span></td>
+          <td><span class="rpill gr">No credit</span></td>
+        </tr>
+      </tbody>
+    </table>
   </div>
 
   <!-- HOW IT WORKS -->
