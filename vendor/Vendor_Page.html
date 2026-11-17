@@ -55,23 +55,23 @@
   .spacer{flex:1}
 
   /* stat strip */
-  .stats{background:#fff;border:1px solid var(--border);border-radius:10px;display:flex;align-items:center;padding:14px 22px;gap:34px;margin-bottom:16px;flex-wrap:wrap}
-  .stat{display:flex;align-items:baseline;gap:8px}
-  .stat b{font-size:19px;font-weight:700;color:var(--accent)}
+  .stats{background:#fff;border:1px solid var(--border);border-radius:10px;display:flex;align-items:center;padding:16px 24px;gap:40px;margin-bottom:16px;flex-wrap:wrap}
+  .stat{display:flex;flex-direction:column;gap:2px}
+  .stat b{font-size:24px;font-weight:800;color:var(--accent)}
   .stat.g b{color:var(--green)} .stat.a b{color:var(--amber)} .stat.n b{color:var(--primary)} .stat.r b{color:var(--red)}
-  .stat span{font-size:12.5px;color:var(--muted);font-weight:500}
+  .stat span{font-size:10.5px;color:var(--faint);font-weight:700;letter-spacing:.6px;text-transform:uppercase}
   .stat.clickable{cursor:pointer;border-radius:7px;padding:4px 8px;margin:-4px -8px}
   .stat.clickable:hover{background:var(--accent-soft)}
   .stat.clickable:hover span{color:var(--accent);text-decoration:underline}
   .fpills{display:flex;gap:7px;margin-bottom:14px}
   .fpill{font-size:12px;font-weight:700;border:1.5px solid var(--border);background:#fff;color:var(--muted);border-radius:999px;padding:6px 15px;cursor:pointer;font-family:'Manrope',sans-serif}
   .fpill.on{background:var(--accent);border-color:var(--accent);color:#fff}
-  .vr{width:1px;height:26px;background:var(--border)}
+  .vr{width:1px;height:38px;background:var(--border)}
 
   /* tabs */
-  .tabs{display:flex;gap:4px;border-bottom:2px solid var(--border);margin-bottom:16px}
-  .tab{padding:10px 18px;font-size:13.5px;font-weight:600;color:var(--muted);cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-2px;display:flex;align-items:center;gap:7px}
-  .tab.on{color:var(--accent);border-bottom-color:var(--accent)}
+  .tabs{display:flex;gap:10px;align-items:center;margin-bottom:16px}
+  .tab{padding:8px 16px;font-size:12.5px;font-weight:700;color:var(--text-dim);cursor:pointer;border:1px solid var(--border);border-radius:9px;background:#fff;display:flex;align-items:center;gap:7px}
+  .tab.on{color:var(--accent);border-color:var(--accent-border);background:var(--accent-soft)}
   .tab .cnt{font-size:11px;background:#f1f5f9;color:var(--muted);border-radius:999px;padding:1px 8px;font-weight:700}
   .tab.on .cnt{background:var(--accent-soft);color:var(--accent)}
 
@@ -193,6 +193,7 @@
 <!-- TOP BAR -->
 <header class="topbar">
   <div class="topbar-left">
+    <span style="font-size:19px;color:var(--text-dim);cursor:pointer;margin-right:2px">☰</span>
     <a href="Dashboard_Page.html"><img src="https://govscraper.com/assets/BigLogo-7gv5uAxF.png" alt="GovScraper" class="topbar-logo"></a>
     <div class="topbar-divider"></div>
     <div class="mode-switcher">
@@ -244,13 +245,6 @@
 
 <!-- ============ LIST VIEW ============ -->
 <div id="listView">
-  <div class="pagehead">
-    <h1>Vendors</h1>
-    <div class="spacer"></div>
-    <button class="btn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="M7 10l5 5 5-5"/><path d="M12 15V3"/></svg>Export</button>
-    <button class="btn primary" onclick="openModal()">+ Add Vendor</button>
-  </div>
-
   <div class="stats">
     <div class="stat"><b>12</b><span>Total Vendors</span></div><div class="vr"></div>
     <div class="stat n clickable" onclick="showRfqs('all')" title="View all RFQs sent"><b>18</b><span>RFQs Sent (30 days)</span></div><div class="vr"></div>
@@ -262,7 +256,10 @@
   <div class="tabs">
     <div class="tab on" id="tabV" onclick="showTab('v')">My Vendors <span class="cnt">12</span></div>
     <div class="tab" id="tabM" onclick="showTab('m')">GovScraper Member Directory <span class="cnt">48</span></div>
-    <div class="tab" id="tabP" onclick="showTab('p')">Vendor Pool <span class="cnt">2,847</span></div>
+    <div class="tab" id="tabP" onclick="showTab('p')">Vendor Pool <span class="cnt">33,969</span></div>
+    <div class="spacer"></div>
+    <button class="btn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="M7 10l5 5 5-5"/><path d="M12 15V3"/></svg>Export</button>
+    <button class="btn primary" onclick="openModal()">+ Add Vendor</button>
   </div>
 
   <!-- TAB: MY VENDORS -->
@@ -332,36 +329,44 @@
   <!-- TAB: MEMBER DIRECTORY -->
   <div id="paneM" style="display:none">
     <div class="optin">
-      <b>Opt-in directory.</b> Only members who turned on <b>"Show me in the Member Directory"</b> in Settings appear here. Share your profile to be discovered by other members for teaming, sourcing, and split-award opportunities. <a href="Settings_Page.html">Manage my visibility →</a>
+      <b>Opt-in directory.</b> Only PRO members who turned on <b>"Show me in the Member Directory"</b> in Settings appear here. List yourself to be found by other members for teaming, sourcing and split-award opportunities. <a href="Settings_Page.html">Manage my visibility →</a>
     </div>
 
     <div class="toolbar">
       <div class="search"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg><input placeholder="Search members by company, FSC, or state..."></div>
-      <select class="flt"><option>All Set-Asides</option><option>SB</option><option>SDVOSB</option><option>HUBZone</option><option>WOSB</option><option>8(a)</option></select>
+      <select class="flt"><option>All Set-Asides</option><option>SB</option><option>SDVOSB</option><option>HUBZone</option><option>WOSB</option><option>EDWOSB</option></select>
       <select class="flt"><option>All FSCs</option><option>5340</option><option>5365</option><option>3040</option><option>5930</option><option>1680</option></select>
     </div>
 
     <div class="mgrid">
+      <div class="mcard" style="border-color:var(--accent-border)">
+        <div class="mtop"><div class="mav" style="background:var(--accent)">M</div><div><h4>MeND Sourcing Solutions <span style="font-size:10px;background:var(--accent-soft);color:var(--accent);border-radius:5px;padding:2px 7px;vertical-align:middle">You</span></h4><div class="loc">Los Angeles, CA</div></div><span class="mcage">CAGE 8HHU7 ✓</span></div>
+        <div class="mblurb">“Anything you need that is Government Contract related, let us know - here to help!”</div>
+        <div class="mrow">✉ tristan@mendsourcing.com</div>
+        <div class="mrow">✆ (661) 644-5509</div>
+        <div style="margin-top:8px"><span class="pill b">SB</span> <span class="pill a">SDVOSB</span></div>
+        <div style="font-size:11px;color:var(--faint);margin-top:10px;border-top:1px dashed var(--border);padding-top:8px">This is how other members see you. <a href="Settings_Page.html">Edit in Settings →</a></div>
+      </div>
       <div class="mcard">
         <div class="mtop"><div class="mav">RA</div><div><h4>Right Ascension Machining</h4><div class="loc">Huntsville, AL</div></div><span class="mcage">CAGE 8KD34</span></div><div class="mblurb">“Build-to-print CNC machine shop — lathe &amp; mill work: brackets, bushings, shafts, pins.”</div>
         <div class="mrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16v16H4z" opacity="0"/><path d="M22 6 12 13 2 6"/><rect x="2" y="4" width="20" height="16" rx="2"/></svg>bids@rightascension.com</div>
         <div class="mrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6A19.79 19.79 0 0 1 2.08 4.18 2 2 0 0 1 4.06 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.22a2 2 0 0 1 2.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"/></svg>(256) 555-0144</div>
         <div style="margin-top:8px"><span class="pill b">SB</span></div>
-        <div class="chips"><span class="chip">5340</span><span class="chip">5365</span><span class="chip">3040</span><span class="chip">4730</span><span class="chip">5315</span><span class="chip">3130</span><span class="chip">3110</span><span class="chip">2815</span><span class="chip">2910</span><span class="chip">2510</span><span class="chip">4140</span><span class="chip">5325</span></div>
+        <div class="chips"><span class="chip">5340</span><span class="chip">5365</span><span class="chip">3040</span><span class="chip">4730</span><span class="chip">5315</span><span class="chip">+7</span></div>
       </div>
       <div class="mcard">
         <div class="mtop"><div class="mav">VS</div><div><h4>Valley Spring Defense</h4><div class="loc">Shreveport, LA</div></div><span class="mcage">CAGE 6TR91</span></div><div class="mblurb">“SDVOSB electronics shop: switches, relays &amp; control assemblies for DLA and Navy programs.”</div>
         <div class="mrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 6 12 13 2 6"/><rect x="2" y="4" width="20" height="16" rx="2"/></svg>contracts@valleyspringdef.com</div>
         <div class="mrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6A19.79 19.79 0 0 1 2.08 4.18 2 2 0 0 1 4.06 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.22a2 2 0 0 1 2.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"/></svg>(318) 555-0171</div>
         <div style="margin-top:8px"><span class="pill b">SB</span> <span class="pill a">SDVOSB</span></div>
-        <div class="chips"><span class="chip">5930</span><span class="chip">5945</span><span class="chip">6110</span><span class="chip">5925</span><span class="chip">5950</span><span class="chip">6150</span></div>
+        <div class="chips"><span class="chip">5930</span><span class="chip">5945</span><span class="chip">6110</span><span class="chip">5925</span><span class="chip">5950</span><span class="chip">+1</span></div>
       </div>
       <div class="mcard">
         <div class="mtop"><div class="mav">BH</div><div><h4>Blue Harbor Supply Group</h4><div class="loc">Norfolk, VA</div></div><span class="mcage">CAGE 3WN57</span></div><div class="mblurb">“Fittings &amp; valve distributor, deep Navy sourcing. HUBZone pricing edge on open RFQs.”</div>
         <div class="mrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 6 12 13 2 6"/><rect x="2" y="4" width="20" height="16" rx="2"/></svg>team@blueharborsupply.com</div>
         <div class="mrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6A19.79 19.79 0 0 1 2.08 4.18 2 2 0 0 1 4.06 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.22a2 2 0 0 1 2.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"/></svg>(757) 555-0126</div>
         <div style="margin-top:8px"><span class="pill b">SB</span> <span class="pill g">HUBZone</span></div>
-        <div class="chips"><span class="chip">4730</span><span class="chip">4820</span><span class="chip">5331</span><span class="chip">4710</span><span class="chip">4720</span><span class="chip">5330</span><span class="chip">5340</span><span class="chip">4810</span></div>
+        <div class="chips"><span class="chip">4730</span><span class="chip">4820</span><span class="chip">5331</span><span class="chip">4710</span><span class="chip">4720</span><span class="chip">+3</span></div>
       </div>
       <div class="mcard">
         <div class="mtop"><div class="mav">SM</div><div><h4>Sierra Metalforms</h4><div class="loc">Reno, NV</div></div><span class="mcage">CAGE 1PV62</span></div><div class="mblurb">“Woman-owned sheet metal &amp; machined hardware MFG — plates, brackets, vehicle components.”</div>
@@ -377,9 +382,9 @@
   <div id="paneP" style="display:none">
 
     <div class="toolbar">
-      <div class="search"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg><input placeholder="Search pool by company, CAGE, FSC, or state..."></div>
+      <div class="search"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg><input placeholder="Search pool by company, CAGE, or state..."></div>
       <select class="flt"><option>All FSCs</option><option>3040</option><option>5930</option><option>5340</option><option>3120</option></select>
-      <select class="flt"><option>All Profiles</option><option>Verified</option><option>Unverified</option><option>GovScraper Member</option><option>In My Vendors</option></select>
+      <select class="flt"><option>All Profiles</option><option>Verified by Scout</option><option>Unverified</option><option>GovScraper Member</option><option>In My Vendors</option></select>
     </div>
 
     <div class="card">
@@ -392,7 +397,7 @@
             <td><div class="chips" style="margin-top:0"><span class="chip">3040</span><span class="chip">1560</span><span class="chip">1615</span></div></td>
             <td><span class="pill b">Approved source · 41 RFQs</span></td>
             <td>supplier.quotes@sikorsky.com <span class="vok">✓</span></td>
-            <td><span class="pill g">Verified</span></td>
+            <td><span class="pill g">Verified by Scout</span></td>
             <td><button class="btn mini" onclick="event.stopPropagation();confirmAdd(this)">+ My Vendors</button></td>
           </tr>
           <tr>
@@ -410,7 +415,7 @@
             <td><div class="chips" style="margin-top:0"><span class="chip">3040</span><span class="chip">1615</span></div></td>
             <td><span class="pill b">Approved source · 18 RFQs</span></td>
             <td>rfq@pcxaero.com <span class="vok">✓</span></td>
-            <td><span class="pill g">Verified</span></td>
+            <td><span class="pill g">Verified by Scout</span></td>
             <td><button class="btn mini" onclick="event.stopPropagation();confirmAdd(this)">+ My Vendors</button></td>
           </tr>
           <tr>
@@ -428,7 +433,7 @@
             <td><div class="chips" style="margin-top:0"><span class="chip">3040</span><span class="chip">1615</span><span class="chip">1680</span></div></td>
             <td><span class="pill g">Won 3 awards</span></td>
             <td>quotes@rotair.com <span class="vok">✓</span></td>
-            <td><span class="pill g">Verified</span></td>
+            <td><span class="pill g">Verified by Scout</span></td>
             <td><button class="btn mini" onclick="event.stopPropagation();confirmAdd(this)">+ My Vendors</button></td>
           </tr>
           <tr>
@@ -472,9 +477,11 @@
         <div><label>PRIMARY CONTACT</label><span id="vdContact">Dana Whitfield</span></div>
         <div><label>EMAIL</label><a href="#" id="vdEmail">dana@apexswitchgear.com</a></div>
         <div><label>PHONE</label><span id="vdPhone">(303) 555-0141</span></div>
-        <div><label>ADDRESS</label><span id="vdAddr">2200 Steele St, Denver, CO 80205</span></div>
+        <div><label>LOCATION</label><span id="vdAddr">Denver, CO</span></div>
         <div><label>PAYMENT TERMS</label><span id="vdTerms">Net 30</span></div>
+        <div><label>WEBSITE</label><a href="#">apexswitchgear.com</a></div>
       </div>
+      <div style="margin-top:12px"><label style="display:block;font-size:10.5px;font-weight:700;letter-spacing:.7px;color:var(--faint);margin-bottom:4px">FSCS PROVIDED (3)</label><div class="chips" style="margin-top:0"><span class="chip">5930</span><span class="chip">5925</span><span class="chip">5945</span></div></div>
       <div class="vnotes"><b>Notes:</b> <span id="vdNotes">Best source for rotary switches &amp; breakers. Always quotes within 48 hours. Ask for Dana directly — main inbox is slow. Will do small quantities.</span></div>
     </div>
     <div style="display:flex;gap:8px">
@@ -493,7 +500,7 @@
 
   <!-- RFQs sent -->
   <div class="sec">
-    <div class="sechead"><h3>REQUEST FOR QUOTES SENT</h3><span class="hint">Logged automatically when you send from an RFQ page</span></div>
+    <div class="sechead"><h3>REQUEST FOR QUOTES SENT</h3><span class="hint">Logged when you send from an RFQ page or mark a vendor Sent</span></div>
     <table>
       <thead><tr><th>DATE SENT</th><th>SOLICITATION #</th><th>NSN</th><th>ITEM</th><th>QTY</th><th>STATUS</th><th>THEIR QUOTE</th></tr></thead>
       <tbody id="vdRfqs">
@@ -528,13 +535,13 @@
   <div class="sec">
     <div class="sechead"><h3>PARTS &amp; PRICING HISTORY</h3><span class="hint">Every price this vendor has given you, newest first</span></div>
     <table>
-      <thead><tr><th>PART NUMBER</th><th>NSN</th><th>ITEM</th><th>UNIT PRICE</th><th>QTY BREAK</th><th>LEAD TIME</th><th>DATE QUOTED</th><th>VALID UNTIL</th></tr></thead>
+      <thead><tr><th>PART NUMBER</th><th>NSN</th><th>ITEM</th><th>UNIT PRICE</th><th>QTY &amp; UNIT</th><th>LEAD TIME</th><th>DATE QUOTED</th></tr></thead>
       <tbody id="vdPricing">
-        <tr><td class="mono">N125-61038-00</td><td class="mono">5930-01-659-8559</td><td>SWITCH, ROTARY</td><td><b style="color:var(--green)">$512.40</b> / EA</td><td>1–10</td><td>45 days</td><td>10/29/2026</td><td>01/27/2027</td></tr>
-        <tr><td class="mono">MS24524-23</td><td class="mono">5930-01-421-7703</td><td>SWITCH, TOGGLE</td><td><b style="color:var(--green)">$88.15</b> / EA</td><td>10–50</td><td>30 days</td><td>10/22/2026</td><td>12/21/2026</td></tr>
-        <tr><td class="mono">MS24524-23</td><td class="mono">5930-01-421-7703</td><td>SWITCH, TOGGLE</td><td>$96.80 / EA</td><td>1–9</td><td>30 days</td><td>10/22/2026</td><td>12/21/2026</td></tr>
-        <tr><td class="mono">8521K9</td><td class="mono">5930-00-655-1514</td><td>SWITCH, PUSH</td><td><b style="color:var(--green)">$41.90</b> / EA</td><td>50–100</td><td>60 days</td><td>10/01/2026</td><td>11/30/2026</td></tr>
-        <tr><td class="mono">CB-4420-T</td><td class="mono">5925-01-227-4483</td><td>CIRCUIT BREAKER</td><td>$214.00 / EA</td><td>5–25</td><td>75 days</td><td>07/11/2026</td><td style="color:var(--red)">Expired</td></tr>
+        <tr><td class="mono">N125-61038-00</td><td class="mono">5930-01-659-8559</td><td>SWITCH, ROTARY</td><td><b style="color:var(--green)">$512.40</b> / EA</td><td>1–10 EA</td><td>45 days</td><td>10/29/2026</td></tr>
+        <tr><td class="mono">MS24524-23</td><td class="mono">5930-01-421-7703</td><td>SWITCH, TOGGLE</td><td><b style="color:var(--green)">$88.15</b> / EA</td><td>10–50 EA</td><td>30 days</td><td>10/22/2026</td></tr>
+        <tr><td class="mono">MS24524-23</td><td class="mono">5930-01-421-7703</td><td>SWITCH, TOGGLE</td><td>$96.80 / EA</td><td>1–9 EA</td><td>30 days</td><td>10/22/2026</td></tr>
+        <tr><td class="mono">8521K9</td><td class="mono">5930-00-655-1514</td><td>SWITCH, PUSH</td><td><b style="color:var(--green)">$41.90</b> / EA</td><td>50–100 EA</td><td>60 days</td><td>10/01/2026</td></tr>
+        <tr><td class="mono">CB-4420-T</td><td class="mono">5925-01-227-4483</td><td>CIRCUIT BREAKER</td><td>$214.00 / EA</td><td>5–25 EA</td><td>75 days</td><td>07/11/2026</td></tr>
       </tbody>
     </table>
   </div>

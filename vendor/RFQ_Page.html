@@ -72,6 +72,8 @@
   .vrt th{padding:10px 8px}
   .vrt input,.vrt select{width:100%;border:1px solid var(--border);border-radius:7px;padding:7px 9px;font-size:12px;font-family:'Manrope',sans-serif;background:#fff}
   .vrt input:focus{outline:2px solid var(--accent-border)}
+  .vtype{font-size:10.5px;font-weight:700;color:var(--faint);margin-top:4px;cursor:pointer}
+  .vtype[data-t="MFG"]{color:var(--accent)} .vtype[data-t="Distributor"]{color:var(--green)} .vtype[data-t="Packaging House"]{color:var(--amber)}
   .vrt .auto{position:relative}
   .st-sel{font-weight:700;border-radius:999px !important;padding:5px 10px !important;border:none !important;appearance:none;text-align:center;cursor:pointer}
   .st-notsent{background:#F1F5F9;color:var(--muted)}
@@ -243,54 +245,53 @@
     <div class="syncnote"><b>⚡ Connected:</b> vendors autocomplete from <a href="Vendor_Page.html"><b>My Vendors + Vendor Pool</b></a> — pick one and email, CAGE, and type fill automatically. Every status you set here rolls up to the Vendors page stats (Sent / Quoted / No Quote / Declined), and prices land in that vendor's <b>Parts &amp; Pricing History</b>.</div>
 
     <div class="sec">
-      <div class="sechead"><h3>Vendor Reference Table</h3><span class="hint">Your sourcing worksheet for this RFQ</span></div>
+      <div class="sechead"><h3>Vendor Reference Table</h3><span style="font-size:11.5px;color:var(--muted);margin-left:14px">Vendors autocomplete from My Vendors. Statuses roll up to your Vendors page, and quotes build each vendor's pricing history.</span><span class="hint" style="color:var(--green);font-weight:700">✓ All changes saved</span></div>
       <table class="vrt">
         <thead><tr>
-          <th style="min-width:170px">VENDOR</th><th>TYPE</th><th style="min-width:170px">EMAIL</th><th>PART NUMBER</th><th>QTY &amp; UNIT</th><th style="min-width:106px">STATUS</th><th>DATE SENT</th><th>PRICE / UNIT</th><th>LEAD TIME</th><th>LAST UPDATE</th><th></th>
+          <th style="min-width:170px">VENDOR</th><th style="min-width:170px">EMAIL</th><th>PART #</th><th>QTY</th><th style="min-width:106px">STATUS</th><th>PRICE</th><th>UNIT</th><th>LEAD TIME</th><th>LAST UPDATE</th><th>FILE</th><th></th>
         </tr></thead>
         <tbody id="vrows">
           <tr>
-            <td><input value="Allied Motion Parts Inc" class="vend-in" autocomplete="off" oninput="fillVendor(this)"></td>
-            <td><span class="pill b">MFG</span></td>
+            <td><input value="Allied Motion Parts Inc" class="vend-in" autocomplete="off" oninput="fillVendor(this)"><div class="vtype" data-t="MFG">MFG ▾</div></td>
             <td><input value="treyes@alliedmotionparts.com"></td>
             <td><input value="70351-08206-102" class="mono"></td>
             <td><input value="12 EA"></td>
             <td><select class="st-sel st-quoted" onchange="restyle(this)"><option>Not Sent</option><option>Sent</option><option selected>Quoted</option><option>No Quote</option><option>Declined</option></select></td>
-            <td><input value="10/30/2026"></td>
             <td><input value="$3,980.00"></td>
+            <td><input value="EA"></td>
             <td><input value="45 days"></td>
             <td><input value="10/30/2026"></td>
+            <td><span class="pill g">quote.pdf</span></td>
             <td style="white-space:nowrap"><button class="icobtn nudge" title="Send reminder to vendor" onclick="nudgeRow(this)">🔔</button> <button class="icobtn send" title="Send RFQ email" onclick="openCompose(this)">➤</button></td>
           </tr>
           <tr>
-            <td><input value="Sikorsky Aircraft Corporation" class="vend-in" autocomplete="off" oninput="fillVendor(this)"></td>
-            <td><span class="pill b">MFG</span></td>
+            <td><input value="Sikorsky Aircraft Corporation" class="vend-in" autocomplete="off" oninput="fillVendor(this)"><div class="vtype" data-t="MFG">MFG ▾</div></td>
             <td><input value="supplier.quotes@sikorsky.com"></td>
             <td><input value="70351-08206-102" class="mono"></td>
             <td><input value="12 EA"></td>
             <td><select class="st-sel st-sent" onchange="restyle(this)"><option>Not Sent</option><option selected>Sent</option><option>Quoted</option><option>No Quote</option><option>Declined</option></select></td>
+            <td><input placeholder="—"></td>
+            <td><input placeholder="—"></td>
+            <td><input placeholder="—"></td>
             <td><input value="10/30/2026"></td>
-            <td><input placeholder="—"></td>
-            <td><input placeholder="—"></td>
-            <td><input placeholder="—"></td>
+            <td><span class="pill gr">—</span></td>
             <td style="white-space:nowrap"><button class="icobtn nudge" title="Send reminder to vendor" onclick="nudgeRow(this)">🔔</button> <button class="icobtn send" title="Send RFQ email" onclick="openCompose(this)">➤</button></td>
           </tr>
           <tr>
-            <td><input value="Equitable Engineering Company" class="vend-in" autocomplete="off" oninput="fillVendor(this)"></td>
-            <td><span class="pill g">Distributor</span></td>
+            <td><input value="Equitable Engineering Company" class="vend-in" autocomplete="off" oninput="fillVendor(this)"><div class="vtype" data-t="Distributor">Distributor ▾</div></td>
             <td><input value="sales@equitableeng.com"></td>
             <td><input value="70351-08206-102" class="mono"></td>
             <td><input value="12 EA"></td>
             <td><select class="st-sel st-noquote" onchange="restyle(this)"><option>Not Sent</option><option>Sent</option><option>Quoted</option><option selected>No Quote</option><option>Declined</option></select></td>
+            <td><input placeholder="—"></td>
+            <td><input placeholder="—"></td>
+            <td><input placeholder="—"></td>
             <td><input value="10/28/2026"></td>
-            <td><input placeholder="—"></td>
-            <td><input placeholder="—"></td>
-            <td><input placeholder="—"></td>
+            <td><span class="pill gr">—</span></td>
             <td style="white-space:nowrap"><button class="icobtn nudge" title="Send reminder to vendor" onclick="nudgeRow(this)">🔔</button> <button class="icobtn send" title="Send RFQ email" onclick="openCompose(this)">➤</button></td>
           </tr>
           <tr>
-            <td><input placeholder="Start typing a vendor…" class="vend-in" autocomplete="off" oninput="fillVendor(this)"></td>
-            <td><span class="pill gr">—</span></td>
+            <td><input placeholder="Start typing a vendor…" class="vend-in" autocomplete="off" oninput="fillVendor(this)"><div class="vtype" data-t="">Set type ▾</div></td>
             <td><input placeholder="auto-fills"></td>
             <td><input value="70351-08206-102" class="mono"></td>
             <td><input value="12 EA"></td>
@@ -299,13 +300,14 @@
             <td><input placeholder="—"></td>
             <td><input placeholder="—"></td>
             <td><input placeholder="—"></td>
+            <td><span class="pill gr">—</span></td>
             <td style="white-space:nowrap"><button class="icobtn nudge" title="Send reminder to vendor" onclick="nudgeRow(this)">🔔</button> <button class="icobtn send" title="Send RFQ email" onclick="openCompose(this)">➤</button></td>
           </tr>
         </tbody>
       </table>
       <div class="addrow">
         <button class="btn primary mini" onclick="addVendorRow('')">+ Add Row</button>
-        <span class="note">Best quote so far: <b style="color:var(--green)">$3,980.00 / EA · Allied Motion</b> → sets your suggested bid</span>
+        <span class="note">Best quote so far: <b style="color:var(--green)">$3,980.00 / EA · Allied Motion Parts Inc</b> &nbsp;<button class="btn mini soft">Use as vendor cost in Price Sheet</button></span>
       </div>
     </div>
 
@@ -364,9 +366,10 @@ function fillVendor(inp){
   const v = BOOK[inp.value];
   if(!v) return;
   const tr = inp.closest('tr');
-  const em = tr.cells[2].querySelector('input');
+  const em = tr.cells[1].querySelector('input');
   em.value = v.e; em.classList.remove('autofill-flash'); void em.offsetWidth; em.classList.add('autofill-flash');
-  tr.cells[1].innerHTML = `<span class="pill ${v.t[0]}">${v.t[1]}</span>`;
+  const ty = tr.cells[0].querySelector('.vtype');
+  if(ty){ const t = v.t[1].includes('Dist')?'Distributor':'MFG'; ty.dataset.t=t; ty.textContent=t+' ▾'; }
 }
 function restyle(sel){
   sel.className = 'st-sel st-' + sel.value.toLowerCase().replace(/[^a-z]/g,'');
@@ -378,8 +381,7 @@ function markSent(btn){
   sel.value = 'Sent'; restyle(sel);
   const d = new Date();
   const today = (d.getMonth()+1)+'/'+d.getDate()+'/'+d.getFullYear();
-  tr.cells[6].querySelector('input').value = today;
-  const lu = tr.cells[9].querySelector('input'); if(lu) lu.value = today;
+  const lu = tr.cells[8].querySelector('input'); if(lu) lu.value = today;
 }
 // ===== compose email modal =====
 let composeRow=null;
@@ -397,9 +399,9 @@ function openCompose(btn){
   composeNudgeBtn=null;
   document.getElementById('tplChip').innerHTML='📋 Template 1 ▾';
   composeRow=btn.closest('tr');
-  const part=composeRow.cells[3].querySelector('input').value||'70351-08206-102';
-  const qty=composeRow.cells[4].querySelector('input').value||'12 EA';
-  const email=composeRow.cells[2].querySelector('input').value||'';
+  const part=composeRow.cells[2].querySelector('input').value||'70351-08206-102';
+  const qty=composeRow.cells[3].querySelector('input').value||'12 EA';
+  const email=composeRow.cells[1].querySelector('input').value||'';
   const vendor=composeRow.cells[0].querySelector('input').value||'';
   document.getElementById('cTo').value=email;
   document.getElementById('cSubj').value='RFQ - Part '+part+' *7STV04V3';
@@ -427,7 +429,7 @@ function sendCompose(){
     const sel=composeRow.querySelector('select');
     sel.value='Sent'; restyle(sel);
     const d=new Date();
-    composeRow.cells[6].querySelector('input').value=(d.getMonth()+1)+'/'+d.getDate()+'/'+d.getFullYear();
+    const lu=composeRow.cells[8].querySelector('input'); if(lu) lu.value=(d.getMonth()+1)+'/'+d.getDate()+'/'+d.getFullYear();
   }
   closeCompose();
 }
@@ -436,11 +438,11 @@ function nudgeRow(btn){
   composeNudgeBtn=btn;
   const tr=btn.closest('tr');
   composeRow=tr;
-  const part=tr.cells[3].querySelector('input').value||'70351-08206-102';
-  const qty=tr.cells[4].querySelector('input').value||'12 EA';
-  const email=tr.cells[2].querySelector('input').value||'';
+  const part=tr.cells[2].querySelector('input').value||'70351-08206-102';
+  const qty=tr.cells[3].querySelector('input').value||'12 EA';
+  const email=tr.cells[1].querySelector('input').value||'';
   const vendor=tr.cells[0].querySelector('input').value||'';
-  const sent=tr.cells[6].querySelector('input').value||'recently';
+  const sent=tr.cells[8].querySelector('input').value||'recently';
   document.getElementById('cTo').value=email;
   document.getElementById('cSubj').value='Re: RFQ - Part '+part+' *7STV04V3';
   document.getElementById('tplChip').innerHTML='📋 Follow-Up Template ▾';
@@ -519,10 +521,10 @@ function addVendorRow(name){
   const tb = document.getElementById('vrows');
   const tr = tb.rows[tb.rows.length-1].cloneNode(true);
   tr.cells[0].querySelector('input').value = name || '';
-  tr.cells[1].innerHTML = '<span class="pill gr">—</span>';
-  tr.cells[2].querySelector('input').value = '';
+  const ty=tr.cells[0].querySelector('.vtype'); if(ty){ty.dataset.t='';ty.textContent='Set type ▾';}
+  tr.cells[1].querySelector('input').value = '';
   const sel = tr.querySelector('select'); sel.value='Not Sent'; restyle(sel);
-  ['6','7','8','9'].forEach(i=>{const el=tr.cells[i].querySelector('input'); if(el) el.value='';});
+  [5,6,7,8].forEach(i=>{const el=tr.cells[i].querySelector('input'); if(el) el.value='';});
   tb.appendChild(tr);
   if(name){ const inp = tr.cells[0].querySelector('input'); fillVendor(inp); }
   tr.scrollIntoView({behavior:'smooth',block:'center'});
