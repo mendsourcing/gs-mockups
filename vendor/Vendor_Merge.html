@@ -1,0 +1,543 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>Vendor Merge &amp; Duplicates — GovScraper</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Source+Code+Pro:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --primary:#1E293B; --accent:#2563EB; --accent-soft:#EFF6FF; --accent-border:#BFDBFE; --accent-hover:#1D4ED8;
+    --red:#DC2626; --red-bg:#FEF2F2; --green:#16A34A; --green-soft:#F0FDF4; --amber:#D97706; --amber-soft:#FFF7ED;
+    --bg:#F8FAFC; --surface:#fff; --border:#E2E8F0; --border-strong:#CBD5E1;
+    --text:#1E293B; --text-dim:#475569; --muted:#6B7280; --faint:#94A3B8;
+  }
+  *{box-sizing:border-box;margin:0}
+  body{font-family:'Manrope',sans-serif;background:var(--bg);color:var(--text);font-size:13px}
+  a{color:var(--accent);text-decoration:none}
+
+  .topbar{height:56px;background:var(--surface);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;padding:0 24px;position:sticky;top:0;z-index:100;box-shadow:0 1px 3px rgba(0,0,0,0.06)}
+  .topbar-left{display:flex;align-items:center;gap:20px}
+  .topbar-logo{height:30px;width:auto;display:block}
+  .topbar-divider{width:1px;height:24px;background:var(--border)}
+  .mode-switcher{display:flex;align-items:center;background:#F1F5F9;border:1.5px solid var(--border-strong);border-radius:9px;padding:3px}
+  .mode-btn{font-family:'Manrope',sans-serif;font-size:12px;font-weight:700;padding:6px 14px;border-radius:6px;border:none;cursor:pointer;display:flex;align-items:center;gap:7px}
+  .mode-btn.inactive{background:transparent;color:var(--muted)}
+  .mode-btn.active-member{background:#1B2A4A;color:#fff;box-shadow:0 1px 4px rgba(27,42,74,0.3)}
+  .mode-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0;display:inline-block}
+  .mode-btn.inactive .mode-dot.green{background:#BE1E2D}
+  .mode-btn.active-member .mode-dot{background:rgba(255,255,255,0.6)}
+  .breadcrumb{font-size:12px;color:var(--muted);font-weight:500;letter-spacing:0.2px}
+  .avatar{width:36px;height:36px;border-radius:9px;border:2px solid #E2E8F0;background:linear-gradient(135deg,var(--accent),#1D4ED8);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:11px}
+
+  .shell{display:flex;min-height:calc(100vh - 56px)}
+  .side{width:224px;background:var(--surface);border-right:1px solid var(--border);padding:14px 0;flex-shrink:0}
+  .sgroup{font-size:10.5px;font-weight:700;letter-spacing:0.8px;color:var(--faint);padding:14px 16px 6px}
+  .sitem{display:flex;align-items:center;gap:9px;padding:8px 16px;font-size:12.5px;color:var(--text-dim);font-weight:500;cursor:pointer;border-left:3px solid transparent}
+  .sitem:hover{background:var(--accent-soft);color:var(--accent);border-left-color:var(--accent-border)}
+  .sitem.on{background:var(--accent-soft);color:var(--accent);font-weight:700;border-left-color:var(--accent)}
+  .sitem.sub{padding-left:38px;font-size:12px}
+  .sitem svg{width:16px;height:16px;flex-shrink:0}
+  .newtag{margin-left:auto;font-size:9.5px;font-weight:700;background:var(--red);color:#fff;border-radius:4px;padding:2px 5px;letter-spacing:.5px}
+
+  .main{flex:1;padding:22px 28px;min-width:0}
+  .pagehead{display:flex;align-items:center;gap:14px;margin-bottom:16px}
+  h1{font-size:21px;font-weight:700}
+  .btn{display:inline-flex;align-items:center;gap:7px;border-radius:8px;padding:8px 15px;font-size:13px;font-weight:600;cursor:pointer;border:1px solid var(--border);background:#fff;color:var(--text);font-family:'Manrope',sans-serif}
+  .btn.primary{background:var(--accent);border-color:var(--accent);color:#fff}
+  .btn.primary:hover{background:#1d4ed8}
+  .btn.mini{padding:5px 11px;font-size:11.5px;border-radius:7px;color:var(--accent);border-color:var(--accent-border);background:var(--accent-soft);font-weight:700}
+  .spacer{flex:1}
+
+  .card{background:#fff;border:1px solid var(--border);border-radius:10px;overflow:hidden}
+  table{width:100%;border-collapse:collapse;font-size:13px}
+  th{text-align:left;font-size:11px;letter-spacing:.6px;font-weight:700;color:var(--faint);padding:11px 14px;border-bottom:1px solid var(--border);background:#fafbfc;white-space:nowrap}
+  td{padding:12px 14px;border-bottom:1px solid #f1f3f6;vertical-align:middle;white-space:nowrap}
+  tr:last-child td{border-bottom:none}
+  tbody tr:hover{background:#f8faff}
+  .co{font-weight:600;color:var(--accent)}
+  .sub2{font-size:11.5px;color:var(--faint);font-weight:400;margin-top:1px}
+  .pill{display:inline-block;font-size:11px;font-weight:700;border-radius:999px;padding:3px 10px}
+  .pill.b{background:var(--accent-soft);color:var(--accent)}
+  .pill.g{background:var(--green-soft);color:var(--green)}
+  .pill.a{background:var(--amber-soft);color:var(--amber)}
+  .pill.r{background:#fef2f2;color:var(--red)}
+  .pill.gr{background:#f1f5f9;color:var(--muted)}
+  .mono{font-family:'Source Code Pro',monospace;font-size:12px}
+  .chips{display:flex;flex-wrap:wrap;gap:5px}
+  .chip{font-size:11px;font-weight:600;background:#F1F5F9;color:var(--text-dim);border-radius:5px;padding:3px 8px;font-family:'Source Code Pro',monospace}
+  .cagechip{display:inline-flex;align-items:center;font-size:11px;font-weight:700;background:var(--accent-soft);color:var(--accent);border:1px solid var(--accent-border);border-radius:999px;padding:3px 10px;font-family:'Source Code Pro',monospace}
+
+  .dupchip{display:inline-flex;align-items:center;gap:5px;font-size:10.5px;font-weight:800;background:var(--amber-soft);color:#92400E;border:1px solid #FDE68A;border-radius:999px;padding:3px 9px;cursor:pointer;margin-left:7px;vertical-align:middle}
+  .dupchip:hover{background:#FEF3C7}
+
+  .mergebar{display:none;align-items:center;gap:12px;background:var(--accent-soft);border:1.5px solid var(--accent-border);border-radius:10px;padding:10px 16px;margin-bottom:12px;font-size:12.5px;font-weight:700;color:var(--accent)}
+  .mergebar.show{display:flex}
+
+  .integr{border:1px dashed var(--accent-border);background:var(--accent-soft);border-radius:10px;padding:13px 17px;font-size:12.5px;color:#334155;margin-top:16px}
+  .integr b{color:var(--accent)}
+  .tryme{border:1.5px solid var(--accent-border);background:var(--accent-soft);border-radius:10px;padding:13px 17px;font-size:12.5px;color:#334155;margin-bottom:16px;line-height:1.8}
+  .tryme b{color:var(--accent)}
+  .tryme .k{font-weight:800;background:#fff;border:1px solid var(--accent-border);border-radius:6px;padding:1px 8px;font-family:'Source Code Pro',monospace;font-size:11.5px}
+
+  /* detail */
+  .back{display:inline-flex;align-items:center;gap:6px;font-size:13px;font-weight:600;color:var(--muted);cursor:pointer;margin-bottom:14px}
+  .back:hover{color:var(--accent)}
+  .vhead{background:#fff;border:1px solid var(--border);border-radius:10px;padding:20px 24px;display:flex;gap:18px;align-items:flex-start;margin-bottom:16px;flex-wrap:wrap}
+  .vav{width:52px;height:52px;border-radius:11px;background:var(--accent);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:19px;flex-shrink:0}
+  .vhead h2{font-size:19px;font-weight:700;margin-bottom:2px}
+  .vmeta{display:flex;gap:22px;flex-wrap:wrap;margin-top:10px}
+  .vmeta div{font-size:12.5px}
+  .vmeta label{display:block;font-size:10.5px;font-weight:700;letter-spacing:.7px;color:var(--faint);margin-bottom:2px}
+  .sec{background:#fff;border:1px solid var(--border);border-radius:10px;margin-bottom:16px;overflow:hidden}
+  .sechead{display:flex;align-items:center;padding:13px 18px;border-bottom:1px solid var(--border);background:#fafbfc}
+  .sechead h3{font-size:12px;font-weight:700;letter-spacing:.8px;color:var(--primary)}
+  .sechead .hint{margin-left:auto;font-size:11.5px;color:var(--faint)}
+  .stats{background:#fff;border:1px solid var(--border);border-radius:10px;display:flex;align-items:center;padding:16px 24px;gap:40px;margin-bottom:16px;flex-wrap:wrap}
+  .stat{display:flex;flex-direction:column;gap:2px}
+  .stat b{font-size:24px;font-weight:800;color:var(--accent)}
+  .stat.g b{color:var(--green)} .stat.n b{color:var(--primary)} .stat.a b{color:var(--amber)}
+  .stat span{font-size:10.5px;color:var(--faint);font-weight:700;letter-spacing:.6px;text-transform:uppercase}
+  .vr{width:1px;height:38px;background:var(--border)}
+
+  /* modals */
+  .ovl{position:fixed;inset:0;background:rgba(15,23,42,.45);display:none;align-items:flex-start;justify-content:center;padding:50px 20px;z-index:200;overflow-y:auto}
+  .ovl.open{display:flex}
+  .modal{background:#fff;border-radius:12px;width:560px;max-width:100%;box-shadow:0 20px 50px rgba(0,0,0,.25)}
+  .modal.wide{width:640px}
+  .mhead{display:flex;align-items:center;padding:16px 22px;border-bottom:1px solid var(--border)}
+  .mhead h3{font-size:15px;font-weight:700}
+  .x{margin-left:auto;cursor:pointer;color:var(--faint);font-size:20px;line-height:1}
+  .mbody{padding:18px 22px}
+  .mfoot{display:flex;gap:10px;justify-content:flex-end;padding:14px 22px;border-top:1px solid var(--border)}
+  .frow{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px}
+  .frow.one{grid-template-columns:1fr}
+  .f label{display:block;font-size:11px;font-weight:700;letter-spacing:.5px;color:var(--muted);margin-bottom:5px}
+  .f input,.f select{width:100%;border:1px solid var(--border);border-radius:7px;padding:9px 11px;font-size:13px;font-family:inherit}
+  .note{font-size:11.5px;color:var(--faint);margin-top:4px}
+
+  /* merge banner inside Add Vendor */
+  .mergehit{display:none;margin-top:8px;border:1.5px solid var(--accent-border);background:var(--accent-soft);border-radius:10px;padding:12px 14px;font-size:12.5px;color:#1E3A8A;line-height:1.6}
+  .mergehit.warn{border-color:#FDE68A;background:var(--amber-soft);color:#92400E}
+  .mergehit .acts{display:flex;gap:8px;margin-top:9px;flex-wrap:wrap}
+
+  /* merge modal internals */
+  .keeper{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px}
+  .kcard{border:1.5px solid var(--border);border-radius:10px;padding:13px 15px;cursor:pointer}
+  .kcard.on{border-color:var(--accent);background:var(--accent-soft)}
+  .kcard h5{font-size:13.5px;font-weight:800;margin-bottom:3px}
+  .kcard .km{font-size:11.5px;color:var(--muted);line-height:1.6}
+  .kcard .ktag{font-size:10px;font-weight:800;letter-spacing:.5px;color:var(--accent);display:none}
+  .kcard.on .ktag{display:inline}
+  .conf{border:1px solid var(--border);border-radius:10px;margin-bottom:10px;overflow:hidden}
+  .conf .cf-h{background:#fafbfc;border-bottom:1px solid var(--border);padding:8px 14px;font-size:11px;font-weight:700;letter-spacing:.5px;color:var(--faint)}
+  .cf-opt{display:flex;align-items:center;gap:10px;padding:10px 14px;cursor:pointer;font-size:13px;border-bottom:1px solid #f1f3f6}
+  .cf-opt:last-child{border-bottom:none}
+  .cf-opt input{accent-color:var(--accent)}
+  .cf-opt .src{margin-left:auto;font-size:10.5px;color:var(--faint);font-weight:700}
+  .union{border-left:4px solid var(--green);background:var(--green-soft);padding:11px 15px;border-radius:0 8px 8px 0;font-size:12.5px;color:#14532D;margin-top:14px;line-height:1.7}
+  .fillnote{border-left:4px solid var(--accent);background:var(--accent-soft);padding:10px 14px;border-radius:0 8px 8px 0;font-size:12px;color:#334155;margin-bottom:14px;line-height:1.7}
+
+  /* toast */
+  .toast{position:fixed;left:50%;bottom:28px;transform:translateX(-50%) translateY(80px);background:#14532D;color:#fff;border-radius:11px;padding:13px 22px;font-size:13px;font-weight:700;box-shadow:0 10px 30px rgba(0,0,0,.3);transition:transform .25s;z-index:999;max-width:92vw;text-align:center}
+  .toast.show{transform:translateX(-50%) translateY(0)}
+</style>
+</head>
+<body>
+
+<!-- TOP BAR -->
+<header class="topbar">
+  <div class="topbar-left">
+    <span style="font-size:19px;color:var(--text-dim);cursor:pointer;margin-right:2px">☰</span>
+    <a href="Dashboard_Page.html"><img src="https://govscraper.com/assets/BigLogo-7gv5uAxF.png" alt="GovScraper" class="topbar-logo"></a>
+    <div class="topbar-divider"></div>
+    <div class="mode-switcher">
+      <button class="mode-btn active-member"><span class="mode-dot"></span>Member Portal</button>
+      <button class="mode-btn inactive"><span class="mode-dot green"></span>Supplier Portal</button>
+    </div>
+    <div class="topbar-divider"></div>
+    <div class="breadcrumb">Vendors · Merge &amp; Duplicates (Proposal)</div>
+  </div>
+  <div class="avatar" onclick="location.href='Settings_Page.html'" title="Settings & Account" style="cursor:pointer">TB</div>
+</header>
+
+<div class="shell">
+
+<!-- SIDEBAR -->
+<div class="side">
+  <div class="sgroup">MAIN</div>
+  <div class="sitem" onclick="location.href='Dashboard_Page.html'"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>Dashboard</div>
+  <div class="sitem" onclick="location.href='RFQ_Page.html'"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/></svg>My RFQs</div>
+  <div class="sitem sub">Private List of RFQs</div>
+  <div class="sitem sub">Public List of RFQs</div>
+
+  <div class="sgroup">VENDORS</div>
+  <div class="sitem on" onclick="location.href='Vendor_Page.html'"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 21h18"/><path d="M5 21V7l7-4 7 4v14"/><path d="M9 21v-6h6v6"/></svg>My Vendors<span class="newtag">NEW</span></div>
+  <div class="sitem sub" onclick="openAdd()">+ Add Vendor</div>
+
+  <div class="sgroup">INTELLIGENCE</div>
+  <div class="sitem"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>NSN Search</div>
+  <div class="sitem"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9.5 12 4l9 5.5"/><path d="M5 10v10h14V10"/></svg>CAGE Search</div>
+  <div class="sitem"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6h16M4 12h16M4 18h16"/></svg>FSC Lookup</div>
+  <div class="sitem"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg>NSN Watch List</div>
+
+  <div class="sgroup">RESULTS</div>
+  <div class="sitem" onclick="location.href='Award_Page.html'"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.1V12a10 10 0 1 1-5.93-9.14"/><path d="m9 11 3 3L22 4"/></svg>Awarded Contracts</div>
+  <div class="sitem"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 9h18"/></svg>Archived RFQs</div>
+
+  <div class="sgroup">ALERTS</div>
+  <div class="sitem"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/></svg>RFQ Alerts</div>
+
+  <div class="sgroup">COMMUNITY</div>
+  <div class="sitem"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>Community</div>
+
+  <div class="sgroup">TOOLS</div>
+  <div class="sitem"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 8V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v3"/><rect x="3" y="8" width="18" height="13" rx="2"/></svg>GovPacking</div>
+</div>
+
+<!-- MAIN -->
+<div class="main">
+
+<!-- ============ LIST VIEW ============ -->
+<div id="listView">
+  <div class="pagehead">
+    <h1>My Vendors — Merge &amp; Duplicate Handling</h1>
+    <div class="spacer"></div>
+    <button class="btn primary" onclick="openAdd()">+ Add Vendor</button>
+  </div>
+
+  <div class="tryme">
+    <b>▶ Three things to try on this page:</b><br>
+    <b>1.</b> Click the <span class="dupchip" style="margin-left:0;cursor:default">⚠ Possible duplicate</span> chip on either MS Aerospace row — merge the typo duplicate.<br>
+    <b>2.</b> Click the <b>Honeywell International</b> row — one vendor card holding multiple CAGE codes.<br>
+    <b>3.</b> Click <b>+ Add Vendor</b> and type CAGE <span class="k">4XK29</span> (same-CAGE merge) — then clear it and type <span class="k">94580</span> (new Honeywell CAGE → add to existing record).
+  </div>
+
+  <div class="mergebar" id="mergebar">
+    <span id="selCount">2 vendors selected</span>
+    <button class="btn mini" onclick="openMergeDupe()">⇄ Merge selected into one record</button>
+    <span style="font-weight:500;color:var(--muted)">History, quotes and awards from both are combined — nothing is lost.</span>
+  </div>
+
+  <div class="card">
+    <table>
+      <thead><tr>
+        <th style="width:34px"></th><th>VENDOR</th><th>PRIMARY CONTACT</th><th>EMAIL</th><th>LOCATION</th><th>RFQS SENT</th><th>QUOTES BACK</th><th>FSCS PROVIDED</th>
+      </tr></thead>
+      <tbody>
+        <tr id="rowHoney" onclick="showHoney()" style="cursor:pointer">
+          <td onclick="event.stopPropagation()"><input type="checkbox" onchange="selChange()"></td>
+          <td><div class="co">Honeywell International Inc</div><div class="sub2" id="honeySub">3 CAGEs: 55939 · 06481 · 70210 &nbsp;· MFG</div></td>
+          <td>Gov Quotes Desk</td><td>gov.quotes@honeywell.com</td><td>Phoenix, AZ</td>
+          <td><span class="pill b">14</span></td><td><span class="pill g">9</span></td>
+          <td><div class="chips"><span class="chip">1680</span><span class="chip">2915</span><span class="chip">6610</span></div></td>
+        </tr>
+        <tr id="rowKeep">
+          <td><input type="checkbox" onchange="selChange()"></td>
+          <td><div class="co">MS Aerospace<span class="dupchip" onclick="event.stopPropagation();openMergeDupe()">⚠ Possible duplicate</span></div><div class="sub2">CAGE 3CAE5 · MFG</div></td>
+          <td>Dana Whitfield</td><td>quotes@msaerospace.com</td><td>Sylmar, CA</td>
+          <td><span class="pill b" id="keepRfq">9</span></td><td><span class="pill g" id="keepQ">7</span></td>
+          <td><div class="chips"><span class="chip">5306</span><span class="chip">5305</span><span class="chip">3040</span></div></td>
+        </tr>
+        <tr id="rowDupe">
+          <td><input type="checkbox" onchange="selChange()"></td>
+          <td><div class="co">MS Aerosapce<span class="dupchip" onclick="event.stopPropagation();openMergeDupe()">⚠ Possible duplicate</span></div><div class="sub2">No CAGE · MFG</div></td>
+          <td>—</td><td>sales@ms-aerospace.com</td><td>Sylmar, CA</td>
+          <td><span class="pill b">2</span></td><td><span class="pill g">1</span></td>
+          <td><div class="chips"><span class="chip">5306</span></div></td>
+        </tr>
+        <tr>
+          <td><input type="checkbox" onchange="selChange()"></td>
+          <td><div class="co">Apex Switchgear Corp</div><div class="sub2">CAGE 4XK29 · MFG</div></td>
+          <td>Dana Whitfield</td><td>dana@apexswitchgear.com</td><td>Denver, CO</td>
+          <td><span class="pill b">9</span></td><td><span class="pill g">7</span></td>
+          <td><div class="chips"><span class="chip">5930</span><span class="chip">5925</span><span class="chip">5945</span></div></td>
+        </tr>
+        <tr>
+          <td><input type="checkbox" onchange="selChange()"></td>
+          <td><div class="co">Precision Sleeve &amp; Bushing Co</div><div class="sub2">CAGE 5TW02 · MFG</div></td>
+          <td>Marcus Teller</td><td>quotes@precisionsleeve.com</td><td>Columbus, OH</td>
+          <td><span class="pill b">6</span></td><td><span class="pill g">5</span></td>
+          <td><div class="chips"><span class="chip">3120</span><span class="chip">5365</span><span class="chip">5342</span></div></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="integr">
+    <b>⚙ Merge rules (for build):</b>
+    <b>1.</b> Same CAGE typed in Add Vendor → always offer merge — it is the same entity.
+    <b>2.</b> New CAGE, company matches an existing vendor → offer "Add this CAGE to that record" or keep separate (member decides — some divisions really are separate vendors).
+    <b>3.</b> Manual merge: select two vendors (or click the duplicate chip) → pick the keeper, union CAGEs + RFQ history + quotes + awards, per-field conflict picker; blanks auto-fill from the other record.
+    <b>4.</b> My Vendors only — the shared Vendor Pool stays one row per CAGE (that's how the government data works).
+  </div>
+</div>
+
+<!-- ============ HONEYWELL DETAIL ============ -->
+<div id="detailView" style="display:none">
+  <div class="back" onclick="showList()">← Back to Vendors</div>
+
+  <div class="vhead">
+    <div class="vav">H</div>
+    <div style="flex:1;min-width:280px">
+      <h2>Honeywell International Inc</h2>
+      <div style="font-size:12.5px;color:var(--muted)">MFG · Aerospace &amp; Defense OEM · Phoenix, AZ</div>
+      <div style="margin-top:12px">
+        <label style="display:block;font-size:10.5px;font-weight:700;letter-spacing:.7px;color:var(--faint);margin-bottom:5px">CAGE CODES ON THIS VENDOR (<span id="cageCount">3</span>)</label>
+        <div class="chips" id="cageChips">
+          <span class="cagechip">55939</span>
+          <span class="cagechip">06481</span>
+          <span class="cagechip">70210</span>
+          <button class="btn mini" onclick="addCage94580()" id="addCageBtn">+ Add CAGE</button>
+        </div>
+        <div class="note">One company card, every CAGE. Each RFQ below records which CAGE it went through — history and stats roll up to the company.</div>
+      </div>
+      <div class="vmeta">
+        <div><label>PRIMARY CONTACT</label>Gov Quotes Desk</div>
+        <div><label>EMAIL</label><a href="#">gov.quotes@honeywell.com</a></div>
+        <div><label>PHONE</label>(602) 555-0150</div>
+        <div><label>PAYMENT TERMS</label>Net 45</div>
+        <div><label>WEBSITE</label><a href="#">honeywell.com</a></div>
+      </div>
+    </div>
+    <div style="display:flex;gap:8px"><button class="btn">Edit Vendor</button></div>
+  </div>
+
+  <div class="stats">
+    <div class="stat"><b>14</b><span>RFQs Sent</span></div><div class="vr"></div>
+    <div class="stat g"><b>9</b><span>Quotes Received</span></div><div class="vr"></div>
+    <div class="stat n"><b>64%</b><span>Response Rate</span></div><div class="vr"></div>
+    <div class="stat a"><b>88 days</b><span>Avg Lead Time</span></div><div class="vr"></div>
+    <div class="stat g"><b>3</b><span>Awards Won</span></div>
+  </div>
+
+  <div class="sec">
+    <div class="sechead"><h3>REQUEST FOR QUOTES SENT</h3><span class="hint">CAGE column shows which Honeywell CAGE each RFQ went through</span></div>
+    <table>
+      <thead><tr><th>DATE SENT</th><th>CAGE</th><th>SOLICITATION #</th><th>NSN</th><th>ITEM</th><th>QTY</th><th>STATUS</th><th>THEIR QUOTE</th></tr></thead>
+      <tbody>
+        <tr><td>11/10/2026</td><td><span class="cagechip">55939</span></td><td><a class="mono" href="RFQ_Page.html">SPE4A6-27-T-1180</a></td><td class="mono">1680-01-412-7730</td><td>VALVE, FUEL SHUTOFF</td><td>2 EA</td><td><span class="pill g">Quoted</span></td><td><b>$4,120.00</b> / EA</td></tr>
+        <tr><td>11/03/2026</td><td><span class="cagechip">06481</span></td><td><a class="mono" href="RFQ_Page.html">SPE7M1-27-U-0441</a></td><td class="mono">6610-01-227-8841</td><td>INDICATOR, PRESSURE</td><td>4 EA</td><td><span class="pill g">Quoted</span></td><td><b>$1,866.50</b> / EA</td></tr>
+        <tr><td>10/27/2026</td><td><span class="cagechip">70210</span></td><td><a class="mono" href="RFQ_Page.html">SPE4A7-27-T-3310</a></td><td class="mono">2915-00-808-6690</td><td>REGULATOR, FUEL</td><td>1 EA</td><td><span class="pill a">Awaiting · 21d</span></td><td>—</td></tr>
+        <tr><td>10/14/2026</td><td><span class="cagechip">55939</span></td><td><a class="mono" href="Award_Page.html">SPE4A6-26-V-8827</a></td><td class="mono">1680-00-556-1247</td><td>ACTUATOR, ELECTRO-MECH</td><td>3 EA</td><td><span class="pill g">Quoted</span></td><td><b>$2,940.00</b> / EA</td></tr>
+        <tr><td>09/22/2026</td><td><span class="cagechip">06481</span></td><td><a class="mono" href="RFQ_Page.html">SPE7M4-26-T-6619</a></td><td class="mono">6610-00-168-2201</td><td>TRANSMITTER, POSITION</td><td>6 EA</td><td><span class="pill r">No Bid</span></td><td>—</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="sec">
+    <div class="sechead"><h3>PARTS &amp; PRICING HISTORY</h3><span class="hint">All CAGEs, one price history</span></div>
+    <table>
+      <thead><tr><th>PART NUMBER</th><th>CAGE</th><th>NSN</th><th>ITEM</th><th>UNIT PRICE</th><th>LEAD TIME</th><th>DATE QUOTED</th></tr></thead>
+      <tbody>
+        <tr><td class="mono">3214550-1</td><td><span class="cagechip">55939</span></td><td class="mono">1680-01-412-7730</td><td>VALVE, FUEL SHUTOFF</td><td><b style="color:var(--green)">$4,120.00</b> / EA</td><td>120 days</td><td>11/12/2026</td></tr>
+        <tr><td class="mono">JG201A7</td><td><span class="cagechip">06481</span></td><td class="mono">6610-01-227-8841</td><td>INDICATOR, PRESSURE</td><td><b style="color:var(--green)">$1,866.50</b> / EA</td><td>90 days</td><td>11/05/2026</td></tr>
+        <tr><td class="mono">899146-3</td><td><span class="cagechip">55939</span></td><td class="mono">1680-00-556-1247</td><td>ACTUATOR, ELECTRO-MECH</td><td><b style="color:var(--green)">$2,940.00</b> / EA</td><td>75 days</td><td>10/16/2026</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+</div><!-- /main -->
+</div><!-- /shell -->
+
+<!-- ============ MERGE DUPLICATES MODAL ============ -->
+<div class="ovl" id="mergeOvl" onclick="if(event.target===this)closeMerge()">
+  <div class="modal wide">
+    <div class="mhead"><h3>⇄ Merge Duplicate Vendors</h3><span class="x" onclick="closeMerge()">×</span></div>
+    <div class="mbody">
+      <div style="font-size:11px;font-weight:700;letter-spacing:.5px;color:var(--muted);margin-bottom:8px">1 · PICK THE RECORD TO KEEP</div>
+      <div class="keeper">
+        <div class="kcard on" id="k1" onclick="pickKeeper(1)">
+          <h5>MS Aerospace <span class="ktag">✓ KEEPER</span></h5>
+          <div class="km">CAGE <span class="mono" style="color:var(--accent)">3CAE5</span> · Sylmar, CA<br>9 RFQs sent · 7 quotes · 2 awards<br>quotes@msaerospace.com</div>
+        </div>
+        <div class="kcard" id="k2" onclick="pickKeeper(2)">
+          <h5>MS Aerosapce <span class="ktag">✓ KEEPER</span></h5>
+          <div class="km">No CAGE · Sylmar, CA<br>2 RFQs sent · 1 quote · 0 awards<br>sales@ms-aerospace.com</div>
+        </div>
+      </div>
+
+      <div style="font-size:11px;font-weight:700;letter-spacing:.5px;color:var(--muted);margin-bottom:8px">2 · RESOLVE CONFLICTS (both records have a value)</div>
+      <div class="conf">
+        <div class="cf-h">EMAIL</div>
+        <label class="cf-opt"><input type="radio" name="cfEmail" checked> quotes@msaerospace.com <span class="src">FROM MS AEROSPACE</span></label>
+        <label class="cf-opt"><input type="radio" name="cfEmail"> sales@ms-aerospace.com <span class="src">FROM MS AEROSAPCE</span></label>
+      </div>
+      <div class="conf">
+        <div class="cf-h">PRIMARY CONTACT</div>
+        <label class="cf-opt"><input type="radio" name="cfContact" checked> Dana Whitfield <span class="src">FROM MS AEROSPACE</span></label>
+        <label class="cf-opt"><input type="radio" name="cfContact"> — (blank) <span class="src">FROM MS AEROSAPCE</span></label>
+      </div>
+      <div class="fillnote">Fields that are blank on one side fill in automatically from the other — only true conflicts are asked here.</div>
+
+      <div style="font-size:11px;font-weight:700;letter-spacing:.5px;color:var(--muted);margin-bottom:8px">3 · WHAT GETS COMBINED</div>
+      <div class="union">
+        ✓ <b>11 RFQs sent</b> (9 + 2) &nbsp;·&nbsp; <b>8 quotes</b> (7 + 1) &nbsp;·&nbsp; <b>2 awards</b> &nbsp;·&nbsp; all parts &amp; pricing history<br>
+        ✓ CAGE <b>3CAE5</b> and FSCs <b>5306, 5305, 3040</b> kept on the merged record<br>
+        ✓ Nothing is deleted — the duplicate's history moves onto the keeper, then the duplicate row goes away
+      </div>
+    </div>
+    <div class="mfoot"><button class="btn" onclick="closeMerge()">Cancel</button><button class="btn primary" onclick="doMerge()">⇄ Merge Vendors</button></div>
+  </div>
+</div>
+
+<!-- ============ ADD VENDOR MODAL (CAGE-FIRST, prod parity) ============ -->
+<div class="ovl" id="addOvl" onclick="if(event.target===this)closeAdd()">
+  <div class="modal">
+    <div class="mhead"><h3>Add New Vendor</h3><span class="x" onclick="closeAdd()">×</span></div>
+    <div class="mbody">
+      <div class="frow one"><div class="f">
+        <label>CAGE CODE *</label>
+        <input id="aCage" placeholder="Try 4XK29 — or 94580" oninput="cageCheck()" autocomplete="off" style="font-family:'Source Code Pro',monospace">
+        <div class="note">Enter a CAGE and company, city &amp; state auto-fill from government records.</div>
+        <div class="mergehit" id="hitSame">
+          ⚠ <b>CAGE 4XK29 is Apex Switchgear Corp</b> — already in My Vendors (9 RFQs, 7 quotes on record).
+          <div class="acts">
+            <button class="btn mini" onclick="openMergeAdd()">⇄ Merge new info into Apex Switchgear Corp</button>
+            <button class="btn mini" style="color:var(--muted);border-color:var(--border);background:#fff" onclick="keepSep('hitSame')">Keep separate</button>
+          </div>
+        </div>
+        <div class="mergehit" id="hitMulti">
+          <b>CAGE 94580 belongs to Honeywell International Inc</b> — already in My Vendors with <b>3 CAGEs</b> (55939, 06481, 70210).
+          <div class="acts">
+            <button class="btn mini" onclick="addCageFromModal()">+ Add this CAGE to the Honeywell record</button>
+            <button class="btn mini" style="color:var(--muted);border-color:var(--border);background:#fff" onclick="keepSep('hitMulti')">Keep as separate vendor</button>
+          </div>
+        </div>
+      </div></div>
+      <div class="frow one"><div class="f"><label>COMPANY NAME *</label><input id="aName" placeholder="Auto-fills from CAGE" oninput="nameCheck()"><div class="mergehit warn" id="hitName">⚠ Looks similar to <b>MS Aerospace</b> (CAGE 3CAE5), already in My Vendors.
+        <div class="acts"><button class="btn mini" onclick="closeAdd();openMergeDupe()">Review &amp; merge</button><button class="btn mini" style="color:var(--muted);border-color:var(--border);background:#fff" onclick="keepSep('hitName')">It's a different company</button></div>
+      </div></div></div>
+      <div class="frow"><div class="f"><label>PRIMARY CONTACT</label><input placeholder="First Last"></div><div class="f"><label>EMAIL *</label><input id="aEmail" placeholder="quotes@vendor.com"></div></div>
+      <div class="frow"><div class="f"><label>PHONE</label><input id="aPhone" placeholder="(555) 555-0100"></div><div class="f"><label>VENDOR TYPE</label><select><option>MFG</option><option>Distributor</option><option>Packaging House</option></select></div></div>
+      <div class="frow"><div class="f"><label>CITY</label><input id="aCity" placeholder="Auto-fills"></div><div class="f"><label>STATE</label><input id="aState" placeholder="—"></div></div>
+    </div>
+    <div class="mfoot"><button class="btn" onclick="closeAdd()">Cancel</button><button class="btn primary">Save Vendor</button></div>
+  </div>
+</div>
+
+<!-- ============ MERGE-ON-ADD MODAL (same CAGE) ============ -->
+<div class="ovl" id="mergeAddOvl" onclick="if(event.target===this)closeMergeAdd()">
+  <div class="modal wide">
+    <div class="mhead"><h3>⇄ Merge into Apex Switchgear Corp</h3><span class="x" onclick="closeMergeAdd()">×</span></div>
+    <div class="mbody">
+      <div class="fillnote"><b>The existing record is the base.</b> Everything you just typed fills in blanks on Apex Switchgear Corp — its 9 RFQs, 7 quotes and pricing history stay exactly where they are.</div>
+
+      <div style="font-size:11px;font-weight:700;letter-spacing:.5px;color:var(--muted);margin-bottom:8px">FILLS IN AUTOMATICALLY (was blank on the existing record)</div>
+      <div class="conf">
+        <div class="cf-h">WEBSITE</div>
+        <div class="cf-opt" style="cursor:default">apexswitchgear.com <span class="src" style="color:var(--green)">+ ADDED</span></div>
+      </div>
+      <div class="conf" style="margin-bottom:16px">
+        <div class="cf-h">SECOND CONTACT</div>
+        <div class="cf-opt" style="cursor:default">Mike Torres — Inside Sales <span class="src" style="color:var(--green)">+ ADDED</span></div>
+      </div>
+
+      <div style="font-size:11px;font-weight:700;letter-spacing:.5px;color:var(--muted);margin-bottom:8px">CONFLICT — PICK ONE</div>
+      <div class="conf">
+        <div class="cf-h">EMAIL</div>
+        <label class="cf-opt"><input type="radio" name="cfEmail2" checked> dana@apexswitchgear.com <span class="src">EXISTING</span></label>
+        <label class="cf-opt"><input type="radio" name="cfEmail2"> quotes@apexswitchgear.com <span class="src">YOU JUST TYPED</span></label>
+      </div>
+      <div class="union">✓ One Apex record · full history kept · autocomplete on the RFQ page stays clean — no second "Apex" to pick from by mistake.</div>
+    </div>
+    <div class="mfoot"><button class="btn" onclick="closeMergeAdd()">Cancel</button><button class="btn primary" onclick="doMergeAdd()">⇄ Merge — Keep One Record</button></div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+function showList(){document.getElementById('listView').style.display='';document.getElementById('detailView').style.display='none';window.scrollTo(0,0);}
+function showHoney(){document.getElementById('listView').style.display='none';document.getElementById('detailView').style.display='';window.scrollTo(0,0);}
+
+function toast(msg){
+  const t=document.getElementById('toast');
+  t.innerHTML=msg; t.classList.add('show');
+  clearTimeout(t._tm); t._tm=setTimeout(()=>t.classList.remove('show'),4200);
+}
+
+/* ---- select-two merge bar ---- */
+function selChange(){
+  const n=[...document.querySelectorAll('#listView tbody input[type=checkbox]')].filter(c=>c.checked).length;
+  document.getElementById('mergebar').classList.toggle('show', n>=2);
+  document.getElementById('selCount').textContent=n+' vendors selected';
+}
+
+/* ---- merge duplicates modal ---- */
+function openMergeDupe(){document.getElementById('mergeOvl').classList.add('open');}
+function closeMerge(){document.getElementById('mergeOvl').classList.remove('open');}
+function pickKeeper(k){
+  document.getElementById('k1').classList.toggle('on',k===1);
+  document.getElementById('k2').classList.toggle('on',k===2);
+}
+function doMerge(){
+  closeMerge();
+  const dupe=document.getElementById('rowDupe');
+  if(dupe){
+    dupe.remove();
+    document.getElementById('keepRfq').textContent='11';
+    document.getElementById('keepQ').textContent='8';
+    const chip=document.querySelector('#rowKeep .dupchip'); if(chip) chip.remove();
+    document.querySelectorAll('#listView tbody input[type=checkbox]').forEach(c=>c.checked=false);
+    selChange();
+  }
+  toast('⇄ Merged <b>MS Aerosapce</b> into <b>MS Aerospace</b> — 11 RFQs, 8 quotes, 2 awards now on one record. Nothing lost.');
+}
+
+/* ---- add vendor modal ---- */
+function openAdd(){document.getElementById('addOvl').classList.add('open');}
+function closeAdd(){
+  document.getElementById('addOvl').classList.remove('open');
+  ['hitSame','hitMulti','hitName'].forEach(id=>document.getElementById(id).style.display='none');
+  ['aCage','aName','aEmail','aPhone','aCity','aState'].forEach(id=>document.getElementById(id).value='');
+}
+let dismissed={};
+function keepSep(id){document.getElementById(id).style.display='none';dismissed[id]=true;
+  if(id!=='hitName') toast('Kept separate — allowed, but both records will carry a duplicate flag until merged.');}
+function cageCheck(){
+  const v=document.getElementById('aCage').value.trim().toUpperCase();
+  const same=document.getElementById('hitSame'), multi=document.getElementById('hitMulti');
+  same.style.display = (v==='4XK29' && !dismissed['hitSame']) ? 'block':'none';
+  multi.style.display = (v==='94580' && !dismissed['hitMulti']) ? 'block':'none';
+  if(v==='4XK29'){fillA('Apex Switchgear Corp','Denver','CO');}
+  else if(v==='94580'){fillA('Honeywell International Inc','South Bend','IN');}
+  if(v!=='4XK29') dismissed['hitSame']=false;
+  if(v!=='94580') dismissed['hitMulti']=false;
+}
+function fillA(name,city,st){
+  document.getElementById('aName').value=name;
+  document.getElementById('aCity').value=city;
+  document.getElementById('aState').value=st;
+}
+function nameCheck(){
+  const v=document.getElementById('aName').value.trim().toLowerCase();
+  const hit = v.length>4 && v.startsWith('ms aero') && !dismissed['hitName'];
+  document.getElementById('hitName').style.display = hit?'block':'none';
+  if(!v.startsWith('ms aero')) dismissed['hitName']=false;
+}
+
+/* ---- merge-on-add (same CAGE) ---- */
+function openMergeAdd(){document.getElementById('addOvl').classList.remove('open');document.getElementById('mergeAddOvl').classList.add('open');}
+function closeMergeAdd(){document.getElementById('mergeAddOvl').classList.remove('open');}
+function doMergeAdd(){
+  closeMergeAdd(); closeAdd();
+  toast('⇄ New info merged into <b>Apex Switchgear Corp</b> — blanks filled, your email pick kept, history untouched.');
+}
+
+/* ---- add CAGE to Honeywell ---- */
+function addCage94580(){
+  if(document.getElementById('cage94580')) return;
+  const sp=document.createElement('span'); sp.className='cagechip'; sp.id='cage94580'; sp.textContent='94580';
+  document.getElementById('cageChips').insertBefore(sp, document.getElementById('addCageBtn'));
+  document.getElementById('cageCount').textContent='4';
+  document.getElementById('honeySub').innerHTML='4 CAGEs: 55939 · 06481 · 70210 · 94580 &nbsp;· MFG';
+  toast('CAGE <b>94580</b> added to <b>Honeywell International Inc</b> — now 4 CAGEs, one vendor card.');
+}
+function addCageFromModal(){ closeAdd(); addCage94580(); }
+</script>
+</body>
+</html>
