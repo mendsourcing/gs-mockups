@@ -227,7 +227,7 @@ function copyLink(){
   t.classList.add('show');
   setTimeout(()=>t.classList.remove('show'),2200);
 }
-function shareText(){ location.href='sms:?&body='+encodeURIComponent(POST_TEXT+' '+REF_URL); }
+function shareText(){ location.href='sms:?&body='+encodeURIComponent('Hey! Quick one for you. I use a tool called GovScraper for my DLA contracts and it has been a game changer. You get a 14 day free trial with my link if you want to try it: '+REF_URL); }
 function shareEmail(){
   const body='Hey,\n\nWanted to share something that has made a big difference for us. A system I use often for my Government Contracts with the DLA is GovScraper. It is a great tool and I highly recommend you check it out if you source Government Contracts as well.\n\nUse my referral link and you get a 14 day free trial, double the standard 7:\n'+REF_URL+'\n\nHappy to walk you through how we use it if you want. Just reply here.\n\nTristan';
   location.href='mailto:?subject='+encodeURIComponent('Your 14-day free trial of GovScraper')+'&body='+encodeURIComponent(body);
