@@ -26,6 +26,17 @@
   .breadcrumb b{color:var(--text)}
   .avatar{width:36px;height:36px;border-radius:9px;border:2px solid #E2E8F0;background:linear-gradient(135deg,var(--accent),#1D4ED8);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:11px;cursor:pointer}
 
+  .shell{display:flex;min-height:calc(100vh - 56px)}
+  .side{width:224px;background:var(--surface);border-right:1px solid var(--border);padding:14px 0;flex-shrink:0;display:flex;flex-direction:column}
+  .sgroup{font-size:10.5px;font-weight:700;letter-spacing:0.8px;color:var(--faint);padding:14px 16px 6px}
+  .sitem{display:flex;align-items:center;gap:9px;padding:8px 16px;font-size:12.5px;color:var(--text-dim);font-weight:500;cursor:pointer;border-left:3px solid transparent}
+  .sitem:hover{background:var(--accent-soft);color:var(--accent);border-left-color:var(--accent-border)}
+  .sitem.on{background:var(--accent-soft);color:var(--accent);font-weight:700;border-left-color:var(--accent)}
+  .sitem.sub{padding-left:38px;font-size:12px}
+  .sitem svg{width:16px;height:16px;flex-shrink:0}
+  .newtag{margin-left:auto;font-size:9.5px;font-weight:700;background:var(--red);color:#fff;border-radius:4px;padding:2px 5px;letter-spacing:.5px}
+  .refside{margin-top:auto;border-top:1px solid var(--border);padding-top:8px}
+  .mainarea{flex:1;min-width:0}
   .wrap{max-width:880px;margin:0 auto;padding:26px 24px 80px}
   .card{background:#fff;border:1px solid var(--border);border-radius:14px;margin-bottom:18px;overflow:hidden}
   .pad{padding:26px 30px}
@@ -103,6 +114,36 @@
   <div class="avatar" onclick="location.href='Settings_Page.html'">TB</div>
 </header>
 
+<div class="shell">
+<div class="side">
+  <div class="sgroup">MAIN</div>
+  <div class="sitem" onclick="location.href='Dashboard_Page.html'"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>Dashboard</div>
+  <div class="sitem" onclick="location.href='RFQ_Page.html'"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/></svg>My RFQs</div>
+  <div class="sitem sub">Private List of RFQs</div>
+  <div class="sitem sub">Public List of RFQs</div>
+  <div class="sgroup">VENDORS</div>
+  <div class="sitem" onclick="location.href='Vendor_Page.html'"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 21h18"/><path d="M5 21V7l7-4 7 4v14"/><path d="M9 21v-6h6v6"/></svg>My Vendors<span class="newtag">NEW</span></div>
+  <div class="sitem sub">+ Add Vendor</div>
+  <div class="sgroup">INTELLIGENCE</div>
+  <div class="sitem"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>NSN Search</div>
+  <div class="sitem"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9.5 12 4l9 5.5"/><path d="M5 10v10h14V10"/></svg>CAGE Search</div>
+  <div class="sitem"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6h16M4 12h16M4 18h16"/></svg>FSC Lookup</div>
+  <div class="sitem"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg>NSN Watch List</div>
+  <div class="sgroup">RESULTS</div>
+  <div class="sitem" onclick="location.href='Award_Page.html'"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.1V12a10 10 0 1 1-5.93-9.14"/><path d="m9 11 3 3L22 4"/></svg>Awarded Contracts</div>
+  <div class="sitem"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 9h18"/></svg>Archived RFQs</div>
+  <div class="sgroup">ALERTS</div>
+  <div class="sitem"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/></svg>RFQ Alerts</div>
+  <div class="sgroup">COMMUNITY</div>
+  <div class="sitem"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>Community</div>
+  <div class="sgroup">TOOLS</div>
+  <div class="sitem"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 8V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v3"/><rect x="3" y="8" width="18" height="13" rx="2"/></svg>GovPacking</div>
+  <div class="refside">
+    <div class="sitem on"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.6l-1-1a5.5 5.5 0 0 0-7.8 7.8l1 1L12 21.2l7.8-7.8 1-1a5.5 5.5 0 0 0 0-7.8z"/></svg>Invite a friend, get $100</div>
+    <div class="sitem" onclick="location.href='Settings_Page.html'"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 21v-1a7 7 0 0 1 14 0v1"/></svg>Settings &amp; Account</div>
+  </div>
+</div>
+<div class="mainarea">
 <div class="wrap">
 
   <!-- HERO -->
@@ -170,6 +211,8 @@
   </div></div>
 
 </div>
+</div><!-- /mainarea -->
+</div><!-- /shell -->
 
 <div class="toast" id="toast">✓ Referral link copied — govscraper.com/referral/tris10x7k2</div>
 <script>
