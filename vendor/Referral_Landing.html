@@ -4,78 +4,80 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="robots" content="noindex, nofollow">
-<title>You're invited to GovScraper — 14-Day Free Trial</title>
+<title>You're invited to GovScraper — 14-day free trial</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Barlow:wght@600;700;800&family=Public+Sans:wght@400;500;600;700;800&family=Source+Code+Pro:wght@500;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Source+Code+Pro:wght@500;700&display=swap" rel="stylesheet">
 <style>
   :root{
-    --ink:#0B1020; --accent:#2563EB; --accent-soft:#EFF6FF; --accent-border:#BFDBFE;
-    --green:#16A34A; --green-soft:#F0FDF4; --amber:#D97706;
-    --bg:#FAFAF7; --surface:#fff; --border:#E5E5DF; --text:#1E293B; --text-dim:#475569; --muted:#6B7280; --faint:#94A3B8;
+    --primary:#1E293B; --accent:#2563EB; --accent-soft:#EFF6FF; --accent-border:#BFDBFE; --accent-hover:#1D4ED8;
+    --green:#16A34A; --green-soft:#F0FDF4;
+    --bg:#F8FAFC; --surface:#fff; --border:#E2E8F0; --text:#1E293B; --text-dim:#475569; --muted:#6B7280; --faint:#94A3B8; --navy:#1B2A4A;
   }
   *{box-sizing:border-box;margin:0}
-  body{font-family:'Public Sans',-apple-system,sans-serif;background:var(--bg);color:var(--text);font-size:15px}
-  a{text-decoration:none;color:inherit}
+  body{font-family:'Manrope',sans-serif;background:var(--bg);color:var(--text);font-size:15px}
+  a{text-decoration:none}
   .mono{font-family:'Source Code Pro',monospace}
-  h1,h2,.bar-cta{font-family:'Barlow',sans-serif}
 
-  .topbar{background:var(--bg);display:flex;align-items:center;gap:30px;padding:18px 40px;position:sticky;top:0;z-index:50;border-bottom:1px solid transparent}
-  .topbar img{height:34px}
-  .nav{display:flex;gap:26px;margin-left:auto;font-size:14px;font-weight:600;color:var(--text-dim);align-items:center}
-  .nav a:hover{color:var(--ink)}
-  .bar-cta{background:var(--ink);color:#fff;border:none;border-radius:999px;padding:13px 26px;font-size:15px;font-weight:700;cursor:pointer}
+  .topbar{background:#fff;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;padding:14px 36px;position:sticky;top:0;z-index:50}
+  .topbar img{height:32px}
+  .signup{background:var(--accent);color:#fff;border:none;border-radius:10px;padding:11px 24px;font-size:14px;font-weight:800;cursor:pointer;font-family:'Manrope',sans-serif}
+  .signup:hover{background:var(--accent-hover)}
 
-  .hero{max-width:1120px;margin:0 auto;padding:46px 40px 30px}
-  .kicker{font-size:12px;font-weight:800;letter-spacing:2px;color:var(--muted);margin-bottom:16px}
-  .kicker .inv{color:var(--accent)}
-  h1{font-size:44px;font-weight:800;line-height:1.12;color:var(--ink);max-width:720px;margin-bottom:20px}
-  .sub{font-size:16.5px;color:var(--text-dim);line-height:1.75;max-width:640px;margin-bottom:26px}
-  .sub b{color:var(--ink)}
-  .ctarow{display:flex;align-items:center;gap:26px;flex-wrap:wrap;margin-bottom:14px}
-  .cta{display:inline-block;background:var(--ink);color:#fff;border-radius:999px;padding:17px 34px;font-size:16px;font-weight:700;font-family:'Barlow',sans-serif}
-  .cta:hover{opacity:.9}
-  .members{display:flex;align-items:center;gap:12px}
-  .avs{display:flex}
-  .avs span{width:34px;height:34px;border-radius:50%;border:2.5px solid var(--bg);background:linear-gradient(135deg,#2563EB,#1B2A4A);color:#fff;font-size:10.5px;font-weight:800;display:flex;align-items:center;justify-content:center;margin-left:-9px}
-  .avs span:first-child{margin-left:0}
-  .members .t{font-size:12.5px;color:var(--muted);line-height:1.4}
-  .members .t b{display:block;font-size:15px;color:var(--ink)}
-  .ctanote{font-size:12.5px;color:var(--faint)}
+  .hero{max-width:1160px;margin:0 auto;padding:68px 36px 54px;display:grid;grid-template-columns:1.05fr 1fr;gap:54px;align-items:center}
+  @media(max-width:880px){.hero{grid-template-columns:1fr}}
+  .kicker{display:inline-flex;align-items:center;gap:9px;background:var(--accent-soft);border:1px solid var(--accent-border);border-radius:999px;padding:7px 16px;font-size:12.5px;font-weight:800;color:var(--accent);margin-bottom:24px}
+  .kicker .av{width:22px;height:22px;border-radius:50%;background:linear-gradient(135deg,var(--accent),#1D4ED8);color:#fff;display:inline-flex;align-items:center;justify-content:center;font-size:10px;font-weight:800}
+  h1{font-size:42px;font-weight:800;line-height:1.18;letter-spacing:-.5px;margin-bottom:20px;color:var(--primary)}
+  h1 .hl{color:var(--accent)}
+  .sub{font-size:16px;color:var(--text-dim);line-height:1.75;max-width:480px;margin-bottom:28px}
+  .sub b{color:var(--primary)}
+  .cta{display:inline-block;background:var(--accent);color:#fff;border-radius:12px;padding:16px 30px;font-size:16px;font-weight:800;box-shadow:0 6px 18px rgba(37,99,235,.3)}
+  .cta:hover{background:var(--accent-hover)}
+  .ctanote{font-size:12px;color:var(--faint);margin-top:13px}
   .ctanote .mono{color:var(--accent);font-weight:700}
+  .members{display:flex;align-items:center;gap:12px;margin-top:22px}
+  .avs{display:flex}
+  .avs span{width:32px;height:32px;border-radius:50%;border:2.5px solid var(--bg);background:linear-gradient(135deg,var(--accent),#1B2A4A);color:#fff;font-size:10px;font-weight:800;display:flex;align-items:center;justify-content:center;margin-left:-8px}
+  .avs span:first-child{margin-left:0}
+  .members .t{font-size:12px;color:var(--muted);line-height:1.4}
+  .members .t b{display:block;font-size:14.5px;color:var(--primary)}
 
-  /* product shot */
-  .shotwrap{max-width:1120px;margin:26px auto 0;padding:0 40px}
-  .shot{background:#fff;border:1px solid var(--border);border-radius:18px;box-shadow:0 30px 70px rgba(11,16,32,.12);overflow:hidden}
-  .shot .bar{display:flex;gap:6px;background:#F1F5F9;padding:11px 15px;border-bottom:1px solid var(--border)}
+  .shot{background:#fff;border:1px solid var(--border);border-radius:16px;box-shadow:0 24px 60px rgba(15,23,42,.14);overflow:hidden}
+  .shot .bar{display:flex;gap:6px;background:#F1F5F9;padding:10px 14px;border-bottom:1px solid var(--border)}
   .shot .dot{width:9px;height:9px;border-radius:50%;background:#CBD5E1}
-  .shot .inner{padding:20px;display:grid;grid-template-columns:1fr 1fr;gap:18px}
-  @media(max-width:760px){.shot .inner{grid-template-columns:1fr}}
+  .shot .inner{padding:18px}
   .srow{display:flex;gap:10px;margin-bottom:12px}
   .scard{flex:1;border:1px solid var(--border);border-radius:10px;padding:12px 14px;border-top:3px solid var(--accent)}
   .scard label{font-size:8.5px;font-weight:800;letter-spacing:.6px;color:var(--faint)}
-  .scard b{display:block;font-size:21px;font-weight:800;color:var(--accent);margin-top:3px}
-  .scard b.dark{color:var(--ink)}
-  .srfq{display:flex;align-items:center;gap:10px;border:1px solid var(--border);border-radius:9px;padding:10px 12px;margin-bottom:7px;font-size:11.5px;font-weight:700}
+  .scard b{display:block;font-size:20px;font-weight:800;color:var(--accent);margin-top:3px}
+  .scard b.dark{color:var(--primary)}
+  .srfq{display:flex;align-items:center;gap:10px;border:1px solid var(--border);border-radius:9px;padding:9px 12px;margin-bottom:7px;font-size:11px;font-weight:700}
   .srfq .mono{color:var(--accent);font-size:10.5px}
   .srfq .pill{margin-left:auto;background:var(--green-soft);color:var(--green);border-radius:999px;padding:2px 9px;font-size:9.5px;font-weight:800}
   .srfq .pill.b{background:var(--accent-soft);color:var(--accent)}
 
-  .platform{max-width:1120px;margin:0 auto;padding:64px 40px 20px}
-  .plabel{font-size:12px;font-weight:800;letter-spacing:2px;color:var(--muted);text-align:center;margin-bottom:10px}
-  h2{font-size:30px;font-weight:800;color:var(--ink);text-align:center;margin-bottom:38px}
-  .feats{display:grid;grid-template-columns:repeat(4,1fr);gap:18px}
-  @media(max-width:900px){.feats{grid-template-columns:1fr 1fr}}
-  .feat{background:#fff;border:1px solid var(--border);border-radius:14px;padding:24px}
-  .feat .ic{font-size:22px;margin-bottom:12px}
-  .feat h4{font-family:'Barlow',sans-serif;font-size:16px;font-weight:700;color:var(--ink);margin-bottom:8px}
-  .feat p{font-size:12.5px;color:var(--muted);line-height:1.65}
+  .trust{border-top:1px solid var(--border);border-bottom:1px solid var(--border);background:#fff}
+  .trust .in{max-width:1160px;margin:0 auto;padding:34px 36px;display:grid;grid-template-columns:repeat(3,1fr);gap:20px;text-align:center}
+  @media(max-width:880px){.trust .in{grid-template-columns:1fr}}
+  .laurel{font-size:15px;font-weight:800;color:var(--primary)}
+  .laurel small{display:block;font-size:12px;color:var(--faint);font-weight:600;margin-top:4px}
 
-  .invite{max-width:760px;margin:0 auto;padding:50px 40px 70px;text-align:center}
-  .invite .card{background:#fff;border:1px solid var(--border);border-radius:18px;padding:40px 44px}
-  .invite .avbig{width:56px;height:56px;border-radius:50%;background:linear-gradient(135deg,#2563EB,#1B2A4A);color:#fff;font-weight:800;font-size:19px;display:flex;align-items:center;justify-content:center;margin:0 auto 14px}
-  .invite h3{font-family:'Barlow',sans-serif;font-size:22px;font-weight:800;color:var(--ink);margin-bottom:10px}
-  .invite p{font-size:14px;color:var(--text-dim);line-height:1.7;margin-bottom:20px}
-  .foot{text-align:center;font-size:12px;color:var(--faint);padding:0 40px 50px}
+  .how{max-width:880px;margin:0 auto;padding:60px 36px 30px;text-align:center}
+  .how h2{font-size:25px;font-weight:800;margin-bottom:32px;color:var(--primary)}
+  .steps{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;text-align:left}
+  @media(max-width:880px){.steps{grid-template-columns:1fr}}
+  .step{background:#fff;border:1px solid var(--border);border-radius:13px;padding:22px}
+  .step .n{width:28px;height:28px;border-radius:50%;background:var(--accent-soft);color:var(--accent);font-weight:800;font-size:13px;display:flex;align-items:center;justify-content:center;margin-bottom:12px}
+  .step h4{font-size:14.5px;font-weight:800;margin-bottom:6px}
+  .step p{font-size:12.5px;color:var(--muted);line-height:1.6}
+
+  .invite{max-width:680px;margin:0 auto;padding:36px 36px 70px;text-align:center}
+  .invite .card{background:var(--navy);border-radius:18px;padding:38px 42px;color:#fff}
+  .invite .avbig{width:54px;height:54px;border-radius:50%;background:rgba(255,255,255,.15);color:#fff;font-weight:800;font-size:18px;display:flex;align-items:center;justify-content:center;margin:0 auto 14px;border:2px solid rgba(255,255,255,.3)}
+  .invite h3{font-size:19px;font-weight:800;margin-bottom:10px}
+  .invite p{font-size:14px;color:#C7D2E4;line-height:1.7;margin-bottom:22px;font-style:italic}
+  .invite .cta{background:#fff;color:var(--navy);box-shadow:none}
+  .foot{text-align:center;font-size:12px;color:var(--faint);padding:0 36px 50px}
   .foot a{color:var(--accent)}
 </style>
 </head>
@@ -83,65 +85,58 @@
 
 <div class="topbar">
   <img src="https://govscraper.com/assets/BigLogo-7gv5uAxF.png" alt="GovScraper">
-  <div class="nav">
-    <a href="#">How it Works</a><a href="#">Pricing</a><a href="#">CAGE Search</a><a href="#">NSN Search</a><a href="#">Sign in</a>
-    <button class="bar-cta">Start Your 14-Day Free Trial</button>
-  </div>
+  <button class="signup">Sign up</button>
 </div>
 
 <div class="hero">
-  <div class="kicker">THE DLA CONTRACT INTELLIGENCE PLATFORM · <span class="inv">YOU'VE BEEN INVITED BY TRISTAN THOMAS</span></div>
-  <h1>Tristan Thinks You'll Love GovScraper. Your Trial Is Doubled to 14 Days.</h1>
-  <p class="sub">Every DLA RFQ matched to your FSC codes, delivered daily. Replace <b>SIX HOURS</b> of DIBBS research with one feed, and because Tristan sent you, you get <b>14 days free instead of the standard 7</b>.</p>
-  <div class="ctarow">
-    <a class="cta" href="#">Start Your 14-Day Free Trial</a>
+  <div>
+    <div class="kicker"><span class="av">TT</span> Invited by Tristan Thomas</div>
+    <h1>Tristan thinks you'll love GovScraper. Get a <span class="hl">14-day free trial</span>, double the standard.</h1>
+    <p class="sub">Every DLA RFQ matched to your FSC codes, delivered daily. Replace <b>six hours</b> of DIBBS research with one feed, and because Tristan sent you, your free trial runs <b>14 days instead of the standard 7</b>.</p>
+    <a class="cta" href="#">Claim your 14-day free trial</a>
+    <div class="ctanote">No charge until your trial ends. Referral code <span class="mono">tris10x7k2</span> applied automatically.</div>
     <div class="members">
       <div class="avs"><span>MR</span><span>SK</span><span>JT</span><span>DL</span><span>AB</span></div>
       <div class="t"><b>121</b>Active Members of GovScraper</div>
     </div>
   </div>
-  <div class="ctanote">No charge until your trial ends. Referral code <span class="mono">tris10x7k2</span> applied automatically.</div>
-</div>
-
-<div class="shotwrap"><div class="shot">
-  <div class="bar"><span class="dot"></span><span class="dot"></span><span class="dot"></span></div>
-  <div class="inner">
-    <div>
+  <div class="shot">
+    <div class="bar"><span class="dot"></span><span class="dot"></span><span class="dot"></span></div>
+    <div class="inner">
       <div class="srow">
         <div class="scard"><label>RFQS READY TO SOURCE</label><b>308</b></div>
         <div class="scard"><label>READY TO BID</label><b class="dark">11</b></div>
-      </div>
-      <div class="srow">
         <div class="scard"><label>AWARD WON</label><b>$82,958</b></div>
-        <div class="scard"><label>NEW TODAY</label><b class="dark">72</b></div>
       </div>
-    </div>
-    <div>
       <div class="srfq"><span class="mono">SPE7L1-27-T-3036</span> SHAFT,SHOULDERED <span class="pill b">$63,000 est.</span></div>
       <div class="srfq"><span class="mono">SPE4A6-27-T-7584</span> CABLE ASSEMBLY <span class="pill b">$361,050 est.</span></div>
       <div class="srfq"><span class="mono">SPE7M1-27-U-0984</span> HEADSET,ACOUSTICAL <span class="pill">Quoted</span></div>
       <div class="srfq"><span class="mono">SPE7M4-26-V-5103</span> SWITCH, PUSH <span class="pill">Award Won</span></div>
     </div>
   </div>
+</div>
+
+<div class="trust"><div class="in">
+  <div class="laurel">🌿 Built by Government Contractors<small>for Government Contractors</small></div>
+  <div class="laurel">🌿 280+ Awards · $8M+ Won<small>by the team behind GovScraper</small></div>
+  <div class="laurel">🌿 2,000+ RFQs Pulled Daily<small>matched to your FSCs every morning</small></div>
 </div></div>
 
-<div class="platform">
-  <div class="plabel">THE PLATFORM</div>
-  <h2>Everything you need to find, bid, and win</h2>
-  <div class="feats">
-    <div class="feat"><div class="ic">⚡</div><h4>See the Newest RFQs First</h4><p>Live DIBBS scraping throughout the day. Every RFQ the DLA puts out (2,000+/day). Never miss an opportunity.</p></div>
-    <div class="feat"><div class="ic">📄</div><h4>100% of Data Extracted</h4><p>All the information extracted from the PDF automatically. Hardcoded formulas, not AI, so the data is 100% accurate.</p></div>
-    <div class="feat"><div class="ic">📊</div><h4>Track Every Bid You Source</h4><p>One dashboard tracks each opportunity through New, Will Source, Ready to Bid, and Submitted.</p></div>
-    <div class="feat"><div class="ic">🏆</div><h4>Bid and Win With Confidence</h4><p>Members have 10x'd their book of business in 18 months. Bid smarter with past award prices on every NSN.</p></div>
+<div class="how">
+  <h2>How your invite works</h2>
+  <div class="steps">
+    <div class="step"><div class="n">1</div><h4>Sign up with Tristan's link</h4><p>Your 14-day free trial starts instantly. Full platform, no card charged during the trial.</p></div>
+    <div class="step"><div class="n">2</div><h4>Set your FSCs</h4><p>Tell GovScraper what you sell. Matching DLA RFQs land in your pipeline every morning with pricing history on every NSN.</p></div>
+    <div class="step"><div class="n">3</div><h4>Bid and win</h4><p>Source vendors, build your price sheet, submit, and track every award, all in one place.</p></div>
   </div>
 </div>
 
 <div class="invite">
   <div class="card">
     <div class="avbig">TT</div>
-    <h3>A personal invite from Tristan Thomas</h3>
+    <h3>A personal note from Tristan</h3>
     <p>"A system that I use often for my Government Contracts with the DLA is GovScraper. It is a great tool and I highly recommend that you check it out if you source Government Contracts as well."</p>
-    <a class="cta" href="#">Claim Your 14-Day Free Trial</a>
+    <a class="cta" href="#">Start your 14-day free trial</a>
   </div>
 </div>
 
