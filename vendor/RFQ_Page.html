@@ -165,7 +165,7 @@
     <div class="stages" id="stages">
       <div class="stage" data-s="New Opportunity" onclick="manualStage(this)">New Opportunity</div><div class="stage" data-s="Will Source" onclick="manualStage(this)">Will Source</div><div class="stage" data-s="Currently Sourcing" onclick="manualStage(this)">Currently Sourcing</div><div class="stage" data-s="Ready to Bid" onclick="manualStage(this)">Ready to Bid</div><div class="stage" data-s="Bid Complete" onclick="manualStage(this)">Bid Complete</div><div class="stage" data-s="Trace" onclick="manualStage(this)">Trace</div><div class="stage" data-s="Award Won" onclick="manualStage(this)">Award Won</div><div class="stage" data-s="Award Lost" onclick="manualStage(this)">Award Lost</div><div class="stage" data-s="No Bid" onclick="manualStage(this)">No Bid</div>
     </div>
-    <div class="stagehint" id="stagehint">⚡ Stage auto-syncs from your Vendor Reference Table below — click any stage to override.</div>
+    <div class="stagehint" id="stagehint">Click a stage to update this RFQ — or use "Save &amp; Mark Ready" on the Vendor Reference Table once pricing is in.</div>
 
     <div class="strip">
       <div class="cell"><label>ISSUE DATE</label><div class="v">10/30/2026</div></div>
@@ -245,7 +245,7 @@
     <div class="syncnote"><b>⚡ Connected:</b> vendors autocomplete from <a href="Vendor_Page.html"><b>My Vendors + Vendor Pool</b></a> — pick one and email, CAGE, and type fill automatically. Every status you set here rolls up to the Vendors page stats (Sent / Quoted / No Quote / Declined), and prices land in that vendor's <b>Parts &amp; Pricing History</b>.</div>
 
     <div class="sec">
-      <div class="sechead"><h3>Vendor Reference Table</h3><span style="font-size:11.5px;color:var(--muted);margin-left:14px">Vendors autocomplete from My Vendors. Statuses roll up to your Vendors page, and quotes build each vendor's pricing history.</span><span class="hint" style="color:var(--green);font-weight:700">✓ All changes saved</span></div>
+      <div class="sechead"><h3>Vendor Reference Table</h3><span style="font-size:11.5px;color:var(--muted);margin-left:14px">Vendors autocomplete from My Vendors. Statuses roll up to your Vendors page, and quotes build each vendor's pricing history.</span><span class="hint" style="color:var(--green);font-weight:700">✓ All changes saved</span><button class="btn" style="margin-left:12px;padding:6px 13px;font-size:12px;font-weight:700;color:var(--accent);border-color:var(--accent-border);background:var(--accent-soft)" onclick="setStage('Ready to Bid',false);document.getElementById('stagehint').textContent='Marked Ready to Bid.'">Save &amp; Mark Ready</button></div>
       <table class="vrt">
         <thead><tr>
           <th style="min-width:170px">VENDOR</th><th style="min-width:170px">EMAIL</th><th>PART #</th><th>QTY</th><th style="min-width:106px">STATUS</th><th>PRICE</th><th>UNIT</th><th>LEAD TIME</th><th>LAST UPDATE</th><th>FILE</th><th></th>
@@ -457,37 +457,13 @@ function nudgeRow(btn){
     '<div class="disc">On '+sent+' we wrote: "I was hoping you could help with a quote for Part Number '+part+'. If so, please quote this government rated order/part..."</div>';
   document.getElementById('covl').classList.add('open');
 }
-// ===== stage auto-sync from vendor table =====
-let stageManual = false;
-function setStage(name, auto){
-  document.querySelectorAll('#stages .stage').forEach(st=>{
-    const on = st.dataset.s===name;
-    st.classList.toggle('on',on);
-    const tag=st.querySelector('.autotag'); if(tag) tag.remove();
-    if(on && auto) st.insertAdjacentHTML('beforeend','<span class="autotag">AUTO</span>');
-  });
+// ===== stage pills (manual, prod behavior) =====
+function setStage(name){
+  document.querySelectorAll('#stages .stage').forEach(st=>st.classList.toggle('on',st.dataset.s===name));
 }
-function manualStage(el){ stageManual=true; setStage(el.dataset.s,false);
-  document.getElementById('stagehint').textContent='Stage set manually — auto-sync off for this RFQ.'; }
-function syncStage(){
-  if(stageManual) return;
-  const sts=[...document.querySelectorAll('#vrows select')].map(s=>s.value);
-  const active=sts.filter((v,i)=>{
-    const name=document.querySelectorAll('#vrows tr')[i].cells[0].querySelector('input').value.trim();
-    return name.length>0;
-  });
-  let stage='New Opportunity';
-  if(active.some(v=>v==='Quoted')) stage='Ready to Bid';
-  else if(active.some(v=>v==='Sent')) stage='Currently Sourcing';
-  else if(active.length && active.every(v=>v==='No Quote'||v==='Declined')) stage='Will Source';
-  setStage(stage,true);
-  const hint=document.getElementById('stagehint');
-  if(stage==='Currently Sourcing') hint.textContent='⚡ Auto: Currently Sourcing — awaiting vendor responses. Click a stage to override.';
-  else if(stage==='Ready to Bid') hint.textContent='⚡ Auto: Ready to Bid — you have pricing in hand. Click a stage to override.';
-  else if(stage==='Will Source') hint.textContent='⚡ Auto: all vendors declined — source more vendors. Click a stage to override.';
-  else hint.textContent='⚡ Stage auto-syncs from your Vendor Reference Table below — click any stage to override.';
-}
-syncStage();
+function manualStage(el){ setStage(el.dataset.s); }
+function syncStage(){} // stage is manual — statuses never move it
+setStage('Currently Sourcing');
 // ===== styled autocomplete dropdown =====
 const acMenu = document.createElement('div'); acMenu.id='acMenu'; document.body.appendChild(acMenu);
 let acInput = null;
