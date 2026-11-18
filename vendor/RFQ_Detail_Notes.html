@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RFQ Detail — Notes Field</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;600;700;800&family=Source+Code+Pro:wght@500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --accent:#2563EB; --accent-soft:#EFF6FF; --accent-border:#BFDBFE;
+    --navy:#1B2A4A; --bg:#F8FAFC; --border:#E2E8F0;
+    --green:#16A34A; --amber:#D97706; --amber-bg:#FFF7ED; --red:#DC2626;
+    --slate:#475569; --muted:#64748B;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{font-family:'Manrope',sans-serif;background:#94A3B8;color:var(--navy)}
+  .mono{font-family:'Source Code Pro',monospace}
+
+  /* drawer */
+  .drawer{max-width:1540px;margin:0 auto;min-height:100vh;background:#fff;box-shadow:-20px 0 60px rgba(15,23,42,.25)}
+  .head{padding:26px 34px 0}
+  .h-top{display:flex;align-items:flex-start;justify-content:space-between;gap:16px}
+  h1{font-size:27px;font-weight:800;letter-spacing:-.01em}
+  .h-sub{margin-top:5px;font-size:13px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.02em}
+  .h-sub b{color:var(--navy)}
+  .h-actions{display:flex;gap:8px;align-items:center}
+  .btn{font-family:inherit;font-size:13.5px;font-weight:700;border:1px solid var(--border);background:#fff;color:var(--navy);border-radius:9px;padding:9px 14px;cursor:pointer}
+  .btn.blue{background:var(--accent-soft);border-color:var(--accent-border);color:var(--accent)}
+  .btn.icon{padding:9px 12px;color:var(--slate)}
+
+  /* status pills */
+  .stages{display:flex;gap:8px;margin-top:20px}
+  .stage{flex:1;text-align:center;font-size:13px;font-weight:700;color:var(--slate);background:var(--bg);border:1px solid var(--border);border-radius:9px;padding:11px 6px;cursor:pointer;white-space:nowrap}
+  .stage.on{background:var(--accent);border-color:var(--accent);color:#fff}
+
+  /* meta strip */
+  .meta{display:grid;grid-template-columns:repeat(7,1fr);margin-top:20px;border-top:1px solid var(--border);border-bottom:1px solid var(--border)}
+  .m{padding:16px 18px;border-right:1px solid var(--border)}
+  .m:last-child{border-right:none}
+  .m .k{font-size:11px;font-weight:800;letter-spacing:.08em;color:var(--muted);text-transform:uppercase}
+  .m .v{margin-top:7px;font-size:15.5px;font-weight:800}
+  .m .v.orange{color:var(--amber)}
+  .pen{display:inline-block;margin-left:6px;font-size:12px;color:var(--slate);border:1px solid var(--border);border-radius:6px;padding:1px 5px;vertical-align:1px}
+
+  /* body */
+  .bodywrap{padding:26px 34px 60px;background:var(--bg)}
+  .card{background:#fff;border:1px solid var(--border);border-radius:14px;overflow:hidden}
+  .card + .card{margin-top:22px}
+  .c-head{display:flex;align-items:center;justify-content:space-between;padding:16px 22px;border-bottom:1px solid var(--border)}
+  .c-head h2{font-size:16px;font-weight:800;color:var(--accent)}
+  .c-head .idn{font-size:13px;font-weight:600;color:var(--slate)}
+  .c-head .idn b{font-weight:800;color:var(--navy)}
+  .c-grid{display:grid;grid-template-columns:1fr 360px}
+
+  /* info table */
+  .itable{border-right:1px solid var(--border)}
+  .irow{display:grid;grid-template-columns:240px 1fr;border-bottom:1px solid var(--border)}
+  .irow:last-child{border-bottom:none}
+  .ik{padding:15px 22px;font-size:14px;font-weight:700;color:var(--navy);background:#fff}
+  .iv{padding:15px 22px;font-size:14px;font-weight:600;color:var(--slate);display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+  .iv .blue{color:var(--accent);font-weight:800}
+  .iv .orange{color:var(--amber);font-weight:800}
+  .chip{font-size:12.5px;font-weight:800;border-radius:999px;padding:6px 14px}
+  .chip.solid{background:var(--accent);color:#fff;cursor:pointer}
+  .chip.soft{background:var(--accent-soft);color:var(--accent);border:1px solid var(--accent-border)}
+
+  /* NOTES */
+  .notesrow{background:#FFFDF5}
+  .noteshead{display:flex;align-items:center;gap:10px;padding:15px 22px 0}
+  .noteshead .nt{font-size:14px;font-weight:800;color:var(--navy)}
+  .noteshead .badge{font-size:11px;font-weight:800;letter-spacing:.06em;color:var(--amber);background:var(--amber-bg);border:1px solid #FDE68A;border-radius:999px;padding:3px 10px;text-transform:uppercase}
+  .noteshead .save{margin-left:auto;font-size:12.5px;font-weight:700;color:var(--green)}
+  .notesbox{padding:12px 22px 20px}
+  textarea{
+    width:100%;min-height:150px;resize:vertical;
+    font-family:inherit;font-size:14px;font-weight:500;line-height:1.55;color:var(--navy);
+    background:#fff;border:1px solid var(--border);border-radius:10px;padding:14px 16px;outline:none;
+  }
+  textarea:focus{border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-soft)}
+  textarea::placeholder{color:#94A3B8}
+
+  /* right rail */
+  .rail{padding:20px 22px}
+  .r-h{font-size:12px;font-weight:800;letter-spacing:.08em;color:var(--muted);text-transform:uppercase;margin:18px 0 10px}
+  .r-h:first-child{margin-top:0}
+  .r-item{display:flex;align-items:flex-start;justify-content:space-between;gap:10px;padding:7px 0}
+  .r-item .n{font-size:13.5px;font-weight:700}
+  .r-item .c{font-size:11px;font-weight:700;color:var(--muted)}
+  .pill{font-size:12px;font-weight:800;border-radius:999px;padding:3px 10px;white-space:nowrap}
+  .pill.yes{color:var(--red);background:#FEF2F2}
+  .pill.org{color:var(--amber);background:var(--amber-bg)}
+  .pill.grn{color:var(--green);background:#F0FDF4}
+  .cmmc{display:flex;align-items:center;justify-content:space-between;background:var(--accent-soft);border:1px solid var(--accent-border);border-radius:10px;padding:12px 14px;margin:14px 0 4px}
+  .cmmc .t{font-size:13px;font-weight:800;color:var(--accent)}
+  .cmmc .tag{font-size:12.5px;font-weight:800;background:var(--amber);color:#fff;border-radius:7px;padding:5px 10px}
+
+  /* approved source list stub */
+  .asl th{font-size:11.5px;font-weight:800;letter-spacing:.06em;color:var(--muted);text-transform:uppercase;text-align:left;padding:14px 22px;border-bottom:1px solid var(--border)}
+  .asl td{font-size:13.5px;font-weight:600;color:var(--slate);padding:13px 22px;border-bottom:1px solid var(--border)}
+  .asl{width:100%;border-collapse:collapse}
+  .asl tr:last-child td{border-bottom:none}
+</style>
+</head>
+<body>
+<div class="drawer">
+  <div class="head">
+    <div class="h-top">
+      <div>
+        <h1>SPE4A6-27-T-108E <span style="font-size:14px;color:#94A3B8">⧉</span></h1>
+        <div class="h-sub">BOLT,SHEAR &nbsp;·&nbsp; FSC 5306 &nbsp;·&nbsp; SS5211-4H10, CONTINUATION SHEET &nbsp;·&nbsp; ID: <b>1UJRINQG</b></div>
+      </div>
+      <div class="h-actions">
+        <button class="btn blue">🗔 Price Sheet</button>
+        <button class="btn icon">‹</button>
+        <button class="btn icon">›</button>
+        <button class="btn icon">✕</button>
+      </div>
+    </div>
+    <div class="stages">
+      <div class="stage on">New Opportunity</div>
+      <div class="stage">Will Source</div>
+      <div class="stage">Currently Sourcing</div>
+      <div class="stage">Ready to Bid</div>
+      <div class="stage">Bid Complete</div>
+      <div class="stage">Trace</div>
+      <div class="stage">Award Won</div>
+      <div class="stage">Award Lost</div>
+      <div class="stage">No Bid</div>
+    </div>
+    <div class="meta">
+      <div class="m"><div class="k">Issue Date</div><div class="v">11/18/2026</div></div>
+      <div class="m"><div class="k">Due Date</div><div class="v orange">11/25/2026</div></div>
+      <div class="m"><div class="k">Set Aside</div><div class="v">Unrestricted</div></div>
+      <div class="m"><div class="k">FSC</div><div class="v">5306</div></div>
+      <div class="m"><div class="k">Est. Award</div><div class="v">$13,037.32</div></div>
+      <div class="m"><div class="k">My Bid Price</div><div class="v">&ndash;<span class="pen">✎</span></div></div>
+      <div class="m"><div class="k">Delivery Days</div><div class="v">&ndash;<span class="pen">✎</span></div></div>
+    </div>
+  </div>
+
+  <div class="bodywrap">
+    <div class="card">
+      <div class="c-head">
+        <h2>Solicitation Information</h2>
+        <div class="idn">ID Number: <b>1UJRINQG</b> ⧉</div>
+      </div>
+      <div class="c-grid">
+        <div class="itable">
+          <div class="irow"><div class="ik">Solicitation Number</div><div class="iv"><b style="color:var(--navy)">SPE4A6-27-T-108E</b> ⧉ <span class="chip solid">Open PDF</span><span class="chip soft">Qty 1,305 EA</span></div></div>
+          <div class="irow"><div class="ik">Set Aside</div><div class="iv">Unrestricted</div></div>
+          <div class="irow"><div class="ik">PR Number</div><div class="iv">7018852147 ⧉</div></div>
+          <div class="irow"><div class="ik">Date Issued</div><div class="iv">Wednesday, November 18, 2026</div></div>
+          <div class="irow"><div class="ik">NSN Number</div><div class="iv"><span class="blue">5306-01-221-8690</span> ⧉</div></div>
+          <div class="irow"><div class="ik">Part Number</div><div class="iv">SS5211-4H10, CONTINUATION SHEET ⧉</div></div>
+          <div class="irow"><div class="ik">Due Date</div><div class="iv"><span class="orange">11/25/2026</span></div></div>
+          <div class="irow"><div class="ik">Item Description</div><div class="iv">BOLT,SHEAR</div></div>
+          <div class="irow"><div class="ik">Drawing Information</div><div class="iv">IAW REFERENCE DRAWING NR 78286 SS5211 REVISION NR 6 DTD 09/25/1998 PART PIECE NUMBER: SS5211-4H10</div></div>
+          <div class="irow"><div class="ik">Tech Document</div><div class="iv"><span class="chip solid">Open Tech Doc</span></div></div>
+          <div class="irow"><div class="ik">FOB Point (Shipping)</div><div class="iv">ORIGIN</div></div>
+          <div class="irow"><div class="ik">Anticipated Award Amount</div><div class="iv"><span class="blue">$13,037.32</span></div></div>
+          <!-- ===== NOTES (new) ===== -->
+          <div class="irow notesrow" style="grid-template-columns:1fr">
+            <div>
+              <div class="noteshead">
+                <span class="nt">Notes</span>
+                <span class="badge">New</span>
+                <span class="save" id="saved" style="visibility:hidden">✓ Saved</span>
+              </div>
+              <div class="notesbox">
+                <textarea id="notes" placeholder="Type anything about this RFQ — vendor calls, pricing thoughts, reminders. Notes are private to your account and save automatically." oninput="savedTick()"></textarea>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="rail">
+          <div class="r-h">Compliance &amp; Restrictions</div>
+          <div class="r-h" style="margin-top:6px">Restrictions</div>
+          <div class="r-item"><div><div class="n">Export Control / ITAR</div><div class="c">RQ032</div></div><span class="pill yes">● Yes</span></div>
+          <div class="r-item"><div><div class="n">CUI Present</div><div class="c">RD002</div></div><span class="pill yes">● Yes</span></div>
+          <div class="r-item"><div><div class="n">Critical Safety Item</div><div class="c">CSI</div></div><span class="pill yes">● Yes</span></div>
+          <div class="r-h">Testing</div>
+          <div class="r-item"><div><div class="n">First Article Testing</div><div class="c">FAT</div></div><span class="pill yes">● Yes</span></div>
+          <div class="r-item"><div><div class="n">Production Lot Testing</div><div class="c">PLT</div></div><span class="pill yes">● Yes</span></div>
+          <div class="r-h">Logistics &amp; Certification</div>
+          <div class="r-item"><div><div class="n">Inspection Point</div><div class="c">Where the gov inspects</div></div><span class="pill org">● Origin</span></div>
+          <div class="cmmc"><span class="t">CMMC REQUIRED</span><span class="tag">L2 · C3PAO</span></div>
+          <div class="r-h">Acquisition (DLA)</div>
+          <div class="r-item"><div><div class="n">Acquisition Method</div><div class="c">AMC</div></div><span class="pill grn">● 1 · Competitive</span></div>
+          <div class="r-item"><div><div class="n">Acquisition Method Suffix</div><div class="c">AMSC</div></div><span class="pill org">● C · Requires engineering source a…</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="c-head"><h2>Approved Source List</h2></div>
+      <table class="asl">
+        <tr><th>Manufacturer Name</th><th>CAGE</th><th>Part Number</th><th>City</th><th>State</th><th>Reference Role</th><th>RNCC</th><th>RNVC</th></tr>
+        <tr><td>SIKORSKY AIRCRAFT CORP</td><td class="mono">78286</td><td class="mono">SS5211-4H10</td><td>Stratford</td><td>CT</td><td>Design Control</td><td>3</td><td>2</td></tr>
+      </table>
+    </div>
+  </div>
+</div>
+<script>
+let t;
+function savedTick(){
+  const s=document.getElementById('saved');
+  s.style.visibility='hidden';
+  clearTimeout(t);
+  t=setTimeout(()=>{s.style.visibility='visible'},700);
+}
+</script>
+</body>
+</html>
